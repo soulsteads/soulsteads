@@ -45,7 +45,7 @@ filters.forEach((button) =>
       if (!card.hidden) count += 1;
     });
     document.querySelector("#filter-status").textContent =
-      `${count} products shown.`;
+      `${count} ${count === 1 ? "product" : "products"} shown.`;
   }),
 );
 
@@ -101,7 +101,7 @@ function selectSetup(name) {
   setupButtons.forEach((button) =>
     button.setAttribute("aria-pressed", String(button.dataset.setup === name)),
   );
-  for (const id of ["home", "messaging"])
+  for (const id of ["home", "messaging", "router"])
     document.querySelector(`#setup-${id}`).hidden = id !== name;
   document.querySelector("#copy-status").textContent = "";
 }

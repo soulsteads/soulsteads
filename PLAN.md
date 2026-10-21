@@ -6,8 +6,8 @@ Static GitHub Pages site in `docs/`. No framework, third-party runtime dependenc
 
 Public lineup:
 
-- Agent Home and Agent Messaging: available early projects, documented capabilities only.
-- Agent Forge and Model Router: previews; public implementations and feature contracts are not yet published.
+- Agent Home, Agent Messaging, and Model Router: public implementations with setup documentation; early software, documented capabilities only.
+- Agent Forge: preview; public implementation and feature contract are not yet published. Model Router retains its documented compatibility, network, and release-review limitations.
 
 ## Acceptance
 
