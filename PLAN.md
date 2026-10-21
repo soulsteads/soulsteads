@@ -16,11 +16,11 @@ Public lineup:
 - [x] Keyboard interactions, clipboard-denial fallback, reduced motion, and readable no-JavaScript content.
 - [x] Desktop and mobile axe WCAG AA checks report zero violations. This is automated coverage, not a complete accessibility certification.
 - [x] Independent source review and final static/browser validation.
-- [ ] Owner enables GitHub Pages for main /docs; verify deployed bytes match the committed source.
+- [x] GitHub Pages serves main /docs; published HTML, official logo, and social image match the committed source. Live browser checks passed.
 
 ## Deployment boundary
 
-An authenticated SSH identity can push repository contents. The available API identities do not have repository administration access, so Pages enablement cannot be assumed from a successful push. See README.md for the exact one-time settings. Do not introduce deployment credentials, a custom domain, or unrelated infrastructure to bypass this boundary.
+GitHub Pages is enabled with branch `main` and folder `/docs`. Changes pushed to that source are deployed by GitHub's standard Pages builder. No custom domain or deployment credentials are needed. Future changes to the Pages setting require repository administration access.
 
 ## Artifact policy
 
