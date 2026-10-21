@@ -36,10 +36,12 @@ try {
   await page.locator(".filter-row").waitFor();
   assert.equal(await page.locator(".product-card:visible").count(), 4);
   await page.locator('[data-filter="preview"]').click();
-  assert.equal(await page.locator(".product-card:visible").count(), 2);
-  assert.match(await page.locator("#filter-status").innerText(), /2 products/);
+  assert.equal(await page.locator(".product-card:visible").count(), 1);
+  assert.match(await page.locator("#filter-status").innerText(), /1 product shown/);
   await page.locator('[data-filter="available"]').click();
   assert.equal(await page.locator(".preview-card:visible").count(), 0);
+  assert.equal(await page.locator("#model-router").isVisible(), true);
+  assert.equal(await page.locator(".product-card:visible").count(), 3);
   await page.locator('[data-filter="all"]').click();
   await page.locator('[data-layer="messaging"]').click();
   assert.match(await page.locator("#layer-title").innerText(), /conversation/);
@@ -76,7 +78,14 @@ try {
     await page.evaluate(() => window.getSelection().toString()),
     /Set up Soulsteads/,
   );
+  await page.locator('[data-setup="router"]').click();
+  assert.equal(await page.locator("#setup-router").isVisible(), true);
+  assert.equal(await page.locator("#setup-messaging").isVisible(), false);
+  assert.match(await page.locator("#setup-router").innerText(), /Tailnet IPv4/);
+  await page.locator('[data-copy="router-command"]').click();
+  assert.match(await page.evaluate(() => window.getSelection().toString()), /Do not replace a proxy/);
   await page.locator('[data-setup="home"]').click();
+  assert.equal(await page.locator("#setup-router").isVisible(), false);
   await page.locator("summary").first().focus();
   await page.keyboard.press("Enter");
   assert.equal(await page.locator("details").first().getAttribute("open"), "");
@@ -123,7 +132,14 @@ try {
       await page.locator('#navigation a[href="#products"]').click();
       assert.equal(await menu.getAttribute("aria-expanded"), "false");
     }
-    results.push(`Responsive layout: ${width}px`);
+    await page.locator('[data-setup="router"]').click();
+    assert.ok(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      `Router setup has no horizontal overflow at ${width}`,
+    );
+    assert.equal(await page.locator("#setup-router").isVisible(), true);
+    await page.locator('[data-setup="home"]').click();
+    results.push(`Responsive layout, including Router setup: ${width}px`);
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -155,6 +171,7 @@ try {
   assert.equal(await fallback.locator(".product-card:visible").count(), 4);
   assert.equal(await fallback.locator("#setup-home").isVisible(), true);
   assert.equal(await fallback.locator("#setup-messaging").isVisible(), true);
+  assert.equal(await fallback.locator("#setup-router").isVisible(), true);
   assert.equal(await fallback.locator("#navigation").isVisible(), true);
   assert.ok(
     await fallback.evaluate(

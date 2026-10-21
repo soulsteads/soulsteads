@@ -7,8 +7,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const html = readFileSync(resolve(root, "docs/index.html"), "utf8");
 
 test("four products have truthful public availability", () => {
-  assert.equal((html.match(/data-status="available"/g) || []).length, 2);
-  assert.equal((html.match(/data-status="preview"/g) || []).length, 2);
+  assert.equal((html.match(/data-status="available"/g) || []).length, 3);
+  assert.equal((html.match(/data-status="preview"/g) || []).length, 1);
   for (const name of [
     "agent-home",
     "agent-messaging",
@@ -20,7 +20,7 @@ test("four products have truthful public availability", () => {
       html.includes(`https://github.com/soulsteads/soulsteads-${name}`),
     );
   }
-  assert.match(html.replace(/\s+/g, " "), /not installable releases/);
+  assert.match(html.replace(/\s+/g, " "), /Forge remains a preview/);
 });
 test("local resources and anchor targets exist", () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
@@ -46,4 +46,20 @@ test("setup and safety information survive without JavaScript", () => {
   }
   assert.match(html, /not a kill switch/);
   assert.match(html, /do not sandbox/);
+});
+
+test("Router is documented with setup links and release limitations", () => {
+  const card = html.match(/<article\b[^>]*id="model-router"[\s\S]*?<\/article>/)[0];
+  assert.match(card, /data-status="available"/);
+  assert.match(card, /EARLY RELEASE/);
+  assert.match(card, /capacity/i);
+  assert.doesNotMatch(card, /reserved|not yet published|ON THE HORIZON/);
+  for (const guide of ["SETUP", "COMPATIBILITY"]) {
+    assert.ok(html.includes(`soulsteads-model-router/blob/main/docs/${guide}.md`));
+  }
+  assert.ok(html.includes('class="quickstart" id="setup-router"'));
+  const copy = html.replace(/\s+/g, " ");
+  for (const phrase of ["Tailnet IPv4", "HTTP", "4001", "privacy review", "does not host models"]) {
+    assert.ok(copy.includes(phrase), phrase);
+  }
 });

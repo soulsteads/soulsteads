@@ -89,7 +89,7 @@
         <div
           class="constellation"
           role="img"
-          aria-label="Independent tools around your agent: Home and Messaging are available; Forge and Router are previews."
+          aria-label="Independent tools around your agent: Home, Messaging, and Model Router have public implementations; Forge is a preview."
         >
           <div class="orbit orbit-one"></div>
           <div class="orbit orbit-two"></div>
@@ -129,9 +129,9 @@
           <div class="satellite satellite-router">
             <span class="node-icon amber">⑂</span>
             <div>
-              <strong>Model Router</strong><small>Watch this space.</small>
+              <strong>Model Router</strong><small>One local model endpoint.</small>
             </div>
-            <span class="preview-dot"></span>
+            <span class="node-dot"></span>
           </div>
           <span class="orbit-coordinate">EST. FOR THE BUILDERS</span>
         </div>
@@ -173,9 +173,9 @@
           <button data-filter="all" aria-pressed="true">
             All products <span>04</span></button
           ><button data-filter="available" aria-pressed="false">
-            Available now <span>02</span></button
+            Available now <span>03</span></button
           ><button data-filter="preview" aria-pressed="false">
-            On the horizon <span>02</span></button
+            On the horizon <span>01</span></button
           ><span id="filter-status" class="sr-only" role="status"></span>
         </div>
         <div class="product-grid">
@@ -312,32 +312,33 @@
               ><span class="tech-label">PREVIEW</span>
             </div>
           </article>
-          <article
-            class="product-card preview-card"
-            data-status="preview"
-            id="model-router"
-          >
+          <article class="product-card router-card" data-status="available" id="model-router">
             <div class="card-top">
-              <span class="product-icon amber" aria-hidden="true">⑂</span
-              ><span class="badge preview-badge">ON THE HORIZON</span>
+              <span class="product-icon amber" aria-hidden="true">⑂</span>
+              <span class="badge"><i></i> EARLY RELEASE · 0.1.0</span>
             </div>
-            <p class="card-kicker">THE NEXT CHAPTER</p>
+            <p class="card-kicker">THE LOCAL MODEL GATEWAY</p>
             <h3>Model Router</h3>
-            <p class="card-tagline">Another piece of the picture.</p>
+            <p class="card-tagline">Your local models. One endpoint.</p>
             <p class="card-description">
-              A future member of the lineup. Its public repository is reserved.
-              Routing capabilities, supported providers, and installation
-              details are not yet published.
+              Route OpenAI-compatible requests across your own inference servers.
+              Stable model aliases, capability checks, and shared capacity limits
+              help clients reach an eligible backend without overbooking it.
             </p>
-            <div class="preview-line">
-              <span></span><span>PREVIEW / NOT AVAILABLE TO INSTALL</span>
-            </div>
+            <ul class="feature-list">
+              <li>Client-key access to selected aliases and routes</li>
+              <li>Capacity-aware routing and bounded pre-response retries</li>
+              <li>Rust gateway; builds as the slotline binary</li>
+            </ul>
+            <p class="fine-print">
+              Bring an existing inference server. This does not host models or
+              manage model loading. Backend compatibility varies; see the setup
+              and compatibility guides before connecting clients.
+            </p>
             <div class="card-bottom">
-              <a
-                class="text-link"
-                href="https://github.com/soulsteads/soulsteads-model-router"
-                >Follow the repository <span aria-hidden="true">↗</span></a
-              ><span class="tech-label">PREVIEW</span>
+              <a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router"
+                >Explore Model Router <span aria-hidden="true">↗</span></a>
+              <span class="tech-label">NATIVE RUST</span>
             </div>
           </article>
         </div>
@@ -355,8 +356,8 @@
             </div>
             <p class="section-intro">
               Home manages the agent's files. Messaging handles the chat
-              connection. Your chosen runtime does the work. No all-or-nothing
-              framework.
+              connection. Your chosen runtime does the work. Optionally point a
+              compatible client at Model Router for your local inference servers.
             </p>
           </div>
           <div class="stack-layout">
@@ -406,8 +407,9 @@
               <noscript
                 ><p>
                   Your chat app → Agent Messaging → your chosen runtime.
-                  Optionally launch from an Agent Home. Neither project requires
-                  the other.
+                  Optionally launch from an Agent Home. A compatible client can
+                  separately use Model Router for local inference. No project
+                  installs or configures another automatically.
                 </p></noscript
               >
             </div>
@@ -513,7 +515,7 @@
               </h2>
             </div>
             <p class="section-intro">
-              Start with an agent home, or go straight to chat. These are
+              Start with an agent home, go straight to chat, or route local models. These are
               independent projects, not mandatory steps in a single installer.
             </p>
           </div>
@@ -527,6 +529,8 @@
               01 / Create a home</button
             ><button data-setup="messaging" aria-pressed="false">
               02 / Connect your chat
+            </button><button data-setup="router" aria-pressed="false">
+              03 / Route local models
             </button>
           </div>
           <div class="quickstart" id="setup-home">
@@ -605,6 +609,44 @@ Tell me how to test the connection.</code></pre>
               </div>
             </div>
           </div>
+          <div class="quickstart" id="setup-router">
+            <div class="setup-copy">
+              <span class="badge">MODEL ROUTER</span>
+              <h3>Your servers.<br />One endpoint.</h3>
+              <p>
+                Build the slotline gateway with Rust on Linux/Unix. Bring an
+                existing inference server and an assigned Tailnet IPv4 address.
+                Port 4001 is reserved; loopback, LAN, and wildcard listener binds
+                are rejected. It serves HTTP, not built-in TLS: use a protected
+                network and do not expose it directly to the internet.
+              </p>
+              <a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/SETUP.md">Read the setup guide ↗</a>
+              <p class="fine-print">
+                Early release, not a universal OpenAI drop-in.
+                <a href="https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/COMPATIBILITY.md">Check compatibility and limits</a>.
+                The repository also records a Git-history privacy review as a
+                remaining public-release prerequisite. No prebuilt binary is bundled.
+              </p>
+            </div>
+            <div class="terminal">
+              <div class="terminal-bar">
+                <span class="window-dots" aria-hidden="true">● ● ●</span><span>prompt / your coding agent</span>
+                <button class="copy" data-copy="router-command" hidden>Copy prompt</button>
+              </div>
+              <pre tabindex="0" role="region" aria-label="Model Router setup prompt"><code id="router-command">Set up Soulsteads Model Router.
+Clone https://github.com/soulsteads/soulsteads-model-router.
+Read README.md, docs/SETUP.md, and config/slotline.example.yaml.
+Check prerequisites and ask which existing inference server to use.
+Build with Cargo.lock. Use the exact model ID and verified limits.
+Declare only capabilities we have tested. Keep keys in a private file.
+Validate configuration before starting the gateway.
+Ask before starting a service or changing anything outside the checkout.
+Do not replace a proxy or migrate clients without approval.
+Verify authentication, the catalog, and a real completion.
+Report what passed and what remains untested.</code></pre>
+              <div class="terminal-footer"><span class="mint-text">↳</span> Optional gateway. Separate configuration. No automatic client migration.</div>
+            </div>
+          </div>
           <p id="copy-status" class="copy-status" role="status"></p>
         </div>
       </section>
@@ -631,7 +673,8 @@ Tell me how to test the connection.</code></pre>
             <p>
               No. Use Agent Home directly with a supported runtime, use
               Messaging without Home, or combine them. Neither installs or
-              configures the other automatically.
+              configures the other automatically. Model Router is also optional;
+              configure a compatible client separately to use it.
             </p>
           </details>
           <details>
@@ -688,12 +731,14 @@ Tell me how to test the connection.</code></pre>
           </details>
           <details>
             <summary>
-              Where are Forge and Model Router?<span aria-hidden="true">+</span>
+              What is available, and what is still a preview?<span aria-hidden="true">+</span>
             </summary>
             <p>
-              Their public repositories are reserved. They are previews, not
-              installable releases, and no public feature contract is published
-              yet. Follow their repositories for future updates.
+              Home, Messaging, and Model Router have public implementations and
+              setup documentation. Model Router is early-release software with
+              backend-specific limits and a recorded release privacy-review
+              prerequisite. Forge remains a preview; its public repository has
+              no implementation or setup guide yet.
             </p>
           </details>
           <details>
@@ -701,7 +746,7 @@ Tell me how to test the connection.</code></pre>
               Is Soulsteads open source?<span aria-hidden="true">+</span>
             </summary>
             <p>
-              Agent Home and Agent Messaging are published under Apache 2.0.
+              Agent Home, Agent Messaging, and Model Router use Apache 2.0.
               Read the source, report a bug, or propose a change. Preview
               projects will publish their own licensing and setup details when
               available.
