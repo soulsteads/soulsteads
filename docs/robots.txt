@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://soulsteads.github.io/soulsteads/sitemap.xml
