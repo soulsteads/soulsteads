@@ -2,9 +2,7 @@
 
 # Soulsteads
 
-**Your agents. On your terms.**
-
-Fast. Less baggage. No BS.
+**Independent tools for running and coordinating your agents.**
 
 Build an agent stack that works for you. Give your agents a home, bring them into your chat, and keep the pieces you want.
 
@@ -18,6 +16,14 @@ Build an agent stack that works for you. Give your agents a home, bring them int
 - **[Model Router](https://github.com/soulsteads/soulsteads-model-router)** — A Rust gateway for routing OpenAI-compatible requests across your own inference servers, with stable aliases, capability checks, and shared capacity limits. Early release; builds as `slotline`.
 
 Visit the [Soulsteads website](https://soulsteads.github.io/soulsteads/) to explore the products, see what's available, and get started.
+
+- **[Agent Workboard](https://github.com/soulsteads/soulsteads-agent-workboard)** — Independent issue ownership, leased claims, and a shared dashboard. Early source release.
+- **Agent Voice** — Explicit speech input/output is in development; no public implementation to install.
+- **Agent Skillstore** — Reviewed portable skill distribution is in development; no public implementation to install.
+
+The lineup describes the public GitHub source checked on the date recorded in
+`data/products.json`. It does not track newer Forgejo snapshots. Each product
+card includes prerequisites, setup or publication status, and limits.
 
 ## Route your local models
 
@@ -37,3 +43,7 @@ gate or backend combination is qualified.
 
 Home, Messaging, and Model Router are independent tools. Installing one does not
 configure another, migrate clients, or start a service.
+
+## Maintaining the lineup
+
+Public facts and setup snippets live in `data/products.json`. Run `node scripts/render-lineup.mjs` after changing those facts, then `node --test tests/*.test.mjs`. The generated `docs/` is committed and needs no runtime build or external data request. Keep public claims tied to inspected public artifacts; private candidates do not change release status.

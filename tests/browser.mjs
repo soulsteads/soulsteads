@@ -14,7 +14,7 @@ const { default: AxeBuilder } = await import(
 const output = process.env.SITE_QA_OUTPUT || "/tmp/soulsteads-site-evidence";
 await mkdir(output, { recursive: true });
 const base = process.env.SITE_URL || "http://127.0.0.1:8096/";
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, executablePath: process.env.SITE_QA_BROWSER || undefined });
 const results = [];
 try {
   const context = await browser.newContext({
@@ -34,14 +34,16 @@ try {
   });
   await page.goto(base);
   await page.locator(".filter-row").waitFor();
-  assert.equal(await page.locator(".product-card:visible").count(), 4);
+  assert.equal(await page.locator(".product-card:visible").count(), 7);
   await page.locator('[data-filter="preview"]').click();
   assert.equal(await page.locator(".product-card:visible").count(), 1);
   assert.match(await page.locator("#filter-status").innerText(), /1 product shown/);
   await page.locator('[data-filter="available"]').click();
   assert.equal(await page.locator(".preview-card:visible").count(), 0);
   assert.equal(await page.locator("#model-router").isVisible(), true);
-  assert.equal(await page.locator(".product-card:visible").count(), 3);
+  assert.equal(await page.locator(".product-card:visible").count(), 4);
+  await page.locator('[data-filter="planned"]').click();
+  assert.equal(await page.locator(".product-card:visible").count(), 2);
   await page.locator('[data-filter="all"]').click();
   await page.locator('[data-layer="messaging"]').click();
   assert.match(await page.locator("#layer-title").innerText(), /conversation/);
@@ -86,9 +88,9 @@ try {
   assert.match(await page.evaluate(() => window.getSelection().toString()), /Do not replace a proxy/);
   await page.locator('[data-setup="home"]').click();
   assert.equal(await page.locator("#setup-router").isVisible(), false);
-  await page.locator("summary").first().focus();
+  await page.locator("#faq summary").first().focus();
   await page.keyboard.press("Enter");
-  assert.equal(await page.locator("details").first().getAttribute("open"), "");
+  assert.equal(await page.locator("#faq details").first().getAttribute("open"), "");
   await page.keyboard.press("Enter");
   assert.equal(
     await page
@@ -122,6 +124,9 @@ try {
       ),
       `No horizontal overflow at ${width}`,
     );
+    await page.locator(".product-details summary").first().click();
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `Expanded setup fits ${width}px`);
+    await page.locator(".product-details summary").first().click();
     if (width <= 540) {
       const menu = page.locator(".menu-toggle");
       await menu.click();
@@ -168,7 +173,7 @@ try {
   });
   const fallback = await nojs.newPage();
   await fallback.goto(base);
-  assert.equal(await fallback.locator(".product-card:visible").count(), 4);
+  assert.equal(await fallback.locator(".product-card:visible").count(), 7);
   assert.equal(await fallback.locator("#setup-home").isVisible(), true);
   assert.equal(await fallback.locator("#setup-messaging").isVisible(), true);
   assert.equal(await fallback.locator("#setup-router").isVisible(), true);

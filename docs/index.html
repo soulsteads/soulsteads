@@ -171,179 +171,128 @@
           hidden
         >
           <button data-filter="all" aria-pressed="true">
-            All products <span>04</span></button
+            All products <span>07</span></button
           ><button data-filter="available" aria-pressed="false">
-            Available now <span>03</span></button
+            Available now <span>04</span></button
           ><button data-filter="preview" aria-pressed="false">
             On the horizon <span>01</span></button
-          ><span id="filter-status" class="sr-only" role="status"></span>
+          ><button data-filter="planned" aria-pressed="false">Planned <span>02</span></button><span id="filter-status" class="sr-only" role="status"></span>
         </div>
-        <div class="product-grid">
-          <article
-            class="product-card home-card"
-            data-status="available"
-            id="agent-home"
-          >
-            <div class="card-top">
-              <span class="product-icon mint" aria-hidden="true">⌂</span
-              ><span class="badge"><i></i> EARLY PROJECT</span>
-            </div>
-            <p class="card-kicker">THE FOUNDATION</p>
-            <h3>Agent Home</h3>
-            <p class="card-tagline">A home for more than a prompt.</p>
-            <p class="card-description">
-              Keep your agent's identity, instructions, memory, skills, and
-              runtime configuration together. Local Git history makes changes
-              yours to track and restore.
-            </p>
-            <div class="home-visual" aria-label="Example agent home files">
-              <div>
-                <span class="mint-text">~/agents/helper/</span
-                ><span class="code-label">LOCAL GIT</span>
-              </div>
-              <div>
-                <span class="file-branch">├──</span> SOUL.md
-                <small>personality</small>
-              </div>
-              <div>
-                <span class="file-branch">├──</span> AGENTS.md
-                <small>instructions</small>
-              </div>
-              <div>
-                <span class="file-branch">├──</span> MEMORY.md
-                <small>continuity</small>
-              </div>
-              <div>
-                <span class="file-branch">└──</span> skills/
-                <small>capabilities</small>
-              </div>
-            </div>
-            <ul class="feature-list">
-              <li>OpenCode, Pi, Claude Code, and Codex adapters</li>
-              <li>Create, configure, launch, commit, and restore</li>
-              <li>Optional, explicit Hermes profile import</li>
-            </ul>
-            <div class="card-bottom">
-              <a
-                class="text-link"
-                href="https://github.com/soulsteads/soulsteads-agent-home"
-                >Explore Agent Home <span aria-hidden="true">↗</span></a
-              ><span class="tech-label">PYTHON + GIT</span>
-            </div>
-          </article>
-          <article
-            class="product-card messaging-card"
-            data-status="available"
-            id="agent-messaging"
-          >
-            <div class="card-top">
-              <span class="product-icon blue" aria-hidden="true">↔</span
-              ><span class="badge"><i></i> EARLY RELEASE · 0.1.0</span>
-            </div>
-            <p class="card-kicker">THE CONNECTION</p>
-            <h3>Agent Messaging</h3>
-            <p class="card-tagline">Your agent. Your chat app.</p>
-            <p class="card-description">
-              Send work to your coding agent without living in a terminal. A
-              native Rust bridge connects your chat account to the runtime you
-              already use.
-            </p>
-            <div
-              class="chat-visual"
-              aria-label="Illustrative chat, not a live conversation"
-            >
-              <span class="code-label">ILLUSTRATIVE CONVERSATION</span>
-              <div class="chat-bubble user-bubble">
-                Can you review this change? <span>↗</span>
-              </div>
-              <div class="chat-bubble agent-bubble">
-                <img
-                  class="avatar"
-                  src="assets/soulsteads-logo.png"
-                  width="28"
-                  height="32"
-                  alt="Soulsteads"
-                />
-                <div>
-                  Your agent, right here.<small
-                    >Your runtime handles the work.</small
-                  >
-                </div>
-              </div>
-            </div>
-            <ul class="feature-list">
-              <li>Seven chat options, including a built-in web UI</li>
-              <li>Claude Code, Codex, OpenCode, Pi, and custom ACP</li>
-              <li>Guided Telegram setup on Linux for Claude/Codex</li>
-            </ul>
-            <div class="card-bottom">
-              <a
-                class="text-link"
-                href="https://github.com/soulsteads/soulsteads-agent-messaging"
-                >Explore Messaging <span aria-hidden="true">↗</span></a
-              ><span class="tech-label">NATIVE RUST</span>
-            </div>
-          </article>
-          <article
-            class="product-card preview-card"
-            data-status="preview"
-            id="agent-forge"
-          >
-            <div class="card-top">
-              <span class="product-icon violet" aria-hidden="true">✳</span
-              ><span class="badge preview-badge">ON THE HORIZON</span>
-            </div>
-            <p class="card-kicker">THE NEXT CHAPTER</p>
-            <h3>Agent Forge</h3>
-            <p class="card-tagline">More room to build.</p>
-            <p class="card-description">
-              Part of the growing Soulsteads family. The public repository is
-              reserved; a public implementation, feature set, and setup guide
-              have not been published yet.
-            </p>
-            <div class="preview-line">
-              <span></span><span>PREVIEW / NOT AVAILABLE TO INSTALL</span>
-            </div>
-            <div class="card-bottom">
-              <a
-                class="text-link"
-                href="https://github.com/soulsteads/soulsteads-agent-forge"
-                >Follow the repository <span aria-hidden="true">↗</span></a
-              ><span class="tech-label">PREVIEW</span>
-            </div>
-          </article>
-          <article class="product-card router-card" data-status="available" id="model-router">
-            <div class="card-top">
-              <span class="product-icon amber" aria-hidden="true">⑂</span>
-              <span class="badge"><i></i> EARLY RELEASE · 0.1.0</span>
-            </div>
-            <p class="card-kicker">THE LOCAL MODEL GATEWAY</p>
-            <h3>Model Router</h3>
-            <p class="card-tagline">Your local models. One endpoint.</p>
-            <p class="card-description">
-              Route OpenAI-compatible requests across your own inference servers.
-              Stable model aliases, capability checks, and shared capacity limits
-              help clients reach an eligible backend without overbooking it.
-            </p>
-            <ul class="feature-list">
-              <li>Client-key access to selected aliases and routes</li>
-              <li>Capacity-aware routing and bounded pre-response retries</li>
-              <li>Rust gateway; builds as the slotline binary</li>
-            </ul>
-            <p class="fine-print">
-              Bring an existing inference server. This does not host models or
-              manage model loading. Backend compatibility varies; see the setup
-              and compatibility guides before connecting clients.
-            </p>
-            <div class="card-bottom">
-              <a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router"
-                >Explore Model Router <span aria-hidden="true">↗</span></a>
-              <span class="tech-label">NATIVE RUST</span>
-            </div>
-          </article>
-        </div>
-      </section>
-      <section class="stack-section" id="stack" aria-labelledby="stack-title">
+        <p class="fine-print" id="lineup-publication">Public source checked 2026-11-14. Internal development candidates are not public releases. Open each product for its prerequisites, standalone setup or publication status.</p><div class="product-grid">
+<article class="product-card " data-status="available" id="agent-home">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">⌂</span><span class="badge">EARLY RELEASE</span></div>
+    <p class="card-kicker">THE FOUNDATION</p><h3>Agent Home</h3><p class="card-tagline">Keep the agent yours.</p>
+    <p class="card-description">Maintain agent identity, instructions, skills, memory connections, learning preferences, and native harness configuration.</p><p class="fine-print">Version 0.1.0 on <code>main</code>. Installs from source: there is no tagged release or prebuilt package.</p>
+    <details class="product-details"><summary>Setup, prerequisites and limits</summary><p>Version 0.1.0 on <code>main</code>. Installs from source: there is no tagged release or prebuilt package.</p>
+<h4>Before you start</h4><ul class="feature-list"><li>Python 3.11 or newer, and Git</li><li><code>uv</code> for the install command shown (the README also documents <code>pipx</code>)</li><li>One supported harness (OpenCode, pi, Claude Code, or Codex), installed and authenticated separately</li></ul>
+<h4>Published capabilities</h4><ul class="feature-list"><li>Maps one portable agent definition into native configuration for pi, OpenCode, Codex, and Claude Code.</li><li>Keeps each home in a private local Git repository: commit changes, read the history, and restore earlier tracked contents as a new commit.</li><li>Refreshes native files from your edited Markdown with <code>soulsteads config &lt;agent&gt; --sync</code>.</li><li>Installs local skill directories, and can inspect and then optionally import selected Hermes profile files.</li></ul>
+<h4>What it owns</h4><ul class="feature-list"><li>The agent definition: identity, instructions, memory documents, skills, and learning preferences</li><li>Generated native configuration files inside the home</li><li>The home's tracked local Git history</li></ul><h4>What stays separate</h4><ul class="feature-list"><li>Execution, native sessions, tools, or permissions: your harness keeps those</li><li>Harness installation, authentication, or global harness configuration</li><li>Models, gateways, scheduled jobs, or chat accounts</li></ul>
+<h4>Current limits</h4><ul class="feature-list"><li>Not a sandbox or a secret scanner: your harness keeps its machine permissions and can still load its own global configuration.</li><li>Refreshing native files is an explicit command in the published version. Start a new native session afterwards.</li><li><code>soulsteads verify</code> is an offline structural check. It never launches an agent, so it does not prove that a harness loaded the configuration.</li></ul>
+<h4>Create a home and preview its launch</h4><h5>Install the CLI, create a home, preview the launch command</h5><pre><code>uv tool install git+https://github.com/soulsteads/soulsteads-agent-home.git
+soulsteads create helper --runtime opencode
+soulsteads run helper --dry-run</code></pre><p>Choose <code>pi</code>, <code>claude</code>, or <code>codex</code> instead of <code>opencode</code> if that is the harness you use. Once it is installed and authenticated, launch it with <code>soulsteads run helper</code>.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home#get-started">Agent Home guide ↗</a> · <a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/runtimes.md">Harness adapters and limits ↗</a></details>
+    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home">Agent Home on GitHub ↗</a></div></article>
+<article class="product-card " data-status="available" id="agent-messaging">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">↔</span><span class="badge">EARLY RELEASE</span></div>
+    <p class="card-kicker">THE CONNECTION</p><h3>Agent Messaging</h3><p class="card-tagline">Your agent in your chat.</p>
+    <p class="card-description">Connect an existing agent to a supported chat application.</p><p class="fine-print"><code>main</code> is version 0.2.0; the <code>release</code> branch that the setup prompt clones is 0.1.0. Builds from source: there is no tagged release or prebuilt binary.</p>
+    <details class="product-details"><summary>Setup, prerequisites and limits</summary><p><code>main</code> is version 0.2.0; the <code>release</code> branch that the setup prompt clones is 0.1.0. Builds from source: there is no tagged release or prebuilt binary.</p>
+<h4>Before you start</h4><ul class="feature-list"><li>A coding agent (harness) that is already installed and signed in</li><li>A chat account and that connector's credentials, such as a Telegram bot token, kept in a private file</li><li>Rust/Cargo and Git to build the bridge from source</li><li>For the guided Telegram helper: Linux, Python 3.11+, and a systemd user session</li></ul>
+<h4>Published capabilities</h4><ul class="feature-list"><li>Runs on your machine and relays messages between your own chat account and the coding agent you already have signed in.</li><li>Includes connectors for Telegram, Matrix, Mattermost, Slack, Discord, WhatsApp, and a built-in web interface. Connectors are included, not preconfigured.</li><li>Works with Claude Code, OpenAI Codex, OpenCode, and Pi, or another compatible ACP server through a custom command. <code>main</code> (0.2.0) adds GitHub Copilot CLI.</li><li>Guided setup covers one path: Telegram with Claude Code or Codex on Linux. Every other combination is configured by hand.</li></ul>
+<h4>What it owns</h4><ul class="feature-list"><li>Connector admission and access rules</li><li>Chat transport</li><li>Bindings between chat conversations and agent sessions</li></ul><h4>What stays separate</h4><ul class="feature-list"><li>Execution: the harness does the work, with its own permissions</li><li>Your terminal sessions: chat sessions are separate and terminal history is not transferred</li><li>Sandboxing, or a guaranteed stop for work that is already running</li></ul>
+<h4>Current limits</h4><ul class="feature-list"><li><code>/cancel</code> is not a kill switch. In the known Codex cancellation case a shell process can keep running, and unattended remote command execution is not qualified.</li><li>Telegram is not an end-to-end-encrypted connection to your machine. Matrix encrypted replies are not yet qualified for interoperability.</li><li>Approval prompts do not cover every tool: tools the agent already allows may run without another prompt.</li><li>Optional local agent tools (a build feature plus a runtime opt-in, on <code>main</code>) let one conversation ask another already-attached agent in the same bridge process a question. Nothing is queued, there is no offline inbox, and there is no cross-machine transport. It is not a remote agent network.</li></ul>
+<h4>Ask your coding agent to set it up</h4><h5>Paste this prompt into a coding agent that can run commands</h5><pre><code>Set up Soulsteads Agent Messaging so I can talk to you from my chat app.
+
+1. Clone https://github.com/soulsteads/soulsteads-agent-messaging (branch
+   `release`) unless you are already inside it.
+2. Read README.md and docs/SETUP.md, and use the setup-soulsteads-messaging
+   skill if you have it.
+3. Ask me which chat app to use (Telegram has a guided setup) and which agent
+   to connect.
+4. Build it, configure it, and install it as a service. Ask me before you start
+   the service or change anything outside the checkout.
+5. Never ask me to paste a token into chat. Tell me where to save it in a
+   private file, then read it from there.
+6. Finish by telling me what to send from my chat app to check it works.</code></pre><p>Your agent still needs permission to run commands, and only Telegram can be set up this way end to end. For the other platforms it follows the manual steps in the setup guide.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-messaging/blob/main/docs/SETUP.md">Messaging setup guide ↗</a> · <a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-messaging#know-before-you-connect">Know before you connect ↗</a></details>
+    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-messaging">Agent Messaging on GitHub ↗</a></div></article>
+<article class="product-card " data-status="available" id="agent-workboard">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">▤</span><span class="badge">EARLY RELEASE</span></div>
+    <p class="card-kicker">THE SHARED PLAN</p><h3>Agent Workboard</h3><p class="card-tagline">Shared work without collisions.</p>
+    <p class="card-description">Give independent agents a durable shared view of issues, dependencies, ownership, progress, and handoffs.</p><p class="fine-print">Version 0.1.0 on <code>main</code>. Builds from source: there is no tagged release or prebuilt binary.</p>
+    <details class="product-details"><summary>Setup, prerequisites and limits</summary><p>Version 0.1.0 on <code>main</code>. Builds from source: there is no tagged release or prebuilt binary.</p>
+<h4>Before you start</h4><ul class="feature-list"><li>Rust's stable toolchain and a C compiler (SQLite is bundled)</li><li>A checkout of the repository: the install command runs from it</li><li>Agents that can call a CLI, MCP, or HTTP</li></ul>
+<h4>Published capabilities</h4><ul class="feature-list"><li>A Rust issue board for agents: projects, epics, stories, tasks, and bugs, with dependencies, priorities, and acceptance criteria.</li><li>Gives each claim one owner: expiring leases, heartbeats, and tokens that reject stale workers. Required revisions stop silent overwrites.</li><li>Agents work through MCP, a JSON CLI, or an authenticated HTTP API. People follow progress in a live, read-only web dashboard.</li><li>One binary and one SQLite database. An optional idempotency key makes a retried change safe.</li></ul>
+<h4>What it owns</h4><ul class="feature-list"><li>Issue, dependency, and claim lifecycles</li><li>The audit trail of which agent changed what</li><li>Per-agent API keys for access to the board</li></ul><h4>What stays separate</h4><ul class="feature-list"><li>Execution: agents keep their own tools and do the work</li><li>External outcomes: a <code>done</code> issue is coordination state, not independent proof that something happened</li><li>Project-specific roles: keys identify agents in one trusted pool</li></ul>
+<h4>Current limits</h4><ul class="feature-list"><li>Designed for one host that owns the SQLite database. Remote agents use HTTP; do not share the database file over a network filesystem.</li><li><code>workboard web</code> listens on <code>127.0.0.1:7878</code> by default. Put any remote access behind an HTTPS reverse proxy.</li><li>API keys identify agents; they are not project-specific authorization roles. Any keyed agent can coordinate work across the board.</li><li>Changes are deduplicated only when you send an idempotency key. Without one, inspect state and events before retrying.</li></ul>
+<h4>Install it, create a board, open the dashboard</h4><h5>Install from a checkout of the repository</h5><p>Use an absolute database path so every local process opens the same board. Its parent directory must already exist.</p><pre><code>cargo install --locked --path .
+export WORKBOARD_DB=&quot;$PWD/workboard.sqlite3&quot;
+export WORKBOARD_ACTOR=&quot;coordinator&quot;</code></pre><h5>Create a workspace</h5><p>Run these in a fresh database, with <code>WORKBOARD_API_KEY</code> unset.</p><pre><code>workboard run '{&quot;op&quot;:&quot;agent_register&quot;,&quot;id&quot;:&quot;coordinator&quot;,&quot;name&quot;:&quot;Coordinator&quot;}'
+workboard run '{&quot;op&quot;:&quot;agent_register&quot;,&quot;id&quot;:&quot;forge&quot;,&quot;name&quot;:&quot;Forge&quot;,&quot;capabilities&quot;:[&quot;rust&quot;,&quot;tests&quot;]}'
+workboard run '{&quot;op&quot;:&quot;project_create&quot;,&quot;key&quot;:&quot;AG&quot;,&quot;name&quot;:&quot;Agent platform&quot;}'
+workboard run '{&quot;op&quot;:&quot;issue_create&quot;,&quot;project&quot;:&quot;AG&quot;,&quot;kind&quot;:&quot;epic&quot;,&quot;title&quot;:&quot;Ship agent coordination&quot;}'
+workboard run '{&quot;op&quot;:&quot;issue_create&quot;,&quot;project&quot;:&quot;AG&quot;,&quot;kind&quot;:&quot;story&quot;,&quot;title&quot;:&quot;Implement the work loop&quot;,&quot;parent&quot;:&quot;AG-1&quot;,&quot;acceptance_criteria&quot;:[&quot;Integration tests pass&quot;]}'
+workboard run '{&quot;op&quot;:&quot;issue_transition&quot;,&quot;key&quot;:&quot;AG-2&quot;,&quot;expected_revision&quot;:1,&quot;state&quot;:&quot;ready&quot;}'</code></pre><h5>Issue a key and open the dashboard</h5><p>Save the returned <code>api_key</code> privately; it is shown only once. Then open <code>http://127.0.0.1:7878</code> and enter that key.</p><pre><code>workboard run '{&quot;op&quot;:&quot;api_key_create&quot;,&quot;agent&quot;:&quot;forge&quot;,&quot;label&quot;:&quot;Forge workstation&quot;}'
+workboard web</code></pre><p>The ready story appears on the board, waiting for an agent to claim it. Leave the server running and connect a worker from another terminal or client.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-workboard#connect-your-agents">Connect your agents ↗</a> · <a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-workboard/blob/main/docs/operations.md">Command and workflow reference ↗</a></details>
+    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-workboard">Agent Workboard on GitHub ↗</a></div></article>
+<article class="product-card preview-card" data-status="preview" id="agent-forge">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">✳</span><span class="badge">PREVIEW · NOT YET RELEASED</span></div>
+    <p class="card-kicker">THE STANDING WORK</p><h3>Agent Forge</h3><p class="card-tagline">Turn delegation into verified outcomes.</p>
+    <p class="card-description">Provide reusable capabilities and dependable automation for authorized ongoing work and personal responsibilities.</p><p class="fine-print">Not yet publicly released. The public repository exists, but it has no branches, implementation, or setup guide.</p>
+    <details class="product-details"><summary>Direction and publication status</summary><p>Not yet publicly released. The public repository exists, but it has no branches, implementation, or setup guide.</p>
+
+<h4>Planned direction</h4><ul class="feature-list"><li>A standalone, plugin-capable core with no plugins bundled.</li><li>MCP tools, published agent skills, and a web dashboard for people.</li><li>Register and schedule permitted work, check status and results, and investigate failures.</li></ul>
+<h4>What it owns</h4><ul class="feature-list"><li>Responsibility state, scheduling, and workflows</li><li>Policy and outcome verification</li></ul><h4>What stays separate</h4><ul class="feature-list"><li>Agent Home's agent definition</li><li>Agent Workboard's issue lifecycle</li></ul>
+
+<p><strong>Not yet published</strong> — There is nothing to install. Agent Forge is a preview: its first public release is still in development. Setup steps will appear here once a public release exists and its documented journey has been demonstrated.</p></details>
+    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-forge">Watch the public repository ↗</a></div></article>
+<article class="product-card " data-status="available" id="model-router">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">⑂</span><span class="badge">EARLY RELEASE</span></div>
+    <p class="card-kicker">THE MODEL GATEWAY</p><h3>Model Router</h3><p class="card-tagline">Predictable access to suitable models.</p>
+    <p class="card-description">Offer compatible clients a stable, policy-controlled endpoint for supported local models and explicitly authorized cloud providers. The router does not host models.</p><p class="fine-print">Version 0.1.0 on <code>main</code>; builds as the <code>slotline</code> binary. The repository still lists a Git-history privacy review as a remaining public-release step. No prebuilt binary.</p>
+    <details class="product-details"><summary>Setup, prerequisites and limits</summary><p>Version 0.1.0 on <code>main</code>; builds as the <code>slotline</code> binary. The repository still lists a Git-history privacy review as a remaining public-release step. No prebuilt binary.</p>
+<h4>Before you start</h4><ul class="feature-list"><li>A Linux/Unix host with Rust/Cargo and a C toolchain</li><li>A running local OpenAI-compatible inference server whose exact model ID and tested limits you know</li><li>An assigned Tailnet IPv4 address for the listener: loopback, LAN, and wildcard binds are rejected, and port <code>4001</code> is reserved</li><li>Python 3 for the setup guide's configuration and request examples</li></ul>
+<h4>Published capabilities</h4><ul class="feature-list"><li>Puts stable model aliases in front of your own inference servers, and restricts each client key to the aliases and routes it needs.</li><li>Checks declared capabilities and available capacity before choosing a backend, with bounded retries before any response is exposed.</li><li>Opt-in routing policies (rules or a local decision model) choose among explicitly authorized local, Codex, and Copilot aliases.</li><li>Shows health, admission, and request timing without logging prompt text by default.</li></ul>
+<h4>What it owns</h4><ul class="feature-list"><li>Request admission and placement across authorized routes</li><li>Client keys and what each key may reach</li><li>Shared capacity limits for the backends it fronts</li></ul><h4>What stays separate</h4><ul class="feature-list"><li>Model hosting or model loading: bring an existing inference server</li><li>Task planning</li><li>Provider subscriptions or cloud accounts</li></ul>
+<h4>Current limits</h4><ul class="feature-list"><li>Not a universal OpenAI drop-in. It exposes an OpenAI-compatible subset, and support depends on your exact backend and the capabilities you declare.</li><li>Serves HTTP without built-in TLS. Keep it on a protected network and do not expose it directly to the internet.</li><li>A routing policy never grants permission: cloud routes need explicit grants on the client key.</li><li>Optional passthrough mode bypasses managed capacity and safety checks. Leave it off unless you accept that different contract.</li></ul>
+<h4>Ask your coding agent to set it up</h4><h5>Clone the repository, then paste this prompt into an agent working in the checkout</h5><pre><code>Set up Soulsteads Model Router from this repository.
+
+1. Read README.md, docs/SETUP.md, and config/slotline.example.yaml.
+2. Check the prerequisites. Ask which existing local inference server to use.
+3. Build with Cargo.lock. Use the backend's exact model ID and tested
+   context/concurrency limits. Declare only capabilities we have verified.
+4. Generate credentials into a private file, never into chat or Git. Validate
+   the configuration before starting the gateway.
+5. Ask before installing or starting a service or changing anything outside
+   this checkout. Do not replace an existing proxy or migrate clients silently.
+6. Verify authentication, the catalog, and a real completion. Report what
+   passed and what remains untested.</code></pre><p>No model server or prebuilt binary is bundled. The example policy starts with one enabled text route; it needs your actual bind address, key path, model ID, and verified limits.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/SETUP.md">Router setup guide ↗</a> · <a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/COMPATIBILITY.md">Compatibility and limits ↗</a></details>
+    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router">Model Router on GitHub ↗</a></div></article>
+<article class="product-card " data-status="planned" id="agent-voice">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">◉</span><span class="badge">PLANNED · IN DEVELOPMENT</span></div>
+    <p class="card-kicker">THE SPOKEN INTERFACE</p><h3>Agent Voice</h3><p class="card-tagline">Speech as an optional interface.</p>
+    <p class="card-description">Turn speech into agent input and agent output into understandable speech.</p><p class="fine-print">Planned and in development. The public repository exists, but it has no branches or implementation.</p>
+    <details class="product-details"><summary>Direction and publication status</summary><p>Planned and in development. The public repository exists, but it has no branches or implementation.</p>
+
+<h4>Planned direction</h4><ul class="feature-list"><li>One small interaction first: explicit record-and-send, transcription, and optional spoken replies.</li><li>No new stack, cloud service, or always-listening device required.</li><li>Live conversation and streaming are considered only after that first path is demonstrated.</li></ul>
+<h4>What it owns</h4><ul class="feature-list"><li>Transcription and speech-generation interfaces for existing clients</li></ul><h4>What stays separate</h4><ul class="feature-list"><li>The agent, its harness, or the conversation it joins</li><li>Any requirement to use another Soulsteads product</li></ul>
+
+<p><strong>Not yet published</strong> — There is nothing to install. Agent Voice is planned: there is no public implementation. Setup steps will appear here once a public release exists and its documented journey has been demonstrated.</p></details>
+    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-voice">Watch the public repository ↗</a></div></article>
+<article class="product-card " data-status="planned" id="agent-skillstore">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">❖</span><span class="badge">PLANNED · IN DEVELOPMENT</span></div>
+    <p class="card-kicker">THE SKILL LIBRARY</p><h3>Agent Skillstore</h3><p class="card-tagline">Share skills without losing control.</p>
+    <p class="card-description">Centrally publish, discover, update, and improve reusable agent skills.</p><p class="fine-print">Planned and in development. There is no public repository or implementation yet.</p>
+    <details class="product-details"><summary>Direction and publication status</summary><p>Planned and in development. There is no public repository or implementation yet.</p>
+
+<h4>Planned direction</h4><ul class="feature-list"><li>Discovery, validation, reviewed version publication, and installation of ordinary, portable Agent Skills packages.</li><li>Update inspection that protects local changes, and recovery from a bad update.</li><li>Improvement proposals that need validation and review before publication. Adoption stays selective.</li></ul>
+<h4>What it owns</h4><ul class="feature-list"><li>Skill distribution and release history</li></ul><h4>What stays separate</h4><ul class="feature-list"><li>The agent's identity, permissions, or active session</li><li>Any requirement to use Agent Home</li></ul>
+
+<p><strong>Not yet published</strong> — There is nothing to install. Agent Skillstore is planned: there is no public repository or implementation. Setup steps will appear here once a public release exists and its documented journey has been demonstrated.</p></details>
+    <div class="card-bottom"></div></article>
+</div>
+</section>
+<!-- optional-combination --><aside class="optional-combination"><h3>One optional combination</h3><p>An agent prepared by Home, reached through Messaging, coordinating issues through Workboard, and reaching models through Router. This is an example, not a canonical stack, and not an installer.</p><ul class="feature-list"><li>Prepare the agent: Define the agent once in a home directory and generate native configuration for your harness.</li><li>Reach it from chat: Point Messaging at that existing directory with <code>acp.agentHome</code>, so new chat sessions run there. Documented on Messaging <code>main</code> (0.2.0); the 0.1.0 <code>release</code> branch does not include it.</li><li>Coordinate shared work: Give each agent the Workboard MCP server, CLI, or HTTP API, with its own key, to claim and hand off issues.</li><li>Reach models through one endpoint: Point a compatible client at the router's endpoint, limited to the routes its key allows.</li></ul><ul class="feature-list"><li>Each connection is something you configure explicitly. No product installs, configures, or starts another.</li><li>Connections use each product's documented public interface, not private imports or a shared database.</li><li>Every product here also works without the others.</li></ul><ul class="feature-list"><li>Messaging's local agent tools are a bounded exchange between already-attached agents in one bridge process on one machine. They are not a cross-machine agent network, and Soulsteads has no agent network product.</li></ul></aside><!-- end-optional-combination -->
+<section class="stack-section" id="stack" aria-labelledby="stack-title">
         <div class="wrap section">
           <div class="section-heading">
             <div>
@@ -543,7 +492,7 @@
               </p>
               <a
                 class="text-link"
-                href="https://github.com/soulsteads/soulsteads-agent-home#install"
+                href="https://github.com/soulsteads/soulsteads-agent-home#get-started"
                 >Full installation guide <span aria-hidden="true">↗</span></a
               >
             </div>
@@ -665,94 +614,15 @@ Report what passed and what remains untested.</code></pre>
             getting—and what you're not.
           </p>
         </div>
-        <div class="faq-list">
-          <details>
-            <summary>
-              Do I need the whole stack?<span aria-hidden="true">+</span>
-            </summary>
-            <p>
-              No. Use Agent Home directly with a supported runtime, use
-              Messaging without Home, or combine them. Neither installs or
-              configures the other automatically. Model Router is also optional;
-              configure a compatible client separately to use it.
-            </p>
-          </details>
-          <details>
-            <summary>
-              Is this a hosted AI service?<span aria-hidden="true">+</span>
-            </summary>
-            <p>
-              No. These are tools you run on your machine. You bring your own
-              runtime, model access, chat accounts, and credentials. Your model
-              and messaging providers' costs and privacy policies still apply.
-            </p>
-          </details>
-          <details>
-            <summary>
-              Is my agent sandboxed?<span aria-hidden="true">+</span>
-            </summary>
-            <p>
-              No. Home and Messaging do not sandbox your agent. It keeps its
-              machine permissions. Keep secrets out of tracked files. Telegram
-              is not an end-to-end-encrypted path to your machine, and
-              Messaging's Matrix encrypted replies are not yet
-              interoperability-qualified.
-            </p>
-          </details>
-          <details>
-            <summary>
-              Can I cancel a remote task safely?<span aria-hidden="true"
-                >+</span
-              >
-            </summary>
-            <p>
-              Messaging's /cancel is not a kill switch. A shell process can keep
-              running in the known Codex cancellation case. Unattended remote
-              command execution is not qualified; review the Messaging README
-              before connecting a powerful agent.
-            </p>
-          </details>
-          <details>
-            <summary>
-              Can I bring an existing Hermes agent?<span aria-hidden="true"
-                >+</span
-              >
-            </summary>
-            <p>
-              Agent Home has an optional Hermes importer. Inspect an explicitly
-              selected source first; applying creates a fresh home, not a live
-              messaging cutover. Unsupported settings are reported, and
-              incomplete imports need acknowledgement.
-              <a
-                href="https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/hermes-import.md"
-                >Read the import guide.</a
-              >
-            </p>
-          </details>
-          <details>
-            <summary>
-              What is available, and what is still a preview?<span aria-hidden="true">+</span>
-            </summary>
-            <p>
-              Home, Messaging, and Model Router have public implementations and
-              setup documentation. Model Router is early-release software with
-              backend-specific limits and a recorded release privacy-review
-              prerequisite. Forge remains a preview; its public repository has
-              no implementation or setup guide yet.
-            </p>
-          </details>
-          <details>
-            <summary>
-              Is Soulsteads open source?<span aria-hidden="true">+</span>
-            </summary>
-            <p>
-              Agent Home, Agent Messaging, and Model Router use Apache 2.0.
-              Read the source, report a bug, or propose a change. Preview
-              projects will publish their own licensing and setup details when
-              available.
-            </p>
-          </details>
-        </div>
+        <div class="faq-list"><details><summary>Do I need the whole lineup?<span aria-hidden="true">+</span></summary><p>No. Every product is meant to be useful on its own; start with one and add another only if it helps. Independence does not mean no dependencies: Messaging needs a harness and a chat account, and Model Router needs an inference server. It means those needs never force you to adopt the rest of Soulsteads.</p></details>
+<details><summary>What can I use today, and what is not published yet?<span aria-hidden="true">+</span></summary><p>Agent Home, Agent Messaging, Agent Workboard, Model Router have public implementations and setup documentation. Agent Forge remains a preview. There is nothing to install. Agent Forge is a preview: its first public release is still in development. Setup steps will appear here once a public release exists and its documented journey has been demonstrated. Agent Voice is planned and in development. There is nothing to install. Agent Voice is planned: there is no public implementation. Setup steps will appear here once a public release exists and its documented journey has been demonstrated. Agent Skillstore is planned and in development. There is nothing to install. Agent Skillstore is planned: there is no public repository or implementation. Setup steps will appear here once a public release exists and its documented journey has been demonstrated.</p></details>
+<details><summary>Is this a hosted AI service?<span aria-hidden="true">+</span></summary><p>No. The published tools run on your machine. You bring your own harness, model access, chat accounts, and credentials. Your model and messaging providers' costs and privacy policies still apply.</p></details>
+<details><summary>Is my agent sandboxed?<span aria-hidden="true">+</span></summary><p>No. Agent Home and Agent Messaging do not sandbox your agent: it keeps its machine permissions. Keep secrets out of tracked files, and use an account and workspace you are comfortable giving the agent.</p></details>
+<details><summary>Can I cancel a remote task safely?<span aria-hidden="true">+</span></summary><p>Messaging's <code>/cancel</code> is not a kill switch. In the known Codex cancellation case a shell process can keep running, and unattended remote command execution is not qualified. Read the Messaging README before connecting a powerful agent.</p></details>
+<details><summary>Can I bring an existing Hermes agent?<span aria-hidden="true">+</span></summary><p>Agent Home has an optional Hermes importer. Inspect an explicitly selected source first; applying creates a fresh home, not a live messaging cutover. Unsupported settings are reported, and incomplete imports need acknowledgement.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/hermes-import.md">Read the import guide ↗</a></details>
+<details><summary>Is there an agent network?<span aria-hidden="true">+</span></summary><p>No. Messaging's optional local agent tools let one conversation ask another already-attached agent on the same machine a question, with nothing queued and no cross-machine delivery. A separate agent network is a possible future decision, not a product.</p></details>
+<details><summary>Are there packaged releases?<span aria-hidden="true">+</span></summary><p>Agent Home, Agent Messaging, Agent Workboard, Model Router currently install or build from source. Check each card's setup and repository release page before installing; there are no tagged releases or prebuilt packages in the inspected public artifacts. Other products have no public setup yet.</p></details>
+<details><summary>Is Soulsteads open source?<span aria-hidden="true">+</span></summary><p>Agent Home: Apache 2.0; Agent Messaging: Apache 2.0; Agent Workboard: Apache 2.0; Model Router: Apache 2.0. Read the source, report a bug, or propose a change. Unpublished projects will state their licensing and setup details when available.</p></details></div>
       </section>
       <section class="closing wrap">
         <div>

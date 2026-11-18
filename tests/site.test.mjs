@@ -6,17 +6,20 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const html = readFileSync(resolve(root, "docs/index.html"), "utf8");
 
-test("four products have truthful public availability", () => {
-  assert.equal((html.match(/data-status="available"/g) || []).length, 3);
+test("complete lineup has truthful public availability", () => {
+  assert.equal((html.match(/data-status="available"/g) || []).length, 4);
   assert.equal((html.match(/data-status="preview"/g) || []).length, 1);
   for (const name of [
     "agent-home",
     "agent-messaging",
     "agent-forge",
     "model-router",
+    "agent-workboard",
+    "agent-voice",
+    "agent-skillstore",
   ]) {
     assert.ok(html.includes(`id="${name}"`));
-    assert.ok(
+    if (name !== "agent-skillstore") assert.ok(
       html.includes(`https://github.com/soulsteads/soulsteads-${name}`),
     );
   }
@@ -53,7 +56,7 @@ test("Router is documented with setup links and release limitations", () => {
   assert.match(card, /data-status="available"/);
   assert.match(card, /EARLY RELEASE/);
   assert.match(card, /capacity/i);
-  assert.doesNotMatch(card, /reserved|not yet published|ON THE HORIZON/);
+  assert.doesNotMatch(card, /not yet published|ON THE HORIZON/);
   for (const guide of ["SETUP", "COMPATIBILITY"]) {
     assert.ok(html.includes(`soulsteads-model-router/blob/main/docs/${guide}.md`));
   }
