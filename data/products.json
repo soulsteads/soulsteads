@@ -1,38 +1,39 @@
 {
   "schema": 1,
-  "factsCheckedOn": "2026-11-14",
+  "factsCheckedOn": "2026-11-19",
   "organization": "https://github.com/soulsteads",
   "siteUrl": "https://soulsteads.github.io/soulsteads/",
   "lineup": [
     "agent-home",
     "agent-messaging",
     "agent-workboard",
-    "agent-forge",
     "model-router",
+    "agent-forge",
     "agent-voice",
-    "agent-skillstore"
+    "agent-skillstore",
+    "agent-harness"
   ],
   "maturityLevels": {
     "early": {
       "rank": 2,
       "installable": true,
-      "label": "Early release",
-      "badge": "EARLY RELEASE",
+      "label": "Early source release",
+      "badge": "EARLY SOURCE RELEASE",
       "summary": "Public source and setup documentation you can use today. Early software: only documented capabilities are claimed, and not every combination has been tested."
     },
     "preview": {
       "rank": 1,
-      "installable": false,
-      "label": "Preview",
-      "badge": "PREVIEW \u00b7 NOT YET RELEASED",
-      "summary": "The first release is defined and in development. No public implementation, feature contract, or setup guide yet. Nothing to install."
+      "installable": true,
+      "label": "Source preview",
+      "badge": "SOURCE PREVIEW",
+      "summary": "Public preview source and setup documentation for evaluation; not a production release."
     },
     "planned": {
       "rank": 0,
       "installable": false,
       "label": "Planned",
-      "badge": "PLANNED \u00b7 IN DEVELOPMENT",
-      "summary": "Proposed scope, in development. No public implementation. Nothing to install, and the scope can still change."
+      "badge": "NOT YET AVAILABLE",
+      "summary": "No public implementation to install. Scope can still change."
     }
   },
   "products": [
@@ -43,20 +44,26 @@
       "tone": "mint",
       "kicker": "THE FOUNDATION",
       "tagline": "Keep the agent yours.",
-      "need": "Keep one agent definition and run it in the harness I choose",
+      "need": "Keep my agent\u2019s identity and instructions portable",
       "maturity": "early",
-      "maturityDetail": "Version 0.1.0 on `main`. Installs from source: there is no tagged release or prebuilt package.",
+      "maturityDetail": "Version 0.1.0 on `main`. GitHub release `v0.1.0` is source-only.",
       "published": {
         "repo": "soulsteads-agent-home",
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "e52aaa5bafc83af51848f1bd4d787e9c64cc8913",
+        "commit": "54851fe43a18ffe15598277c917ab9edb734db8a",
         "version": "0.1.0",
         "license": "Apache-2.0",
-        "otherRefs": []
+        "otherRefs": [],
+        "releaseTag": "v0.1.0"
       },
-      "purpose": "Maintain agent identity, instructions, skills, memory connections, learning preferences, and native harness configuration.",
+      "purpose": "Keep your agent\u2019s identity, instructions, skills, and configuration in files you control, with local Git history.",
+      "taggedSetup": {
+        "summary": "Keep one agent’s instructions, skills, and configuration in a portable, Git-tracked home.",
+        "requirements": "Python 3.11+, Git, and a supported agent runtime to launch it.",
+        "guide": "README.md#other-installation-options"
+      },
       "does": [
         "Maps one portable agent definition into native configuration for pi, OpenCode, Codex, and Claude Code.",
         "Keeps each home in a private local Git repository: commit changes, read the history, and restore earlier tracked contents as a new commit.",
@@ -91,7 +98,7 @@
             "kind": "commands",
             "lang": "sh",
             "note": null,
-            "code": "uv tool install git+https://github.com/soulsteads/soulsteads-agent-home.git\nsoulsteads create helper --runtime opencode\nsoulsteads run helper --dry-run",
+            "code": "uv tool install git+https://github.com/soulsteads/soulsteads-agent-home.git@54851fe43a18ffe15598277c917ab9edb734db8a\nsoulsteads create helper --runtime opencode\nsoulsteads verify helper\nsoulsteads run helper --dry-run",
             "source": {
               "path": "README.md"
             }
@@ -100,7 +107,7 @@
         "after": "Choose `pi`, `claude`, or `codex` instead of `opencode` if that is the harness you use. Once it is installed and authenticated, launch it with `soulsteads run helper`.",
         "guides": [
           {
-            "label": "Agent Home guide",
+            "label": "Create and verify a home",
             "href": "https://github.com/soulsteads/soulsteads-agent-home#get-started"
           },
           {
@@ -125,15 +132,15 @@
       "tone": "blue",
       "kicker": "THE CONNECTION",
       "tagline": "Your agent in your chat.",
-      "need": "Talk to my coding agent from a chat app",
+      "need": "Talk to my coding agent from chat",
       "maturity": "early",
-      "maturityDetail": "`main` is version 0.2.0; the `release` branch that the setup prompt clones is 0.1.0. Builds from source: there is no tagged release or prebuilt binary.",
+      "maturityDetail": "Version 0.2.0 on `main`. GitHub release `v0.2.0` is source-only. Use `main` for current setup; the older `release` branch is 0.1.0.",
       "published": {
         "repo": "soulsteads-agent-messaging",
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "baa57df107b3d4062f6e78817b7aa51a9a3ace77",
+        "commit": "27657bd2f59a3b943fd7b9fcb6860a82ec6946d0",
         "version": "0.2.0",
         "license": "Apache-2.0",
         "otherRefs": [
@@ -142,9 +149,15 @@
             "commit": "a27bc86e44ca13f7fcca697c0ca5835be28d2fd5",
             "version": "0.1.0"
           }
-        ]
+        ],
+        "releaseTag": "v0.2.0"
       },
-      "purpose": "Connect an existing agent to a supported chat application.",
+      "purpose": "Use your existing coding agent from Telegram, Matrix, Mattermost, Slack, Discord, WhatsApp, or the built-in web interface.",
+      "taggedSetup": {
+        "summary": "Talk to an existing coding agent from chat or the built-in web interface.",
+        "requirements": "Rust/Cargo, Git, an authenticated coding agent, and connector credentials as needed. Set a nonempty sender allowlist (`allowedUsers`) before enabling a remote connector.",
+        "guide": "docs/SETUP.md#before-you-start"
+      },
       "does": [
         "Runs on your machine and relays messages between your own chat account and the coding agent you already have signed in.",
         "Includes connectors for Telegram, Matrix, Mattermost, Slack, Discord, WhatsApp, and a built-in web interface. Connectors are included, not preconfigured.",
@@ -211,20 +224,9 @@
         }
       ],
       "journey": {
-        "title": "Ask your coding agent to set it up",
-        "steps": [
-          {
-            "title": "Paste this prompt into a coding agent that can run commands",
-            "kind": "prompt",
-            "lang": "text",
-            "note": null,
-            "code": "Set up Soulsteads Agent Messaging so I can talk to you from my chat app.\n\n1. Clone https://github.com/soulsteads/soulsteads-agent-messaging (branch\n   `release`) unless you are already inside it.\n2. Read README.md and docs/SETUP.md, and use the setup-soulsteads-messaging\n   skill if you have it.\n3. Ask me which chat app to use (Telegram has a guided setup) and which agent\n   to connect.\n4. Build it, configure it, and install it as a service. Ask me before you start\n   the service or change anything outside the checkout.\n5. Never ask me to paste a token into chat. Tell me where to save it in a\n   private file, then read it from there.\n6. Finish by telling me what to send from my chat app to check it works.",
-            "source": {
-              "path": "README.md"
-            }
-          }
-        ],
-        "after": "Your agent still needs permission to run commands, and only Telegram can be set up this way end to end. For the other platforms it follows the manual steps in the setup guide.",
+        "title": "Connect an existing agent",
+        "steps": [],
+        "after": "Follow the guide for the connector and runtime you actually use. Telegram setup is guided for Claude Code and Codex on Linux; other setups are manual. Start with a dedicated account and a harmless allowed-user prompt.",
         "guides": [
           {
             "label": "Messaging setup guide",
@@ -252,20 +254,26 @@
       "tone": "teal",
       "kicker": "THE SHARED PLAN",
       "tagline": "Shared work without collisions.",
-      "need": "Let several agents share a plan without colliding",
+      "need": "Give multiple agents one shared issue board",
       "maturity": "early",
-      "maturityDetail": "Version 0.1.0 on `main`. Builds from source: there is no tagged release or prebuilt binary.",
+      "maturityDetail": "Version 0.1.0 on `main`. GitHub release `v0.1.0` is source-only.",
       "published": {
         "repo": "soulsteads-agent-workboard",
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "f11ca5bce1f9ffdaa767c440a21dd419521d5d16",
+        "commit": "9833be988577718aa96d21cf3be521015361b8b2",
         "version": "0.1.0",
         "license": "Apache-2.0",
-        "otherRefs": []
+        "otherRefs": [],
+        "releaseTag": "v0.1.0"
       },
-      "purpose": "Give independent agents a durable shared view of issues, dependencies, ownership, progress, and handoffs.",
+      "purpose": "Give agents a shared issue board with dependencies, one active claim per issue, and a dashboard people can follow.",
+      "taggedSetup": {
+        "summary": "Coordinate issues, dependencies, and agent claims on a shared board.",
+        "requirements": "Stable Rust and a C compiler. SQLite is bundled.",
+        "guide": "README.md#quickstart"
+      },
       "does": [
         "A Rust issue board for agents: projects, epics, stories, tasks, and bugs, with dependencies, priorities, and acceptance criteria.",
         "Gives each claim one owner: expiring leases, heartbeats, and tokens that reject stale workers. Required revisions stop silent overwrites.",
@@ -330,6 +338,10 @@
         "after": "The ready story appears on the board, waiting for an agent to claim it. Leave the server running and connect a worker from another terminal or client.",
         "guides": [
           {
+            "label": "Create a sandbox board",
+            "href": "https://github.com/soulsteads/soulsteads-agent-workboard#quickstart"
+          },
+          {
             "label": "Connect your agents",
             "href": "https://github.com/soulsteads/soulsteads-agent-workboard#connect-your-agents"
           },
@@ -349,74 +361,32 @@
       "license": "Apache 2.0"
     },
     {
-      "slug": "agent-forge",
-      "name": "Agent Forge",
-      "icon": "\u2733",
-      "tone": "violet",
-      "kicker": "THE STANDING WORK",
-      "tagline": "Turn delegation into verified outcomes.",
-      "need": "Hand over ongoing responsibilities and get verified results",
-      "maturity": "preview",
-      "maturityDetail": "Not yet publicly released. The public repository exists, but it has no branches, implementation, or setup guide.",
-      "published": {
-        "repo": "soulsteads-agent-forge",
-        "repoExists": true,
-        "implementation": false,
-        "ref": null,
-        "commit": null,
-        "version": null,
-        "license": null,
-        "otherRefs": []
-      },
-      "purpose": "Provide reusable capabilities and dependable automation for authorized ongoing work and personal responsibilities.",
-      "direction": [
-        "A standalone, plugin-capable core with no plugins bundled.",
-        "MCP tools, published agent skills, and a web dashboard for people.",
-        "Register and schedule permitted work, check status and results, and investigate failures."
-      ],
-      "owns": [
-        "Responsibility state, scheduling, and workflows",
-        "Policy and outcome verification"
-      ],
-      "doesNotOwn": [
-        "Agent Home's agent definition",
-        "Agent Workboard's issue lifecycle"
-      ],
-      "prerequisites": null,
-      "limits": [],
-      "journey": null,
-      "notPublished": {
-        "headline": "Not yet published",
-        "body": "There is nothing to install. Agent Forge is a preview: its first public release is still in development. Setup steps will appear here once a public release exists and its documented journey has been demonstrated."
-      },
-      "links": [
-        {
-          "label": "Watch the public repository",
-          "href": "https://github.com/soulsteads/soulsteads-agent-forge"
-        }
-      ]
-    },
-    {
       "slug": "model-router",
       "name": "Model Router",
       "icon": "\u2442",
       "tone": "amber",
       "kicker": "THE MODEL GATEWAY",
       "tagline": "Predictable access to suitable models.",
-      "need": "Give my clients one endpoint for the models I authorize",
+      "need": "Give compatible clients one endpoint for existing models",
       "maturity": "early",
-      "maturityDetail": "Version 0.1.0 on `main`; builds as the `slotline` binary. The repository still lists a Git-history privacy review as a remaining public-release step. No prebuilt binary.",
+      "maturityDetail": "Version 0.1.0 on `main`. GitHub release `v0.1.0` is source-only.",
       "published": {
         "repo": "soulsteads-model-router",
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "f38966fb6f84c90279a34a1ea35097db2366fa6a",
+        "commit": "8621acd55ad293c4140b1e58664f0fc4f5fa650d",
         "version": "0.1.0",
         "license": "Apache-2.0",
-        "otherRefs": []
+        "otherRefs": [],
+        "releaseTag": "v0.1.0"
       },
-      "purpose": "Offer compatible clients a stable, policy-controlled endpoint for supported local models and explicitly authorized cloud providers. The router does not host models.",
+      "purpose": "Route compatible requests to existing model servers through stable aliases, per-client access rules, and shared capacity limits.",
+      "taggedSetup": {
+        "summary": "Route compatible requests to existing inference servers through one endpoint.",
+        "requirements": "Linux, Rust/Cargo, a C toolchain, an inference server, and Tailnet IPv4. Loopback listeners are documented on `main`, not in this tag.",
+        "guide": "docs/SETUP.md#prerequisites"
+      },
       "does": [
         "Puts stable model aliases in front of your own inference servers, and restricts each client key to the aliases and routes it needs.",
         "Checks declared capabilities and available capacity before choosing a backend, with bounded retries before any response is exposed.",
@@ -429,14 +399,14 @@
         "Shared capacity limits for the backends it fronts"
       ],
       "doesNotOwn": [
-        "Model hosting or model loading: bring an existing inference server",
+        "The router does not host models or load them: bring an existing inference server",
         "Task planning",
         "Provider subscriptions or cloud accounts"
       ],
       "prerequisites": [
         "A Linux/Unix host with Rust/Cargo and a C toolchain",
         "A running local OpenAI-compatible inference server whose exact model ID and tested limits you know",
-        "An assigned Tailnet IPv4 address for the listener: loopback, LAN, and wildcard binds are rejected, and port `4001` is reserved",
+        "An assigned Tailnet IPv4 address in default mode, or explicit loopback mode for same-host clients. LAN and wildcard binds are rejected; port `4001` is reserved.",
         "Python 3 for the setup guide's configuration and request examples"
       ],
       "limits": [
@@ -446,20 +416,9 @@
         "Optional passthrough mode bypasses managed capacity and safety checks. Leave it off unless you accept that different contract."
       ],
       "journey": {
-        "title": "Ask your coding agent to set it up",
-        "steps": [
-          {
-            "title": "Clone the repository, then paste this prompt into an agent working in the checkout",
-            "kind": "prompt",
-            "lang": "text",
-            "note": null,
-            "code": "Set up Soulsteads Model Router from this repository.\n\n1. Read README.md, docs/SETUP.md, and config/slotline.example.yaml.\n2. Check the prerequisites. Ask which existing local inference server to use.\n3. Build with Cargo.lock. Use the backend's exact model ID and tested\n   context/concurrency limits. Declare only capabilities we have verified.\n4. Generate credentials into a private file, never into chat or Git. Validate\n   the configuration before starting the gateway.\n5. Ask before installing or starting a service or changing anything outside\n   this checkout. Do not replace an existing proxy or migrate clients silently.\n6. Verify authentication, the catalog, and a real completion. Report what\n   passed and what remains untested.",
-            "source": {
-              "path": "README.md"
-            }
-          }
-        ],
-        "after": "No model server or prebuilt binary is bundled. The example policy starts with one enabled text route; it needs your actual bind address, key path, model ID, and verified limits.",
+        "title": "Configure one model route",
+        "steps": [],
+        "after": "Use an existing inference server with an exact model ID and verified limits. Validate the policy with `slotline --check-config` before starting. Configuration validation does not prove inference.",
         "guides": [
           {
             "label": "Router setup guide",
@@ -481,6 +440,74 @@
       "license": "Apache 2.0"
     },
     {
+      "slug": "agent-forge",
+      "name": "Agent Forge",
+      "icon": "\u2733",
+      "tone": "violet",
+      "kicker": "THE STANDING WORK",
+      "tagline": "Schedule work. Inspect the result.",
+      "need": "Run recurring workflows and inspect what happened",
+      "maturity": "preview",
+      "maturityDetail": "Version 0.1.0 on `main`. Build from `main`; no GitHub release or prebuilt binary.",
+      "published": {
+        "repo": "soulsteads-agent-forge",
+        "repoExists": true,
+        "implementation": true,
+        "ref": "main",
+        "commit": "cbe32ca5c7caa5563ca0aa1c15a75b68de9b2c6c",
+        "version": "0.1.0",
+        "license": "Apache-2.0",
+        "otherRefs": [],
+        "releaseTag": null
+      },
+      "purpose": "Run one-off or recurring workflows, inspect step results, and recover carefully after an interruption.",
+      "owns": [
+        "Workflow and schedule definitions, run history, and effect admission and receipts"
+      ],
+      "doesNotOwn": [
+        "Agent identity, issue and claim state, or model routing",
+        "Automatic undo or proof that an external effect happened"
+      ],
+      "prerequisites": [
+        "Linux, Rust 1.97 or later, and a C compiler",
+        "An empty, dedicated PostgreSQL database for DBOS",
+        "`jq` for the upstream quick-start example"
+      ],
+      "limits": [
+        "Early preview, not a production release. Listener is loopback only.",
+        "SQLite stores local admission and effect receipts; it is not a substitute for PostgreSQL.",
+        "Verify unknown external outcomes independently before retrying. Do not give untrusted executables access."
+      ],
+      "journey": {
+        "title": "Run a deterministic workflow",
+        "steps": [],
+        "after": "Use the upstream quick start to initialize a fresh Forge home and run the sample workflow against a disposable PostgreSQL database. Check the output before adding a schedule, model, or plugin.",
+        "guides": [
+          {
+            "label": "Run the first workflow",
+            "href": "https://github.com/soulsteads/soulsteads-agent-forge#quick-start"
+          },
+          {
+            "label": "Requirements and verification",
+            "href": "https://github.com/soulsteads/soulsteads-agent-forge/blob/main/docs/support.md"
+          }
+        ]
+      },
+      "notPublished": null,
+      "links": [
+        {
+          "label": "Agent Forge on GitHub",
+          "href": "https://github.com/soulsteads/soulsteads-agent-forge"
+        }
+      ],
+      "does": [
+        "Runs typed workflows on demand or on a recurring schedule, with explicit time zones.",
+        "Shows runs, step output, failures, and the status of external effects through a local dashboard, CLI, authenticated HTTP, or stdio MCP.",
+        "Deterministic workflows need no model or harness. Configured models, harnesses, and trusted executable plugins are optional."
+      ],
+      "license": "Apache 2.0"
+    },
+    {
       "slug": "agent-voice",
       "name": "Agent Voice",
       "icon": "\u25c9",
@@ -489,7 +516,7 @@
       "tagline": "Speech as an optional interface.",
       "need": "Speak to my agent and hear its replies",
       "maturity": "planned",
-      "maturityDetail": "Planned and in development. The public repository exists, but it has no branches or implementation.",
+      "maturityDetail": "No public implementation to install.",
       "published": {
         "repo": "soulsteads-agent-voice",
         "repoExists": true,
@@ -517,8 +544,8 @@
       "limits": [],
       "journey": null,
       "notPublished": {
-        "headline": "Not yet published",
-        "body": "There is nothing to install. Agent Voice is planned: there is no public implementation. Setup steps will appear here once a public release exists and its documented journey has been demonstrated."
+        "headline": "Not available",
+        "body": "The public repository is empty."
       },
       "links": [
         {
@@ -536,15 +563,15 @@
       "tagline": "Share skills without losing control.",
       "need": "Publish, find, and update agent skills with clear versions",
       "maturity": "planned",
-      "maturityDetail": "Planned and in development. There is no public repository or implementation yet.",
+      "maturityDetail": "Public placeholder repository; no implementation to install.",
       "published": {
-        "repo": null,
-        "repoExists": false,
+        "repo": "soulsteads-agent-skillstore",
+        "repoExists": true,
         "implementation": false,
-        "ref": null,
-        "commit": null,
+        "ref": "main",
+        "commit": "df937ad6223b5fb929f4c79b0db397313ca43ec8",
         "version": null,
-        "license": null,
+        "license": "Apache-2.0",
         "otherRefs": []
       },
       "purpose": "Centrally publish, discover, update, and improve reusable agent skills.",
@@ -564,15 +591,58 @@
       "limits": [],
       "journey": null,
       "notPublished": {
-        "headline": "Not yet published",
-        "body": "There is nothing to install. Agent Skillstore is planned: there is no public repository or implementation. Setup steps will appear here once a public release exists and its documented journey has been demonstrated."
+        "headline": "Not available",
+        "body": "The public repository contains a license and Git ignore file, but no implementation or setup guide."
       },
-      "links": []
+      "links": [
+        {
+          "label": "Placeholder repository",
+          "href": "https://github.com/soulsteads/soulsteads-agent-skillstore"
+        }
+      ]
+    },
+    {
+      "slug": "agent-harness",
+      "name": "Agent Harness",
+      "icon": "\u25c7",
+      "tone": "slate",
+      "kicker": "THE RUNTIME",
+      "tagline": "A first-party runtime project.",
+      "need": "Explore a first-party agent runtime",
+      "maturity": "planned",
+      "maturityDetail": "Reserved public repository; no implementation to install.",
+      "published": {
+        "repo": "soulsteads-agent-harness",
+        "repoExists": true,
+        "implementation": false,
+        "ref": null,
+        "commit": null,
+        "version": null,
+        "license": null,
+        "otherRefs": []
+      },
+      "purpose": "A reserved project for a Soulsteads agent runtime. Use an existing supported harness with Home or Messaging today.",
+      "direction": [],
+      "owns": [],
+      "doesNotOwn": [],
+      "prerequisites": null,
+      "limits": [],
+      "journey": null,
+      "notPublished": {
+        "headline": "Not available",
+        "body": "The public repository is empty."
+      },
+      "links": [
+        {
+          "label": "Reserved repository",
+          "href": "https://github.com/soulsteads/soulsteads-agent-harness"
+        }
+      ]
     }
   ],
   "composition": {
-    "title": "One optional combination",
-    "intro": "An agent prepared by Home, reached through Messaging, coordinating issues through Workboard, and reaching models through Router. This is an example, not a canonical stack, and not an installer.",
+    "title": "One agent, optional connections",
+    "intro": "Keep your chosen harness. Add only the tools you need, and configure each connection explicitly.",
     "steps": [
       {
         "product": "agent-home",
@@ -582,22 +652,12 @@
       {
         "product": "agent-messaging",
         "role": "Reach it from chat",
-        "connection": "Point Messaging at that existing directory with `acp.agentHome`, so new chat sessions run there. Documented on Messaging `main` (0.2.0); the 0.1.0 `release` branch does not include it."
-      },
-      {
-        "product": "agent-voice",
-        "role": "Or reach it by voice",
-        "connection": null
+        "connection": "Bridge a supported chat to an independently configured backend. Messaging's `acp.agentHome` sets a working directory, not an Agent Home import. Do not move existing session bindings as part of a fresh setup."
       },
       {
         "product": "agent-workboard",
         "role": "Coordinate shared work",
         "connection": "Give each agent the Workboard MCP server, CLI, or HTTP API, with its own key, to claim and hand off issues."
-      },
-      {
-        "product": "agent-forge",
-        "role": "Hand over ongoing responsibilities",
-        "connection": null
       },
       {
         "product": "model-router",
@@ -606,9 +666,7 @@
       }
     ],
     "notes": [
-      "Each connection is something you configure explicitly. No product installs, configures, or starts another.",
-      "Connections use each product's documented public interface, not private imports or a shared database.",
-      "Every product here also works without the others."
+      "Products share neither an installer nor a database. Each has its own setup and recovery path."
     ],
     "limits": [
       "Messaging's local agent tools are a bounded exchange between already-attached agents in one bridge process on one machine. They are not a cross-machine agent network, and Soulsteads has no agent network product."
@@ -620,7 +678,7 @@
       "a": "No. Every product is meant to be useful on its own; start with one and add another only if it helps. Independence does not mean no dependencies: Messaging needs a harness and a chat account, and Model Router needs an inference server. It means those needs never force you to adopt the rest of Soulsteads."
     },
     {
-      "q": "What can I use today, and what is not published yet?",
+      "q": "What is available now?",
       "generated": "availability"
     },
     {
@@ -651,7 +709,7 @@
       "a": "No. Messaging's optional local agent tools let one conversation ask another already-attached agent on the same machine a question, with nothing queued and no cross-machine delivery. A separate agent network is a possible future decision, not a product."
     },
     {
-      "q": "Are there packaged releases?",
+      "q": "Are binaries available, or do I build from source?",
       "generated": "packaging"
     },
     {

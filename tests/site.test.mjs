@@ -9,6 +9,7 @@ const html = readFileSync(resolve(root, "docs/index.html"), "utf8");
 test("complete lineup has truthful public availability", () => {
   assert.equal((html.match(/data-status="available"/g) || []).length, 4);
   assert.equal((html.match(/data-status="preview"/g) || []).length, 1);
+  assert.equal((html.match(/data-status="planned"/g) || []).length, 3);
   for (const name of [
     "agent-home",
     "agent-messaging",
@@ -17,13 +18,14 @@ test("complete lineup has truthful public availability", () => {
     "agent-workboard",
     "agent-voice",
     "agent-skillstore",
+    "agent-harness",
   ]) {
     assert.ok(html.includes(`id="${name}"`));
-    if (name !== "agent-skillstore") assert.ok(
+    assert.ok(
       html.includes(`https://github.com/soulsteads/soulsteads-${name}`),
     );
   }
-  assert.match(html.replace(/\s+/g, " "), /Forge remains a preview/);
+  assert.match(html.replace(/\s+/g, " "), /Forge is an early preview/);
 });
 test("local resources and anchor targets exist", () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
@@ -44,9 +46,8 @@ test("no third-party runtime requests or tracking", () => {
   assert.ok(!js.includes("innerHTML"));
 });
 test("setup and safety information survive without JavaScript", () => {
-  for (const id of ["setup-home", "setup-messaging"]) {
-    assert.ok(html.includes(`class="quickstart" id="${id}"`));
-  }
+  assert.match(html, /<ul class="setup-choices">/);
+  assert.match(html, /<code id="agent-setup-prompt">/);
   assert.match(html, /not a kill switch/);
   assert.match(html, /do not sandbox/);
 });
@@ -54,15 +55,14 @@ test("setup and safety information survive without JavaScript", () => {
 test("Router is documented with setup links and release limitations", () => {
   const card = html.match(/<article\b[^>]*id="model-router"[\s\S]*?<\/article>/)[0];
   assert.match(card, /data-status="available"/);
-  assert.match(card, /EARLY RELEASE/);
+  assert.match(card, /EARLY SOURCE RELEASE/);
   assert.match(card, /capacity/i);
   assert.doesNotMatch(card, /not yet published|ON THE HORIZON/);
   for (const guide of ["SETUP", "COMPATIBILITY"]) {
     assert.ok(html.includes(`soulsteads-model-router/blob/main/docs/${guide}.md`));
   }
-  assert.ok(html.includes('class="quickstart" id="setup-router"'));
-  const copy = html.replace(/\s+/g, " ");
-  for (const phrase of ["Tailnet IPv4", "HTTP", "4001", "privacy review", "does not host models"]) {
+  const copy = card.replace(/\s+/g, " ");
+  for (const phrase of ["Tailnet IPv4", "explicit loopback", "HTTP", "4001", "does not host models"]) {
     assert.ok(copy.includes(phrase), phrase);
   }
 });

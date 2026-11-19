@@ -2,48 +2,72 @@
 
 # Soulsteads
 
-**Independent tools for running and coordinating your agents.**
+**Open-source tools for running AI agents on your own infrastructure.**
 
-Build an agent stack that works for you. Give your agents a home, bring them into your chat, and keep the pieces you want.
+Keep the coding agent you already use. Pick a tool for portable configuration, chat access, shared work, or model routing. Each installs separately; there is no suite installer.
 
-**[Explore the Soulsteads lineup →](https://soulsteads.github.io/soulsteads/#products)**
+<!-- readme-lineup -->
 
-## The lineup
+## Released on GitHub
 
-- **[Agent Home](https://github.com/soulsteads/soulsteads-agent-home)** — A portable home for your agents, with identity and history.
-- **[Agent Messaging](https://github.com/soulsteads/soulsteads-agent-messaging)** — Bring coding agents into your chat. Available as an early release.
-- **[Agent Forge](https://github.com/soulsteads/soulsteads-agent-forge)** — Part of the upcoming lineup. Preview only; no public implementation yet.
-- **[Model Router](https://github.com/soulsteads/soulsteads-model-router)** — A Rust gateway for routing OpenAI-compatible requests across your own inference servers, with stable aliases, capability checks, and shared capacity limits. Early release; builds as `slotline`.
+These are early, **source-only releases**: no prebuilt binaries. Check out the tag before following its setup guide; the guides and features on `main` can differ.
 
-Visit the [Soulsteads website](https://soulsteads.github.io/soulsteads/) to explore the products, see what's available, and get started.
+| Tool | Release | Use it to | What you need / setup |
+| --- | --- | --- | --- |
+| **Agent Home** | [v0.1.0](https://github.com/soulsteads/soulsteads-agent-home/releases/tag/v0.1.0) | Keep one agent’s instructions, skills, and configuration in a portable, Git-tracked home. | Python 3.11+, Git, and a supported agent runtime to launch it. [Setup at v0.1.0](https://github.com/soulsteads/soulsteads-agent-home/blob/v0.1.0/README.md#other-installation-options) |
+| **Agent Messaging** | [v0.2.0](https://github.com/soulsteads/soulsteads-agent-messaging/releases/tag/v0.2.0) | Talk to an existing coding agent from chat or the built-in web interface. | Rust/Cargo, Git, an authenticated coding agent, and connector credentials as needed. Set a nonempty sender allowlist (`allowedUsers`) before enabling a remote connector. [Setup at v0.2.0](https://github.com/soulsteads/soulsteads-agent-messaging/blob/v0.2.0/docs/SETUP.md#before-you-start) |
+| **Agent Workboard** | [v0.1.0](https://github.com/soulsteads/soulsteads-agent-workboard/releases/tag/v0.1.0) | Coordinate issues, dependencies, and agent claims on a shared board. | Stable Rust and a C compiler. SQLite is bundled. [Setup at v0.1.0](https://github.com/soulsteads/soulsteads-agent-workboard/blob/v0.1.0/README.md#quickstart) |
+| **Model Router** | [v0.1.0](https://github.com/soulsteads/soulsteads-model-router/releases/tag/v0.1.0) | Route compatible requests to existing inference servers through one endpoint. | Linux, Rust/Cargo, a C toolchain, an inference server, and Tailnet IPv4. Loopback listeners are documented on `main`, not in this tag. [Setup at v0.1.0](https://github.com/soulsteads/soulsteads-model-router/blob/v0.1.0/docs/SETUP.md#prerequisites) |
 
-- **[Agent Workboard](https://github.com/soulsteads/soulsteads-agent-workboard)** — Independent issue ownership, leased claims, and a shared dashboard. Early source release.
-- **Agent Voice** — Explicit speech input/output is in development; no public implementation to install.
-- **Agent Skillstore** — Reviewed portable skill distribution is in development; no public implementation to install.
+### Public source preview
 
-The lineup describes the public GitHub source checked on the date recorded in
-`data/products.json`. It does not track newer Forgejo snapshots. Each product
-card includes prerequisites, setup or publication status, and limits.
+- **[Agent Forge](https://github.com/soulsteads/soulsteads-agent-forge/tree/cbe32ca5c7caa5563ca0aa1c15a75b68de9b2c6c)** — Run one-off or recurring workflows, inspect step results, and recover carefully after an interruption. No tagged release; for evaluation.
+  **What you need:** Linux, Rust 1.97 or later, and a C compiler · An empty, dedicated PostgreSQL database for DBOS · `jq` for the upstream quick-start example. [Run the first workflow](https://github.com/soulsteads/soulsteads-agent-forge#quick-start) · [Requirements and verification](https://github.com/soulsteads/soulsteads-agent-forge/blob/main/docs/support.md)
 
-## Route your local models
+### No release to install
 
-Model Router gives compatible clients one endpoint for existing inference servers.
-It does not host models or manage loading, and it is not a universal OpenAI drop-in.
-Use the [setup guide](https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/SETUP.md)
-and [compatibility guide](https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/COMPATIBILITY.md)
-before connecting clients.
+- **[Agent Voice](https://github.com/soulsteads/soulsteads-agent-voice)** — The public repository is empty.
+- **[Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore)** — The public repository contains a license and Git ignore file, but no implementation or setup guide.
+- **[Agent Harness](https://github.com/soulsteads/soulsteads-agent-harness)** — The public repository is empty.
 
-You need a Linux/Unix host, an existing inference server, and an assigned Tailnet
-IPv4 address. The listener rejects loopback, LAN, and wildcard binds and reserves
-port `4001`. It serves HTTP without built-in TLS; keep it on a protected network,
-not exposed directly to the internet. No model server or prebuilt binary is bundled.
-The project's release notes still require a Git-history privacy review before
-public-release qualification; published source is not a claim that every release
-gate or backend combination is qualified.
+Public source and releases checked on GitHub: **2026-11-19**.
 
-Home, Messaging, and Model Router are independent tools. Installing one does not
-configure another, migrate clients, or start a service.
+<!-- end-readme-lineup -->
 
-## Maintaining the lineup
+**[Browse the website](https://soulsteads.github.io/soulsteads/)** · **[Set up with an agent](#set-up-with-an-agent)** · **[See the lineup diagram](docs/assets/lineup-map.svg)**
 
-Public facts and setup snippets live in `data/products.json`. Run `node scripts/render-lineup.mjs` after changing those facts, then `node --test tests/*.test.mjs`. The generated `docs/` is committed and needs no runtime build or external data request. Keep public claims tied to inspected public artifacts; private candidates do not change release status.
+## Set up with an agent
+
+| Skill | Use it to |
+| --- | --- |
+| [**soulsteads-setup**](skills/soulsteads-setup/SKILL.md) | Select one public tool, check the reviewed source and prerequisites, prepare it, and distinguish local checks from live success. |
+| [**soulsteads-connect**](skills/soulsteads-connect/SKILL.md) | Connect tools that already work independently, using their documented interfaces and keeping each change reversible. |
+
+Review the skill, then copy its directory into your coding agent’s documented skills location or ask the agent to read `SKILL.md` directly from this repository. No special installer or Skillstore is required.
+
+> Help me set up one Soulsteads tool. Read `skills/soulsteads-setup/SKILL.md` from `soulsteads/soulsteads` and ask which tool I want. Show me the plan before making changes. Keep credentials out of chat and Git. Ask before starting services or making live requests, and report what was actually verified.
+
+## How the tools fit together
+
+![One existing agent harness with optional interfaces to Home, Messaging, Workboard, and Model Router.](docs/assets/agent-connections.svg)
+
+- **Home → harness:** Generate native configuration from your agent’s files. Your harness still owns execution, sessions, and permissions.
+- **Messaging → harness:** Bridge a supported chat to your coding agent. `acp.agentHome` sets a working directory, not an Agent Home import. You don’t need Home to use Messaging.
+- **Agent → Workboard:** Use MCP, the CLI, or HTTP to coordinate issues and claims. Workboard does not execute tasks or prove real-world outcomes.
+- **Compatible client → Model Router:** Send requests to approved model aliases. The router connects to inference servers you already run; it does not host models.
+- **Forge:** Schedule and inspect workflows independently. Its deterministic quick start needs no model, harness, or plugin.
+
+These are explicit connections, not an installer, a shared database, or an agent network. Home and Messaging do not sandbox an agent. Keep credentials out of tracked files, and review each tool’s documented access limits before putting it on a network or connecting a chat account.
+
+## Maintain this lineup
+
+This repository contains the website, public product catalog, diagrams, and setup skills—not the product binaries. Product code and issue trackers live in the linked repositories. See [LICENSE](LICENSE) for this repository’s license.
+
+Edit [`data/products.json`](data/products.json) and update the setup skill’s source pins when reviewing a new GitHub snapshot. Verify tagged guides at their tags, not on `main`. Update the SVGs if the lineup or connection boundaries change. Regenerate the README and site sections, then run the checks:
+
+```sh
+node scripts/render-lineup.mjs
+node --test tests/*.test.mjs
+```
+
+GitHub Pages serves `docs/` directly. The site has no runtime build, tracking scripts, or third-party requests.

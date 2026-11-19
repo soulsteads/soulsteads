@@ -34,7 +34,7 @@ try {
   });
   await page.goto(base);
   await page.locator(".filter-row").waitFor();
-  assert.equal(await page.locator(".product-card:visible").count(), 7);
+  assert.equal(await page.locator(".product-card:visible").count(), 8);
   await page.locator('[data-filter="preview"]').click();
   assert.equal(await page.locator(".product-card:visible").count(), 1);
   assert.match(await page.locator("#filter-status").innerText(), /1 product shown/);
@@ -43,27 +43,15 @@ try {
   assert.equal(await page.locator("#model-router").isVisible(), true);
   assert.equal(await page.locator(".product-card:visible").count(), 4);
   await page.locator('[data-filter="planned"]').click();
-  assert.equal(await page.locator(".product-card:visible").count(), 2);
-  await page.locator('[data-filter="all"]').click();
-  await page.locator('[data-layer="messaging"]').click();
-  assert.match(await page.locator("#layer-title").innerText(), /conversation/);
-  assert.equal(
-    await page.locator('[data-layer="messaging"]').getAttribute("aria-pressed"),
-    "true",
-  );
-  await page.locator('[data-layer="chat"]').click();
-  assert.match(
-    await page.locator("#layer-description").innerText(),
-    /WhatsApp/,
-  );
-  await page.locator('[data-layer="home"]').click();
-  await page.locator('[data-setup="messaging"]').click();
-  assert.equal(await page.locator("#setup-home").isVisible(), false);
-  assert.equal(await page.locator("#setup-messaging").isVisible(), true);
-  await page.locator('[data-copy="messaging-command"]').click();
+  assert.equal(await page.locator(".product-card:visible").count(), 3);
+  assert.equal(await page.locator('.setup-choices li').count(), 5);
+  await page.getByRole('link', { name: 'Agent Forge details' }).click();
+  assert.equal(await page.locator('#agent-forge').isVisible(), true, 'Setup link reveals a filtered card');
+  assert.equal(await page.locator('[data-filter="all"]').getAttribute('aria-pressed'), 'true');
+  await page.locator('[data-copy="agent-setup-prompt"]').click();
   assert.match(
     await page.evaluate(() => navigator.clipboard.readText()),
-    /Keep tokens in a private file/,
+    /Keep tokens private/,
   );
   await page.evaluate(() => {
     Object.defineProperty(navigator, "clipboard", {
@@ -71,23 +59,15 @@ try {
       value: { writeText: () => Promise.reject(new Error("denied")) },
     });
   });
-  await page.locator('[data-copy="messaging-command"]').click();
+  await page.locator('[data-copy="agent-setup-prompt"]').click();
   assert.match(
     await page.locator("#copy-status").innerText(),
     /Clipboard unavailable/,
   );
   assert.match(
     await page.evaluate(() => window.getSelection().toString()),
-    /Set up Soulsteads/,
+    /Help me set up one Soulsteads tool/,
   );
-  await page.locator('[data-setup="router"]').click();
-  assert.equal(await page.locator("#setup-router").isVisible(), true);
-  assert.equal(await page.locator("#setup-messaging").isVisible(), false);
-  assert.match(await page.locator("#setup-router").innerText(), /Tailnet IPv4/);
-  await page.locator('[data-copy="router-command"]').click();
-  assert.match(await page.evaluate(() => window.getSelection().toString()), /Do not replace a proxy/);
-  await page.locator('[data-setup="home"]').click();
-  assert.equal(await page.locator("#setup-router").isVisible(), false);
   await page.locator("#faq summary").first().focus();
   await page.keyboard.press("Enter");
   assert.equal(await page.locator("#faq details").first().getAttribute("open"), "");
@@ -137,14 +117,13 @@ try {
       await page.locator('#navigation a[href="#products"]').click();
       assert.equal(await menu.getAttribute("aria-expanded"), "false");
     }
-    await page.locator('[data-setup="router"]').click();
+    await page.locator('#start').scrollIntoViewIfNeeded();
     assert.ok(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
-      `Router setup has no horizontal overflow at ${width}`,
+      `Setup has no horizontal overflow at ${width}`,
     );
-    assert.equal(await page.locator("#setup-router").isVisible(), true);
-    await page.locator('[data-setup="home"]').click();
-    results.push(`Responsive layout, including Router setup: ${width}px`);
+    assert.equal(await page.locator("#agent-setup-prompt").isVisible(), true);
+    results.push(`Responsive layout, including setup: ${width}px`);
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -173,10 +152,13 @@ try {
   });
   const fallback = await nojs.newPage();
   await fallback.goto(base);
-  assert.equal(await fallback.locator(".product-card:visible").count(), 7);
-  assert.equal(await fallback.locator("#setup-home").isVisible(), true);
-  assert.equal(await fallback.locator("#setup-messaging").isVisible(), true);
-  assert.equal(await fallback.locator("#setup-router").isVisible(), true);
+  assert.equal(await fallback.locator(".product-card:visible").count(), 8);
+  assert.equal(await fallback.locator('.setup-choices li:visible').count(), 5);
+  assert.equal(await fallback.locator('#agent-setup-prompt').isVisible(), true);
+  for (const image of await fallback.locator('figure img').all()) {
+    await image.scrollIntoViewIfNeeded();
+    await image.evaluate(img => img.decode());
+  }
   assert.equal(await fallback.locator("#navigation").isVisible(), true);
   assert.ok(
     await fallback.evaluate(
@@ -185,7 +167,7 @@ try {
   );
   await nojs.close();
   results.push(
-    "Product filters, stack selector, setup selector, clipboard success/fallback, keyboard FAQ, mobile menu/Escape, reduced motion, no-JS fallback, no external requests, zero WCAG AA axe violations",
+    "Product filters and setup links, clipboard success/fallback, keyboard FAQ, mobile menu/Escape, reduced motion, no-JS setup and diagrams, no external requests, zero WCAG AA axe violations",
   );
   await writeFile(
     `${output}/results.json`,
