@@ -21,7 +21,7 @@ Use this skill only after each selected tool works independently. A connection i
 | Agent Forge | `cbe32ca5c7caa5563ca0aa1c15a75b68de9b2c6c` | `README.md`, `docs/operations.md` |
 | Model Router | `8621acd55ad293c4140b1e58664f0fc4f5fa650d` | `README.md`, `docs/SETUP.md`, `docs/COMPATIBILITY.md` |
 
-Agent Voice, Agent Harness, and Agent Skillstore have no public connection/setup interface in this reviewed lineup. Do not claim support for them.
+Agent Voice and Agent Harness have no public source to install. Agent Skillstore has a standalone source preview and setup guide; use that guide for its documented harness targets. This connection skill does not define a cross-product Skillstore integration.
 
 ## Plan every connection separately
 

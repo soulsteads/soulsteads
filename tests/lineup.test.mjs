@@ -19,8 +19,8 @@ test("regeneration updates publication date, counts and FAQ",()=>{
   changed.faq[0]={q:"Updated fixture question?",a:"Updated fixture answer."};
   const rendered=renderLineup(changed,html);
   assert.match(rendered,/Public source checked 2030-01-02/);
-  assert.match(rendered,/data-filter="planned"[^>]*>[^<]*<span>02<\/span>/);
-  assert.match(rendered,/data-filter="preview"[^>]*>[^<]*<span>02<\/span>/);
+  assert.match(rendered,/data-filter="planned"[^>]*>[^<]*<span>01<\/span>/);
+  assert.match(rendered,/data-filter="preview"[^>]*>[^<]*<span>03<\/span>/);
   assert.ok(rendered.includes("Updated fixture answer."));
   assert.equal(renderLineup(changed,rendered),rendered);
   assert.match(renderReadme(changed,readme),/checked on GitHub: \*\*2030-01-02\*\*/);
@@ -58,6 +58,7 @@ test('README leads with tagged releases and separates previews and placeholders'
   assert.match(releases, /nonempty sender allowlist/);
   assert.match(releases, /Tailnet IPv4/);
   assert.match(preview, /no tagged release/i);
-  assert.match(planned, /Agent Skillstore[^\n]*repository[^\n]*no implementation/);
+  assert.match(preview, /Agent Skillstore[^\n]*No tagged release/);
+  assert.doesNotMatch(planned, /Agent Skillstore/);
   assert.ok(text.indexOf('## Released on GitHub') < text.indexOf('lineup-map.svg'));
 });
