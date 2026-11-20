@@ -562,24 +562,19 @@
       "kicker": "THE SKILL LIBRARY",
       "tagline": "Share skills without losing control.",
       "need": "Publish, find, and update agent skills with clear versions",
-      "maturity": "planned",
-      "maturityDetail": "Public placeholder repository; no implementation to install.",
+      "maturity": "preview",
+      "maturityDetail": "Version 0.1.0 on `main`. Untagged source preview; no prebuilt binary.",
       "published": {
         "repo": "soulsteads-agent-skillstore",
         "repoExists": true,
-        "implementation": false,
+        "implementation": true,
         "ref": "main",
-        "commit": "df937ad6223b5fb929f4c79b0db397313ca43ec8",
-        "version": null,
+        "commit": "10a949a77ea0c6111e79768655b3ff0689f2ea78",
+        "version": "0.1.0",
         "license": "Apache-2.0",
         "otherRefs": []
       },
-      "purpose": "Centrally publish, discover, update, and improve reusable agent skills.",
-      "direction": [
-        "Discovery, validation, reviewed version publication, and installation of ordinary, portable Agent Skills packages.",
-        "Update inspection that protects local changes, and recovery from a bad update.",
-        "Improvement proposals that need validation and review before publication. Adoption stays selective."
-      ],
+      "purpose": "Publish, discover, and install reviewed, versioned Agent Skills.",
       "owns": [
         "Skill distribution and release history"
       ],
@@ -587,19 +582,37 @@
         "The agent's identity, permissions, or active session",
         "Any requirement to use Agent Home"
       ],
-      "prerequisites": null,
-      "limits": [],
-      "journey": null,
-      "notPublished": {
-        "headline": "Not available",
-        "body": "The public repository contains a license and Git ignore file, but no implementation or setup guide."
+      "prerequisites": [
+        "Python 3.11 or later",
+        "A source checkout and `uv` or `pip`"
+      ],
+      "limits": [
+        "Linux-tested source preview; macOS qualification is pending.",
+        "The local quick start needs no harness or model account. Installing a skill copies files; it does not execute them."
+      ],
+      "journey": {
+        "title": "Try a local skill registry",
+        "steps": [],
+        "after": "From the pinned source checkout, install the CLI and follow the disposable quick start. No shared registry or changes to your harness are needed.",
+        "guides": [
+          {
+            "label": "Install from source and try the quick start",
+            "href": "https://github.com/soulsteads/soulsteads-agent-skillstore/blob/10a949a77ea0c6111e79768655b3ff0689f2ea78/README.md#install-from-source"
+          }
+        ]
       },
+      "notPublished": null,
       "links": [
         {
-          "label": "Placeholder repository",
+          "label": "Agent Skillstore on GitHub",
           "href": "https://github.com/soulsteads/soulsteads-agent-skillstore"
         }
-      ]
+      ],
+      "does": [
+        "Publish reviewed skill versions and inspect changes before installing.",
+        "Protect local edits and roll back or restore installed skills."
+      ],
+      "license": "Apache 2.0"
     },
     {
       "slug": "agent-harness",

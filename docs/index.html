@@ -168,14 +168,14 @@
           ><button data-filter="available" aria-pressed="false">
             Available now <span>04</span></button
           ><button data-filter="preview" aria-pressed="false">
-            On the horizon <span>01</span></button
-          ><button data-filter="planned" aria-pressed="false">Not yet available <span>03</span></button><span id="filter-status" class="sr-only" role="status"></span>
+            Source previews <span>02</span></button
+          ><button data-filter="planned" aria-pressed="false">Not yet available <span>02</span></button><span id="filter-status" class="sr-only" role="status"></span>
         </div>
         <!-- publication -->
 <p class="fine-print" id="lineup-publication">Public source checked 2026-11-19 on <a href="https://github.com/soulsteads">GitHub</a>. Source availability does not imply a supported deployment.</p>
 <!-- end-publication -->
         <figure class="marketing-figure lineup-figure">
-          <img src="assets/lineup-map.svg" width="1600" height="900" loading="lazy" alt="Five public-source tools, each solving a different job. Agent Forge is a source preview." />
+          <img src="assets/lineup-map.svg" width="1600" height="900" loading="lazy" alt="Five tools for agent setup, messaging, coordination, routing, and scheduling. See the product cards for the full lineup." />
         </figure>
         <div class="product-grid">
 <!-- product-cards -->
@@ -277,15 +277,20 @@ workboard web</code></pre>
 <p><strong>Not available</strong> — The public repository is empty.</p></details>
     <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-voice">Watch the public repository <span aria-hidden="true">↗</span></a></div>
   </article>
-<article class="product-card" data-status="planned" id="agent-skillstore">
-    <div class="card-top"><span class="product-icon mint" aria-hidden="true">❖</span><span class="badge">NOT YET AVAILABLE</span></div>
-    <h3>Agent Skillstore</h3><p class="card-description">Centrally publish, discover, update, and improve reusable agent skills.</p><p class="fine-print">Public placeholder repository; no implementation to install.</p>
-
-    <details class="product-details"><summary>Direction and availability</summary><h4>Proposed direction</h4><ul class="feature-list"><li>Discovery, validation, reviewed version publication, and installation of ordinary, portable Agent Skills packages.</li><li>Update inspection that protects local changes, and recovery from a bad update.</li><li>Improvement proposals that need validation and review before publication. Adoption stays selective.</li></ul>
+<article class="product-card preview-card" data-status="preview" id="agent-skillstore">
+    <div class="card-top"><span class="product-icon mint" aria-hidden="true">❖</span><span class="badge">SOURCE PREVIEW</span></div>
+    <h3>Agent Skillstore</h3><p class="card-description">Publish, discover, and install reviewed, versioned Agent Skills.</p><p class="fine-print">Version 0.1.0 on <code>main</code>. Untagged source preview; no prebuilt binary.</p>
+    <p class="card-guide"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-skillstore/blob/10a949a77ea0c6111e79768655b3ff0689f2ea78/README.md#install-from-source">Install from source and try the quick start <span aria-hidden="true">↗</span></a></p>
+    <details class="product-details"><summary>Setup details and limits</summary><h4>Before you start</h4><ul class="feature-list"><li>Python 3.11 or later</li><li>A source checkout and <code>uv</code> or <code>pip</code></li></ul>
+<h4>Published capabilities</h4><ul class="feature-list"><li>Publish reviewed skill versions and inspect changes before installing.</li><li>Protect local edits and roll back or restore installed skills.</li></ul>
 <h4>What it owns</h4><ul class="feature-list"><li>Skill distribution and release history</li></ul>
 <h4>What stays separate</h4><ul class="feature-list"><li>The agent's identity, permissions, or active session</li><li>Any requirement to use Agent Home</li></ul>
-<p><strong>Not available</strong> — The public repository contains a license and Git ignore file, but no implementation or setup guide.</p></details>
-    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-skillstore">Placeholder repository <span aria-hidden="true">↗</span></a></div>
+<h4>Current limits</h4><ul class="feature-list"><li>Linux-tested source preview; macOS qualification is pending.</li><li>The local quick start needs no harness or model account. Installing a skill copies files; it does not execute them.</li></ul>
+
+    <h4>Try a local skill registry</h4>
+
+    <p>From the pinned source checkout, install the CLI and follow the disposable quick start. No shared registry or changes to your harness are needed.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-skillstore/blob/10a949a77ea0c6111e79768655b3ff0689f2ea78/README.md#install-from-source">Install from source and try the quick start <span aria-hidden="true">↗</span></a></details>
+    <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-skillstore">Agent Skillstore on GitHub <span aria-hidden="true">↗</span></a></div>
   </article>
 <article class="product-card" data-status="planned" id="agent-harness">
     <div class="card-top"><span class="product-icon mint" aria-hidden="true">◇</span><span class="badge">NOT YET AVAILABLE</span></div>
@@ -385,7 +390,8 @@ workboard web</code></pre>
 <li><div><strong>Agent Messaging</strong><p>Talk to my coding agent from chat</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-messaging/blob/main/docs/SETUP.md">Messaging setup guide <span aria-hidden="true">↗</span></a><a href="#agent-messaging">Agent Messaging details</a></div></li>
 <li><div><strong>Agent Workboard</strong><p>Give multiple agents one shared issue board</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-workboard#quickstart">Create a sandbox board <span aria-hidden="true">↗</span></a><a href="#agent-workboard">Agent Workboard details</a></div></li>
 <li><div><strong>Model Router</strong><p>Give compatible clients one endpoint for existing models</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/SETUP.md">Router setup guide <span aria-hidden="true">↗</span></a><a href="#model-router">Model Router details</a></div></li>
-<li><div><strong>Agent Forge</strong> <span class="badge">SOURCE PREVIEW</span><p>Run recurring workflows and inspect what happened</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-forge#quick-start">Run the first workflow <span aria-hidden="true">↗</span></a><a href="#agent-forge">Agent Forge details</a></div></li></ul>
+<li><div><strong>Agent Forge</strong> <span class="badge">SOURCE PREVIEW</span><p>Run recurring workflows and inspect what happened</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-forge#quick-start">Run the first workflow <span aria-hidden="true">↗</span></a><a href="#agent-forge">Agent Forge details</a></div></li>
+<li><div><strong>Agent Skillstore</strong> <span class="badge">SOURCE PREVIEW</span><p>Publish, find, and update agent skills with clear versions</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-skillstore/blob/10a949a77ea0c6111e79768655b3ff0689f2ea78/README.md#install-from-source">Install from source and try the quick start <span aria-hidden="true">↗</span></a><a href="#agent-skillstore">Agent Skillstore details</a></div></li></ul>
 <!-- end-setup-links -->
           <div class="quickstart">
             <div class="setup-copy">
@@ -430,14 +436,14 @@ Report what passed and what remains untested.</code></pre>
         <div class="faq-list">
 <!-- faq-items -->
 <details><summary>Do I need the whole lineup?<span aria-hidden="true">+</span></summary><p>No. Every product is meant to be useful on its own; start with one and add another only if it helps. Independence does not mean no dependencies: Messaging needs a harness and a chat account, and Model Router needs an inference server. It means those needs never force you to adopt the rest of Soulsteads.</p></details>
-<details><summary>What is available now?<span aria-hidden="true">+</span></summary><p>Agent Home, Agent Messaging, Agent Workboard, Model Router, Agent Forge have public source and setup guides. Agent Forge is an early preview. Agent Voice, Agent Skillstore, Agent Harness have no public implementation to install.</p></details>
+<details><summary>What is available now?<span aria-hidden="true">+</span></summary><p>Agent Home, Agent Messaging, Agent Workboard, Model Router, Agent Forge, Agent Skillstore have public source and setup guides. Agent Forge is an early preview. Agent Skillstore is an early preview. Agent Voice, Agent Harness have no public implementation to install.</p></details>
 <details><summary>Is this a hosted AI service?<span aria-hidden="true">+</span></summary><p>No. The published tools run on your machine. You bring your own harness, model access, chat accounts, and credentials. Your model and messaging providers' costs and privacy policies still apply.</p></details>
 <details><summary>Is my agent sandboxed?<span aria-hidden="true">+</span></summary><p>No. Agent Home and Agent Messaging do not sandbox your agent: it keeps its machine permissions. Keep secrets out of tracked files, and use an account and workspace you are comfortable giving the agent.</p></details>
 <details><summary>Can I cancel a remote task safely?<span aria-hidden="true">+</span></summary><p>Messaging's <code>/cancel</code> is not a kill switch. In the known Codex cancellation case a shell process can keep running, and unattended remote command execution is not qualified. Read the Messaging README before connecting a powerful agent.</p></details>
 <details><summary>Can I bring an existing Hermes agent?<span aria-hidden="true">+</span></summary><p>Agent Home has an optional Hermes importer. Inspect an explicitly selected source first; applying creates a fresh home, not a live messaging cutover. Unsupported settings are reported, and incomplete imports need acknowledgement.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/hermes-import.md">Read the import guide <span aria-hidden="true">↗</span></a></details>
 <details><summary>Is there an agent network?<span aria-hidden="true">+</span></summary><p>No. Messaging's optional local agent tools let one conversation ask another already-attached agent on the same machine a question, with nothing queued and no cross-machine delivery. A separate agent network is a possible future decision, not a product.</p></details>
-<details><summary>Are binaries available, or do I build from source?<span aria-hidden="true">+</span></summary><p>GitHub releases for Agent Home, Agent Messaging, Agent Workboard, Model Router are source-only. Agent Forge can be built from public source but has no tagged release. No prebuilt release assets were listed for these tools.</p></details>
-<details><summary>Is Soulsteads open source?<span aria-hidden="true">+</span></summary><p>Agent Home: Apache 2.0; Agent Messaging: Apache 2.0; Agent Workboard: Apache 2.0; Model Router: Apache 2.0; Agent Forge: Apache 2.0. See each repository’s license and notices.</p></details>
+<details><summary>Are binaries available, or do I build from source?<span aria-hidden="true">+</span></summary><p>GitHub releases for Agent Home, Agent Messaging, Agent Workboard, Model Router are source-only. Agent Forge, Agent Skillstore can be built from public source but have no tagged release. No prebuilt release assets were listed for these tools.</p></details>
+<details><summary>Is Soulsteads open source?<span aria-hidden="true">+</span></summary><p>Agent Home: Apache 2.0; Agent Messaging: Apache 2.0; Agent Workboard: Apache 2.0; Model Router: Apache 2.0; Agent Forge: Apache 2.0; Agent Skillstore: Apache 2.0. See each repository’s license and notices.</p></details>
 <!-- end-faq-items -->
 </div>
       </section>

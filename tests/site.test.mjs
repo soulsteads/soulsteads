@@ -8,8 +8,8 @@ const html = readFileSync(resolve(root, "docs/index.html"), "utf8");
 
 test("complete lineup has truthful public availability", () => {
   assert.equal((html.match(/data-status="available"/g) || []).length, 4);
-  assert.equal((html.match(/data-status="preview"/g) || []).length, 1);
-  assert.equal((html.match(/data-status="planned"/g) || []).length, 3);
+  assert.equal((html.match(/data-status="preview"/g) || []).length, 2);
+  assert.equal((html.match(/data-status="planned"/g) || []).length, 2);
   for (const name of [
     "agent-home",
     "agent-messaging",
