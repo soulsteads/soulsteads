@@ -12,6 +12,62 @@ const links = (items) => items.map(link).join(' · ');
 const state = (p) => p.maturity === 'early' ? 'available' : p.maturity;
 const publicProducts = (data) => data.products.filter((p) => p.published.implementation);
 
+function journeyContext(data, journey) {
+  const product = data.products.find((p) => p.slug === journey.product);
+  if (!product?.published?.repo) throw Error(`Journey ${journey.id} references an unknown published product`);
+  const ref = journey.source === 'tagged' ? product.published.releaseTag
+    : journey.source === 'preview' ? product.published.commit : null;
+  if (!ref) throw Error(`Journey ${journey.id} has no reviewed source reference`);
+  if (!journey.guide?.path || !journey.guide?.label) throw Error(`Journey ${journey.id} requires a guide`);
+  return {
+    product,
+    href: `${data.organization}/${product.published.repo}/blob/${ref}/${journey.guide.path}`,
+    sourceLabel: journey.source === 'tagged'
+      ? `Tagged source ${ref} (source-only, not a binary download)`
+      : `Source preview (main at reviewed commit ${ref})`,
+  };
+}
+
+function renderStartHereHtml(data) {
+  const cards = data.journeys.map((journey) => {
+    const { product, href, sourceLabel } = journeyContext(data, journey);
+    return `<article class="start-here-card" data-journey="${escape(journey.id)}" data-source="${escape(journey.source)}">
+      <p class="eyebrow">${escape(product.name)} · ${escape(sourceLabel)}</p>
+      <h3>${escape(journey.title)}</h3>
+      <p>${prose(journey.summary)}</p>
+      <p class="card-guide">${link({ href, label: journey.guide.label })}</p>
+    </article>`;
+  }).join('\n');
+  return `<section class="section wrap start-here-section" id="start-here" aria-labelledby="start-here-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">00 / START HERE</p><h2 id="start-here-title">Start here</h2></div>
+      <p>${prose(data.journeyIntro)}</p>
+    </div>
+    <div class="start-here-grid">${cards}</div>
+  </section>`;
+}
+
+function renderStartHereReadme(data) {
+  const cards = data.journeys.map((journey) => {
+    const { product, href, sourceLabel } = journeyContext(data, journey);
+    return [
+      `### ${journey.title}`,
+      '',
+      journey.summary,
+      '',
+      `**${product.name} — ${sourceLabel}.** [${journey.guide.label}](${href})`,
+      '',
+    ].join('\n');
+  });
+  return [
+    '## Start here',
+    '',
+    data.journeyIntro,
+    '',
+    ...cards,
+  ].join('\n');
+}
+
 function block(text, name, content) {
   const begin = `<!-- ${name} -->`;
   const end = `<!-- end-${name} -->`;
@@ -44,6 +100,7 @@ ${p.links.length ? `    <div class="card-bottom">${links(p.links)}</div>` : ''}
 
 export function renderLineup(data, html) {
   const available = publicProducts(data);
+  html = block(html, 'start-here', renderStartHereHtml(data));
   html = block(html, 'product-cards', data.products.map((p) => card(data, p)).join('\n'));
   for (const filter of ['all', 'available', 'preview', 'planned']) {
     const count = data.products.filter((p) => filter === 'all' || state(p) === filter).length;
@@ -71,6 +128,7 @@ export function renderLineup(data, html) {
 
 export function renderReadme(data, markdown) {
   const products = publicProducts(data);
+  markdown = block(markdown, 'readme-start-here', renderStartHereReadme(data));
   const repoUrl = (p) => `${data.organization}/${p.published.repo}`;
   const rows = products.filter((p) => p.published.releaseTag).map((p) => {
     const repo = repoUrl(p);
@@ -104,6 +162,15 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const data = JSON.parse(readFileSync(new URL('data/products.json', root), 'utf8'));
   for (const [path, render] of [['docs/index.html', renderLineup], ['README.md', renderReadme]]) {
     const file = new URL(path, root);
-    writeFileSync(file, render(data, readFileSync(file, 'utf8')));
+    const current = readFileSync(file, 'utf8');
+    const updated = render(data, current);
+    if (process.argv.includes('--check')) {
+      if (updated !== current) {
+        console.error(`${path} is out of date; run node scripts/render-lineup.mjs`);
+        process.exitCode = 1;
+      }
+    } else if (updated !== current) {
+      writeFileSync(file, updated);
+    }
   }
 }
