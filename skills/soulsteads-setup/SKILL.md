@@ -16,17 +16,135 @@ Use this skill to plan, prepare, and verify **one** public Soulsteads tool at a 
 
 ## Public source records
 
-These are the reviewed public `main` source pins for this skill. Clone only the named repository and branch, then verify `git rev-parse HEAD` before following its guide. A different commit, branch, missing guide, or rewritten history is a stop-and-report condition; do not silently substitute newer source, reset an existing checkout, or use a private snapshot.
+These are reviewed public source pins for this skill, not claims that the pinned revisions are the newest available. Fetch the exact reviewed ref directly into a fresh temporary repository, then verify its resolved commit against the listed SHA before following the guide. A mismatch, missing guide, or rewritten history is a stop-and-report condition; do not clone a moving branch and check it only afterward, silently substitute newer source, reset an existing checkout, or use a private snapshot.
 
 | Product | Public repository / branch | Reviewed commit | Read first |
 | --- | --- | --- | --- |
-| Agent Home | `https://github.com/soulsteads/soulsteads-agent-home.git` / `main` | `54851fe43a18ffe15598277c917ab9edb734db8a` | `README.md`, `docs/installation.md`, `docs/runtimes.md` |
-| Agent Messaging | `https://github.com/soulsteads/soulsteads-agent-messaging.git` / `main` | `27657bd2f59a3b943fd7b9fcb6860a82ec6946d0` | `README.md`, `docs/SETUP.md` |
-| Agent Workboard | `https://github.com/soulsteads/soulsteads-agent-workboard.git` / `main` | `9833be988577718aa96d21cf3be521015361b8b2` | `README.md`, `docs/operations.md` |
-| Agent Forge | `https://github.com/soulsteads/soulsteads-agent-forge.git` / `main` | `cbe32ca5c7caa5563ca0aa1c15a75b68de9b2c6c` | `README.md`, `docs/support.md`, `docs/operations.md` |
+| Agent Home | `https://github.com/soulsteads/soulsteads-agent-home.git` / `main` | `31d1fc26fe210d82fd414780a4aeae78efea185f` | `README.md`, `docs/installation.md`, `docs/runtimes.md` |
+| Agent Messaging | `https://github.com/soulsteads/soulsteads-agent-messaging.git` / `main` | `e9b2ccfd13f6fc3ec7b71e8b66f13cb8de31ca26` | `README.md`, `docs/SETUP.md` |
+| Agent Workboard | `https://github.com/soulsteads/soulsteads-agent-workboard.git` / `main` | `143704cf433349ae80592200600e80f66307fcfc` | `README.md`, `docs/operations.md` |
+| Agent Forge | `https://github.com/soulsteads/soulsteads-agent-forge.git` / `main` | `9bcc307946730ac5c00c1a5552790504ba2fea4a` | `README.md`, `docs/support.md`, `docs/operations.md` |
 | Model Router | `https://github.com/soulsteads/soulsteads-model-router.git` / `main` | `8621acd55ad293c4140b1e58664f0fc4f5fa650d` | `README.md`, `docs/SETUP.md`, `docs/COMPATIBILITY.md` |
 
 Agent Voice, Agent Harness, and Agent Skillstore have no public setup path in this reviewed lineup. Do not invent one. Do not treat an empty public repository or an unpublished name as installable source.
+
+### Fetch one reviewed source revision
+
+Use the exact reviewed tag or full commit SHA as `REVIEWED_REF`; do not substitute `main`, a moving branch, or a default branch. Set `REVIEWED_SHA` to the independently reviewed 40-character commit ID and `GUIDE` to the guide path recorded for that revision. The recipe fetches only that ref, checks the resolved commit and guide before publishing the checkout, and refuses to reuse an existing destination. Final publication uses Linux `renameat2(RENAME_NOREPLACE)` through Python 3, with the stage and destination on the same filesystem. It fails closed if libc does not expose `renameat2`; do not replace it with plain `mv`.
+
+```sh
+# reviewed-checkout-recipe
+set -eu
+: "${REPOSITORY:?Set REPOSITORY to the public Git URL}"
+: "${REVIEWED_REF:?Set REVIEWED_REF to the reviewed tag or full SHA}"
+: "${REVIEWED_SHA:?Set REVIEWED_SHA to the expected full commit SHA}"
+: "${GUIDE:?Set GUIDE to the documented guide path at that revision}"
+: "${DESTINATION:?Set DESTINATION to a new checkout path}"
+
+case "$REVIEWED_SHA" in
+  ''|*[!0-9a-f]*) printf 'Refusing a non-full commit SHA: %s\n' "$REVIEWED_SHA" >&2; exit 1 ;;
+esac
+if [ "${#REVIEWED_SHA}" -ne 40 ]; then
+  printf 'Refusing a non-full commit SHA: %s\n' "$REVIEWED_SHA" >&2
+  exit 1
+fi
+if [ -e "$DESTINATION" ] || [ -L "$DESTINATION" ]; then
+  printf 'Refusing existing destination: %s\n' "$DESTINATION" >&2
+  exit 1
+fi
+
+mkdir -p "$(dirname "$DESTINATION")"
+stage="$(mktemp -d "${DESTINATION}.tmp.XXXXXX")"
+cleanup() {
+  if [ -n "$stage" ] && [ -d "$stage" ]; then rm -rf -- "$stage"; fi
+}
+trap cleanup EXIT HUP INT TERM
+git -C "$stage" init --quiet
+git -C "$stage" remote add origin "$REPOSITORY"
+git -C "$stage" fetch --no-tags --depth=1 origin "$REVIEWED_REF"
+resolved="$(git -C "$stage" rev-parse --verify 'FETCH_HEAD^{commit}')"
+if [ "$resolved" != "$REVIEWED_SHA" ]; then
+  printf 'Refusing unexpected commit: wanted %s, fetched %s\n' "$REVIEWED_SHA" "$resolved" >&2
+  exit 1
+fi
+git -C "$stage" checkout --detach "$resolved"
+# Accept only an exact regular file from the pinned tree and checkout.
+python3 - "$stage" "$resolved" "$GUIDE" <<'PY'
+import os, stat, subprocess, sys
+
+stage, revision, guide = sys.argv[1:]
+parts = guide.split("/")
+
+def refuse():
+    print("Refusing guide: expected a regular committed file inside reviewed checkout", file=sys.stderr)
+    sys.exit(1)
+
+if guide.startswith("/") or any(part in ("", ".", "..") for part in parts):
+    refuse()
+
+pathspec = f":(top,literal){guide}"
+tree = subprocess.run(
+    ["git", "-C", stage, "ls-tree", "-z", "--full-tree", revision, "--", pathspec],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    check=False,
+)
+if tree.returncode != 0:
+    refuse()
+records = tree.stdout.split(b"\0")
+if len(records) != 2 or not records[0]:
+    refuse()
+try:
+    metadata, tree_path = records[0].split(b"\t", 1)
+    mode, kind, _object_id = metadata.split(b" ", 2)
+except ValueError:
+    refuse()
+if tree_path != os.fsencode(guide) or mode not in (b"100644", b"100755") or kind != b"blob":
+    refuse()
+
+if not hasattr(os, "O_DIRECTORY") or not hasattr(os, "O_NOFOLLOW"):
+    refuse()
+directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+fd = None
+try:
+    fd = os.open(stage, directory_flags)
+    for component in parts[:-1]:
+        child_fd = os.open(component, directory_flags, dir_fd=fd)
+        os.close(fd)
+        fd = child_fd
+    guide_info = os.stat(parts[-1], dir_fd=fd, follow_symlinks=False)
+except OSError:
+    refuse()
+finally:
+    if fd is not None:
+        os.close(fd)
+if not stat.S_ISREG(guide_info.st_mode):
+    refuse()
+PY
+if [ -e "$DESTINATION" ] || [ -L "$DESTINATION" ]; then
+  printf 'Refusing existing destination: %s\n' "$DESTINATION" >&2
+  exit 1
+fi
+python3 -c 'import ctypes, errno, os, sys
+libc = ctypes.CDLL(None, use_errno=True)
+try:
+    renameat2 = libc.renameat2
+except AttributeError:
+    print("Refusing publication: libc does not expose renameat2", file=sys.stderr)
+    sys.exit(1)
+renameat2.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint]
+renameat2.restype = ctypes.c_int
+if renameat2(-100, os.fsencode(sys.argv[1]), -100, os.fsencode(sys.argv[2]), 1) != 0:
+    error = ctypes.get_errno()
+    if error == errno.EEXIST:
+        print(f"Refusing existing destination: {sys.argv[2]}", file=sys.stderr)
+    else:
+        print(f"Refusing publication: atomic no-replace rename failed: {os.strerror(error)}", file=sys.stderr)
+    sys.exit(1)
+' "$stage" "$DESTINATION"
+stage=''
+printf 'Reviewed guide: %s/%s\n' "$DESTINATION" "$GUIDE"
+```
 
 ## Phase 1 — plan
 

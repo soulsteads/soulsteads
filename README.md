@@ -6,6 +6,36 @@
 
 Keep the coding agent you already use. Pick a tool for portable configuration, chat access, shared work, or model routing. Each installs separately; there is no suite installer.
 
+<!-- readme-start-here -->
+## Start here
+
+Choose one independent path. The links open component-owned guides; setup commands stay with those components. Tagged sources are source-only, and source previews are pinned to reviewed commits. These are not binary downloads.
+
+### Start with a ready local Workboard
+
+Create a useful local board using SQLite. No model or remote database is needed for this ready-to-use path.
+
+**Agent Workboard — Tagged source v0.1.0 (source-only, not a binary download).** [Workboard quickstart](https://github.com/soulsteads/soulsteads-agent-workboard/blob/v0.1.0/README.md#quickstart)
+
+### Connect Telegram to an existing agent
+
+Follow the documented Telegram path using the existing coding-agent harness. This connector path adds no agent runner or model setup.
+
+**Agent Messaging — Tagged source v0.2.0 (source-only, not a binary download).** [Telegram setup guide](https://github.com/soulsteads/soulsteads-agent-messaging/blob/v0.2.0/README.md)
+
+### Try a no-model Forge workflow with dedicated PostgreSQL
+
+Use Forge's documented no-model example with its own PostgreSQL database, separate from production. Follow the component guide for the supported setup.
+
+**Agent Forge — Source preview (main at reviewed commit 9bcc307946730ac5c00c1a5552790504ba2fea4a).** [Forge source preview guide](https://github.com/soulsteads/soulsteads-agent-forge/blob/9bcc307946730ac5c00c1a5552790504ba2fea4a/README.md)
+
+### Inspect a read-only Hermes import
+
+Review a Hermes import in Home's default read-only inspection mode before deciding whether to apply it. The source stays unchanged during inspection; use the component guide for supported inputs and boundaries.
+
+**Agent Home — Source preview (main at reviewed commit 31d1fc26fe210d82fd414780a4aeae78efea185f).** [Hermes import guide](https://github.com/soulsteads/soulsteads-agent-home/blob/31d1fc26fe210d82fd414780a4aeae78efea185f/docs/hermes-import.md)
+
+<!-- end-readme-start-here -->
 <!-- readme-lineup -->
 
 ## Released on GitHub
@@ -21,7 +51,7 @@ These are early, **source-only releases**: no prebuilt binaries. Check out the t
 
 ### Public source preview
 
-- **[Agent Forge](https://github.com/soulsteads/soulsteads-agent-forge/tree/cbe32ca5c7caa5563ca0aa1c15a75b68de9b2c6c)** — Run one-off or recurring workflows, inspect step results, and recover carefully after an interruption. No tagged release; for evaluation.
+- **[Agent Forge](https://github.com/soulsteads/soulsteads-agent-forge/tree/9bcc307946730ac5c00c1a5552790504ba2fea4a)** — Run one-off or recurring workflows, inspect step results, and recover carefully after an interruption. No tagged release; for evaluation.
   **What you need:** Linux, Rust 1.97 or later, and a C compiler · An empty, dedicated PostgreSQL database for DBOS · `jq` for the upstream quick-start example. [Run the first workflow](https://github.com/soulsteads/soulsteads-agent-forge#quick-start) · [Requirements and verification](https://github.com/soulsteads/soulsteads-agent-forge/blob/main/docs/support.md)
 
 ### No release to install

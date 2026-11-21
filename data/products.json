@@ -3,6 +3,41 @@
   "factsCheckedOn": "2026-11-19",
   "organization": "https://github.com/soulsteads",
   "siteUrl": "https://soulsteads.github.io/soulsteads/",
+  "journeyIntro": "Choose one independent path. The links open component-owned guides; setup commands stay with those components. Tagged sources are source-only, and source previews are pinned to reviewed commits. These are not binary downloads.",
+  "journeys": [
+    {
+      "id": "workboard-sqlite",
+      "title": "Start with a ready local Workboard",
+      "product": "agent-workboard",
+      "source": "tagged",
+      "summary": "Create a useful local board using SQLite. No model or remote database is needed for this ready-to-use path.",
+      "guide": { "path": "README.md#quickstart", "label": "Workboard quickstart" }
+    },
+    {
+      "id": "messaging-telegram",
+      "title": "Connect Telegram to an existing agent",
+      "product": "agent-messaging",
+      "source": "tagged",
+      "summary": "Follow the documented Telegram path using the existing coding-agent harness. This connector path adds no agent runner or model setup.",
+      "guide": { "path": "README.md", "label": "Telegram setup guide" }
+    },
+    {
+      "id": "forge-postgres",
+      "title": "Try a no-model Forge workflow with dedicated PostgreSQL",
+      "product": "agent-forge",
+      "source": "preview",
+      "summary": "Use Forge's documented no-model example with its own PostgreSQL database, separate from production. Follow the component guide for the supported setup.",
+      "guide": { "path": "README.md", "label": "Forge source preview guide" }
+    },
+    {
+      "id": "home-hermes-import",
+      "title": "Inspect a read-only Hermes import",
+      "product": "agent-home",
+      "source": "preview",
+      "summary": "Review a Hermes import in Home's default read-only inspection mode before deciding whether to apply it. The source stays unchanged during inspection; use the component guide for supported inputs and boundaries.",
+      "guide": { "path": "docs/hermes-import.md", "label": "Hermes import guide" }
+    }
+  ],
   "lineup": [
     "agent-home",
     "agent-messaging",
@@ -52,7 +87,7 @@
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "54851fe43a18ffe15598277c917ab9edb734db8a",
+        "commit": "31d1fc26fe210d82fd414780a4aeae78efea185f",
         "version": "0.1.0",
         "license": "Apache-2.0",
         "otherRefs": [],
@@ -140,7 +175,7 @@
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "27657bd2f59a3b943fd7b9fcb6860a82ec6946d0",
+        "commit": "e9b2ccfd13f6fc3ec7b71e8b66f13cb8de31ca26",
         "version": "0.2.0",
         "license": "Apache-2.0",
         "otherRefs": [
@@ -262,7 +297,7 @@
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "9833be988577718aa96d21cf3be521015361b8b2",
+        "commit": "143704cf433349ae80592200600e80f66307fcfc",
         "version": "0.1.0",
         "license": "Apache-2.0",
         "otherRefs": [],
@@ -454,7 +489,7 @@
         "repoExists": true,
         "implementation": true,
         "ref": "main",
-        "commit": "cbe32ca5c7caa5563ca0aa1c15a75b68de9b2c6c",
+        "commit": "9bcc307946730ac5c00c1a5552790504ba2fea4a",
         "version": "0.1.0",
         "license": "Apache-2.0",
         "otherRefs": [],

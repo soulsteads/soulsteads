@@ -529,6 +529,32 @@ h2 {
   grid-template-columns: 1fr 1fr;
   gap: 22px;
 }
+.start-here-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.start-here-card {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(150deg, #17201e22, transparent 40%), var(--panel);
+}
+.start-here-card .eyebrow {
+  margin-bottom: 14px;
+}
+.start-here-card h3 {
+  margin: 0 0 12px;
+  font-size: 23px;
+  line-height: 1.2;
+}
+.start-here-card p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.start-here-card .card-guide {
+  margin-top: 18px;
+}
 .product-card {
   padding: 32px 34px 0;
   border: 1px solid var(--line);
@@ -1593,6 +1619,13 @@ footer {
   .product-grid {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+  .start-here-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .start-here-card {
+    padding: 24px 22px;
   }
   .product-card {
     padding: 26px 25px 0;
