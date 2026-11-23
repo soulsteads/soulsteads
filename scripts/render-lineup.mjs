@@ -12,10 +12,10 @@ const links = (items) => items.map(link).join(' · ');
 const state = (p) => p.maturity === 'early' ? 'available' : p.maturity;
 const publicProducts = (data) => data.products.filter((p) => p.published.implementation);
 
-function journeyContext(data, journey) {
+function journeyContext(data, journey, { website = false } = {}) {
   const product = data.products.find((p) => p.slug === journey.product);
   if (!product?.published?.repo) throw Error(`Journey ${journey.id} references an unknown published product`);
-  const ref = journey.source === 'tagged' ? product.published.releaseTag
+  const ref = journey.source === 'tagged' ? (website ? product.published.ref : product.published.releaseTag)
     : journey.source === 'preview' ? product.published.commit : null;
   if (!ref) throw Error(`Journey ${journey.id} has no reviewed source reference`);
   if (!journey.guide?.path || !journey.guide?.label) throw Error(`Journey ${journey.id} requires a guide`);
@@ -23,14 +23,14 @@ function journeyContext(data, journey) {
     product,
     href: `${data.organization}/${product.published.repo}/blob/${ref}/${journey.guide.path}`,
     sourceLabel: journey.source === 'tagged'
-      ? `Tagged source ${ref} (source-only, not a binary download)`
-      : `Source preview (main at reviewed commit ${ref})`,
+      ? (website ? 'Source guide' : `Tagged source ${ref} (source-only, not a binary download)`)
+      : (website ? 'Source preview' : `Source preview (main at reviewed commit ${ref})`),
   };
 }
 
 function renderStartHereHtml(data) {
   const cards = data.journeys.map((journey) => {
-    const { product, href, sourceLabel } = journeyContext(data, journey);
+    const { product, href, sourceLabel } = journeyContext(data, journey, { website: true });
     return `<article class="start-here-card" data-journey="${escape(journey.id)}" data-source="${escape(journey.source)}">
       <p class="eyebrow">${escape(product.name)} · ${escape(sourceLabel)}</p>
       <h3>${escape(journey.title)}</h3>
@@ -41,7 +41,7 @@ function renderStartHereHtml(data) {
   return `<section class="section wrap start-here-section" id="start-here" aria-labelledby="start-here-title">
     <div class="section-heading">
       <div><p class="eyebrow">00 / START HERE</p><h2 id="start-here-title">Start here</h2></div>
-      <p>${prose(data.journeyIntro)}</p>
+      <p>Choose a task and open its source guide. If you’re just exploring, try Workboard first. For instructions for a specific release, see the <a href="https://github.com/soulsteads/soulsteads#released-on-github">release catalog</a>.</p>
     </div>
     <div class="start-here-grid">${cards}</div>
   </section>`;

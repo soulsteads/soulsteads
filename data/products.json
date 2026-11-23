@@ -81,7 +81,7 @@
       "tagline": "Keep the agent yours.",
       "need": "Keep my agent\u2019s identity and instructions portable",
       "maturity": "early",
-      "maturityDetail": "Version 0.1.0 on `main`. GitHub release `v0.1.0` is source-only.",
+      "maturityDetail": "Source-only release. Build or install from the source checkout.",
       "published": {
         "repo": "soulsteads-agent-home",
         "repoExists": true,
@@ -169,7 +169,7 @@
       "tagline": "Your agent in your chat.",
       "need": "Talk to my coding agent from chat",
       "maturity": "early",
-      "maturityDetail": "Version 0.2.0 on `main`. GitHub release `v0.2.0` is source-only. Use `main` for current setup; the older `release` branch is 0.1.0.",
+      "maturityDetail": "Source-only release. Build or install from the source checkout.",
       "published": {
         "repo": "soulsteads-agent-messaging",
         "repoExists": true,
@@ -196,7 +196,7 @@
       "does": [
         "Runs on your machine and relays messages between your own chat account and the coding agent you already have signed in.",
         "Includes connectors for Telegram, Matrix, Mattermost, Slack, Discord, WhatsApp, and a built-in web interface. Connectors are included, not preconfigured.",
-        "Works with Claude Code, OpenAI Codex, OpenCode, and Pi, or another compatible ACP server through a custom command. `main` (0.2.0) adds GitHub Copilot CLI.",
+        "Works with Claude Code, OpenAI Codex, OpenCode, and Pi, or another compatible ACP server through a custom command. The current source also supports GitHub Copilot CLI.",
         "Guided setup covers one path: Telegram with Claude Code or Codex on Linux. Every other combination is configured by hand."
       ],
       "owns": [
@@ -291,7 +291,7 @@
       "tagline": "Shared work without collisions.",
       "need": "Give multiple agents one shared issue board",
       "maturity": "early",
-      "maturityDetail": "Version 0.1.0 on `main`. GitHub release `v0.1.0` is source-only.",
+      "maturityDetail": "Source-only release. Build or install from the source checkout.",
       "published": {
         "repo": "soulsteads-agent-workboard",
         "repoExists": true,
@@ -404,7 +404,7 @@
       "tagline": "Predictable access to suitable models.",
       "need": "Give compatible clients one endpoint for existing models",
       "maturity": "early",
-      "maturityDetail": "Version 0.1.0 on `main`. GitHub release `v0.1.0` is source-only.",
+      "maturityDetail": "Source-only release. Build or install from the source checkout.",
       "published": {
         "repo": "soulsteads-model-router",
         "repoExists": true,
@@ -483,7 +483,7 @@
       "tagline": "Schedule work. Inspect the result.",
       "need": "Run recurring workflows and inspect what happened",
       "maturity": "preview",
-      "maturityDetail": "Version 0.1.0 on `main`. Build from `main`; no GitHub release or prebuilt binary.",
+      "maturityDetail": "Build from source for evaluation; no release or prebuilt binary.",
       "published": {
         "repo": "soulsteads-agent-forge",
         "repoExists": true,
