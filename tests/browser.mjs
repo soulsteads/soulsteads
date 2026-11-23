@@ -13,13 +13,15 @@ const { default: AxeBuilder } = await import(
 );
 const output = process.env.SITE_QA_OUTPUT || "/tmp/soulsteads-site-evidence";
 await mkdir(output, { recursive: true });
-const base = process.env.SITE_URL || "http://127.0.0.1:8096/";
+// Mount docs/ at /soulsteads/ to match the GitHub Pages project site.
+const base = process.env.SITE_URL || "http://127.0.0.1:8096/soulsteads/";
 const browser = await chromium.launch({ headless: true, executablePath: process.env.SITE_QA_BROWSER || undefined });
 const results = [];
 try {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
     reducedMotion: "reduce",
+    colorScheme: "dark", // The site should stay light even on a dark device.
     permissions: ["clipboard-read", "clipboard-write"],
   });
   const page = await context.newPage();
@@ -33,6 +35,27 @@ try {
     if (!r.url().startsWith(new URL(base).origin)) remoteRequests.push(r.url());
   });
   await page.goto(base);
+  const white = "rgb(255, 255, 255)";
+  assert.equal(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundColor), white, "Homepage canvas");
+  assert.equal(await page.locator('meta[name="theme-color"]').getAttribute("content"), "#ffffff");
+  for (const asset of ["lineup-map.svg", "agent-connections.svg", "agent-connections-compact.svg", "social.svg", "social.png"]) {
+    const pixel = await page.evaluate(async (asset) => {
+      const image = new Image();
+      image.src = new URL(`assets/${asset}`, document.baseURI);
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      // Sample inside rounded corners, well clear of the artwork.
+      ctx.drawImage(image, -40, -20);
+      return [...ctx.getImageData(0, 0, 1, 1).data];
+    }, asset);
+    assert.deepEqual(pixel, [255, 255, 255, 255], `${asset} canvas`);
+  }
+  const missing = await context.newPage();
+  await missing.goto(new URL("404.html", base).href);
+  assert.equal(await missing.locator("body").evaluate(el => getComputedStyle(el).backgroundColor), white, "404 canvas");
+  assert.equal(await missing.locator('meta[name="theme-color"]').getAttribute("content"), "#ffffff");
+  await missing.close();
   await page.locator(".filter-row").waitFor();
   assert.equal(await page.locator(".product-card:visible").count(), 6);
   await page.locator('[data-filter="preview"]').click();
