@@ -34,17 +34,17 @@ try {
   });
   await page.goto(base);
   await page.locator(".filter-row").waitFor();
-  assert.equal(await page.locator(".product-card:visible").count(), 8);
+  assert.equal(await page.locator(".product-card:visible").count(), 6);
   await page.locator('[data-filter="preview"]').click();
-  assert.equal(await page.locator(".product-card:visible").count(), 1);
-  assert.match(await page.locator("#filter-status").innerText(), /1 product shown/);
+  assert.equal(await page.locator(".product-card:visible").count(), 2);
+  assert.equal(await page.locator("#agent-skillstore").isVisible(), true);
+  assert.match(await page.locator("#filter-status").innerText(), /2 products shown/);
   await page.locator('[data-filter="available"]').click();
   assert.equal(await page.locator(".preview-card:visible").count(), 0);
   assert.equal(await page.locator("#model-router").isVisible(), true);
   assert.equal(await page.locator(".product-card:visible").count(), 4);
-  await page.locator('[data-filter="planned"]').click();
-  assert.equal(await page.locator(".product-card:visible").count(), 3);
-  assert.equal(await page.locator('.setup-choices li').count(), 5);
+  assert.equal(await page.locator('[data-filter="planned"]').count(), 0);
+  assert.equal(await page.locator('.setup-choices li').count(), 6);
   await page.getByRole('link', { name: 'Agent Forge details' }).click();
   assert.equal(await page.locator('#agent-forge').isVisible(), true, 'Setup link reveals a filtered card');
   assert.equal(await page.locator('[data-filter="all"]').getAttribute('aria-pressed'), 'true');
@@ -152,8 +152,9 @@ try {
   });
   const fallback = await nojs.newPage();
   await fallback.goto(base);
-  assert.equal(await fallback.locator(".product-card:visible").count(), 8);
-  assert.equal(await fallback.locator('.setup-choices li:visible').count(), 5);
+  assert.equal(await fallback.locator(".product-card:visible").count(), 6);
+  assert.equal(await fallback.locator('.setup-choices li:visible').count(), 6);
+  assert.equal(await fallback.getByRole('link', { name: 'Agent Skillstore details' }).isVisible(), true);
   assert.equal(await fallback.locator('#agent-setup-prompt').isVisible(), true);
   for (const image of await fallback.locator('figure img').all()) {
     await image.scrollIntoViewIfNeeded();

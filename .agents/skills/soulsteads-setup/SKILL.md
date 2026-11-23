@@ -25,8 +25,9 @@ These are reviewed public source pins for this skill, not claims that the pinned
 | Agent Workboard | `https://github.com/soulsteads/soulsteads-agent-workboard.git` / `main` | `143704cf433349ae80592200600e80f66307fcfc` | `README.md`, `docs/operations.md` |
 | Agent Forge | `https://github.com/soulsteads/soulsteads-agent-forge.git` / `main` | `9bcc307946730ac5c00c1a5552790504ba2fea4a` | `README.md`, `docs/support.md`, `docs/operations.md` |
 | Model Router | `https://github.com/soulsteads/soulsteads-model-router.git` / `main` | `8621acd55ad293c4140b1e58664f0fc4f5fa650d` | `README.md`, `docs/SETUP.md`, `docs/COMPATIBILITY.md` |
+| Agent Skillstore | `https://github.com/soulsteads/soulsteads-agent-skillstore.git` / `main` | `7b24bb6eaf566ab004b6b30591a5369a6a4ec53a` | `README.md`, `docs/usage.md`, `docs/support.md` |
 
-Agent Voice, Agent Harness, and Agent Skillstore have no public setup path in this reviewed lineup. Do not invent one. Do not treat an empty public repository or an unpublished name as installable source.
+Do not treat an empty public repository or an unpublished name as installable source.
 
 ### Fetch one reviewed source revision
 
@@ -197,6 +198,12 @@ After the approved scope is clear, use only the selected product's current guide
 - Declare only capabilities tested on the exact backend. Keep the initial route text-only until tools, structured output, or images have been separately verified. Do not point the router at itself or a public-provider gateway.
 - `slotline --check-config <policy>` validates policy structure and key files but does not prove inference. Foreground listening, a service unit, and any client migration are separate effects. HTTP has no built-in TLS; do not expose it directly to the internet.
 
+### Agent Skillstore
+
+- This source preview is tested on Linux. macOS qualification is pending. From the reviewed checkout, use Python 3.11+ and follow the source install in `README.md`.
+- Use the quickstart in a disposable directory to review, install, and recover a sample skill without a harness or model account. Its local actor labels are not authentication. Do not target a real harness or shared registry without separate approval.
+- For skills-only backups, follow tracking-only mode in `docs/usage.md`; no registry is required. Do not treat a backup as permission to overwrite active skills.
+
 Preparation is complete only when requested files/state are created in authorized locations, secrets remain private, and no unapproved service or external request was made.
 
 ## Phase 3 — verify
@@ -210,6 +217,7 @@ Run only the verification within the approved scope and report observed output r
 | Agent Workboard | `workboard schema` plus a read such as `project_list` | Verify the configured worker's intended CLI/MCP/HTTP access and inspect state; do not equate a dashboard view with external work completion. |
 | Agent Forge | Validate the intended workflow and inspect its stored definition/state | Inspect a terminal run's actual output; for a schedule, inspect a real due occurrence and linked terminal run. |
 | Model Router | `slotline --check-config <policy>` | Authenticate, verify the catalog contains the authorized alias, then verify a real completion and reject an invalid/missing bearer. |
+| Agent Skillstore | Use `skillstore status` against the disposable quickstart target and verify the sample's version and clean receipt. | For an approved shared registry, verify the selected client's documented access without publishing or executing a skill. |
 
 Report the checked source pin, commands/actions actually performed, observed checks, any intentionally untested live behavior, state locations, and required next approval. Do not claim service, provider, chat, harness, or external-work success from a build, configuration check, process start, or admission response alone.
 

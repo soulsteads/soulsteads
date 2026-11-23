@@ -540,20 +540,34 @@ h2 {
   border-radius: 12px;
   background: linear-gradient(150deg, #17201e22, transparent 40%), var(--panel);
 }
-.start-here-card .eyebrow {
-  margin-bottom: 14px;
-}
 .start-here-card h3 {
-  margin: 0 0 12px;
-  font-size: 23px;
+  margin: 0 0 6px;
+  font-size: 24px;
   line-height: 1.2;
 }
 .start-here-card p {
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.6;
 }
-.start-here-card .card-guide {
-  margin-top: 18px;
+.start-here-card .journey-source {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+.journey-guides {
+  margin: 12px 0 0;
+  padding-inline-start: 1.25em;
+  line-height: 1.5;
+}
+.journey-guides li + li {
+  margin-top: 8px;
+}
+.journey-guides li div {
+  color: var(--muted);
+}
+.journey-guides a {
+  display: inline-block;
+  padding-block: 3px;
 }
 .product-card {
   padding: 32px 34px 0;

@@ -3,39 +3,43 @@
   "factsCheckedOn": "2026-11-19",
   "organization": "https://github.com/soulsteads",
   "siteUrl": "https://soulsteads.github.io/soulsteads/",
-  "journeyIntro": "Choose one independent path. The links open component-owned guides; setup commands stay with those components. Tagged sources are source-only, and source previews are pinned to reviewed commits. These are not binary downloads.",
+  "journeyIntro": "Pick one task and follow its guide. You’ll build from source, not download a binary. Preview links point to exact reviewed commits.",
   "journeys": [
     {
       "id": "workboard-sqlite",
-      "title": "Start with a ready local Workboard",
+      "title": "Create a local workboard",
       "product": "agent-workboard",
       "source": "tagged",
-      "summary": "Create a useful local board using SQLite. No model or remote database is needed for this ready-to-use path.",
-      "guide": { "path": "README.md#quickstart", "label": "Workboard quickstart" }
+      "summary": "Track issues locally with SQLite. No model or database server needed.",
+      "guides": [{ "path": "README.md#quickstart", "label": "Workboard quickstart" }]
     },
     {
-      "id": "messaging-telegram",
-      "title": "Connect Telegram to an existing agent",
+      "id": "messaging-chat",
+      "title": "Chat with your agent",
       "product": "agent-messaging",
       "source": "tagged",
-      "summary": "Follow the documented Telegram path using the existing coding-agent harness. This connector path adds no agent runner or model setup.",
-      "guide": { "path": "README.md", "label": "Telegram setup guide" }
+      "summary": "Keep your existing agent harness. Choose a Linux setup guide:",
+      "guides": [
+        { "path": "docs/SETUP.md#telegram", "label": "Telegram setup", "note": "Guided setup on Linux for Claude Code or Codex." },
+        { "path": "docs/MATTERMOST.md", "label": "Mattermost setup", "note": "Manual Linux setup with a dedicated bot." },
+        { "path": "docs/MATRIX.md", "label": "Matrix setup", "note": "Manual Linux setup in an unencrypted room." }
+      ]
     },
     {
       "id": "forge-postgres",
-      "title": "Try a no-model Forge workflow with dedicated PostgreSQL",
+      "title": "Run your first Forge workflow",
       "product": "agent-forge",
       "source": "preview",
-      "summary": "Use Forge's documented no-model example with its own PostgreSQL database, separate from production. Follow the component guide for the supported setup.",
-      "guide": { "path": "README.md", "label": "Forge source preview guide" }
+      "summary": "Run and schedule a sample workflow. Use a dedicated PostgreSQL database, not production. No model or agent harness needed.",
+      "guides": [{ "path": "README.md", "label": "Forge source preview guide" }]
     },
     {
       "id": "home-hermes-import",
-      "title": "Inspect a read-only Hermes import",
+      "title": "Preview a Hermes import",
       "product": "agent-home",
       "source": "preview",
-      "summary": "Review a Hermes import in Home's default read-only inspection mode before deciding whether to apply it. The source stays unchanged during inspection; use the component guide for supported inputs and boundaries.",
-      "guide": { "path": "docs/hermes-import.md", "label": "Hermes import guide" }
+      "summary": "Use Agent Home to inspect a Hermes import in read-only mode. No files in the source are changed.",
+      "guides": [{ "path": "docs/hermes-import.md", "label": "Hermes import guide" }]
     }
   ],
   "lineup": [
@@ -44,9 +48,7 @@
     "agent-workboard",
     "model-router",
     "agent-forge",
-    "agent-voice",
-    "agent-skillstore",
-    "agent-harness"
+    "agent-skillstore"
   ],
   "maturityLevels": {
     "early": {
@@ -62,13 +64,6 @@
       "label": "Source preview",
       "badge": "SOURCE PREVIEW",
       "summary": "Public preview source and setup documentation for evaluation; not a production release."
-    },
-    "planned": {
-      "rank": 0,
-      "installable": false,
-      "label": "Planned",
-      "badge": "NOT YET AVAILABLE",
-      "summary": "No public implementation to install. Scope can still change."
     }
   },
   "products": [
@@ -543,141 +538,77 @@
       "license": "Apache 2.0"
     },
     {
-      "slug": "agent-voice",
-      "name": "Agent Voice",
-      "icon": "\u25c9",
-      "tone": "rose",
-      "kicker": "THE SPOKEN INTERFACE",
-      "tagline": "Speech as an optional interface.",
-      "need": "Speak to my agent and hear its replies",
-      "maturity": "planned",
-      "maturityDetail": "No public implementation to install.",
-      "published": {
-        "repo": "soulsteads-agent-voice",
-        "repoExists": true,
-        "implementation": false,
-        "ref": null,
-        "commit": null,
-        "version": null,
-        "license": null,
-        "otherRefs": []
-      },
-      "purpose": "Turn speech into agent input and agent output into understandable speech.",
-      "direction": [
-        "One small interaction first: explicit record-and-send, transcription, and optional spoken replies.",
-        "No new stack, cloud service, or always-listening device required.",
-        "Live conversation and streaming are considered only after that first path is demonstrated."
-      ],
-      "owns": [
-        "Transcription and speech-generation interfaces for existing clients"
-      ],
-      "doesNotOwn": [
-        "The agent, its harness, or the conversation it joins",
-        "Any requirement to use another Soulsteads product"
-      ],
-      "prerequisites": null,
-      "limits": [],
-      "journey": null,
-      "notPublished": {
-        "headline": "Not available",
-        "body": "The public repository is empty."
-      },
-      "links": [
-        {
-          "label": "Watch the public repository",
-          "href": "https://github.com/soulsteads/soulsteads-agent-voice"
-        }
-      ]
-    },
-    {
       "slug": "agent-skillstore",
       "name": "Agent Skillstore",
       "icon": "\u2756",
       "tone": "slate",
       "kicker": "THE SKILL LIBRARY",
       "tagline": "Share skills without losing control.",
-      "need": "Publish, find, and update agent skills with clear versions",
-      "maturity": "planned",
-      "maturityDetail": "Public placeholder repository; no implementation to install.",
+      "need": "Review, install, and recover agent skills",
+      "maturity": "preview",
+      "maturityDetail": "Linux-tested source preview. macOS qualification is pending; Windows is not supported.",
       "published": {
         "repo": "soulsteads-agent-skillstore",
         "repoExists": true,
-        "implementation": false,
+        "implementation": true,
         "ref": "main",
-        "commit": "df937ad6223b5fb929f4c79b0db397313ca43ec8",
-        "version": null,
+        "commit": "7b24bb6eaf566ab004b6b30591a5369a6a4ec53a",
+        "version": "0.1.1",
         "license": "Apache-2.0",
         "otherRefs": []
       },
-      "purpose": "Centrally publish, discover, update, and improve reusable agent skills.",
-      "direction": [
-        "Discovery, validation, reviewed version publication, and installation of ordinary, portable Agent Skills packages.",
-        "Update inspection that protects local changes, and recovery from a bad update.",
-        "Improvement proposals that need validation and review before publication. Adoption stays selective."
+      "purpose": "Share reviewed, versioned Agent Skills across projects and harnesses. Preview an update before installing it and recover previous versions offline.",
+      "does": [
+        "Review an exact skill version and inspect the proposed file changes before installing.",
+        "Protect local edits and roll back or restore skills from local snapshots.",
+        "Use tracking-only mode for private skill backups without a registry."
       ],
       "owns": [
-        "Skill distribution and release history"
+        "Skill distribution and installation records"
       ],
       "doesNotOwn": [
-        "The agent's identity, permissions, or active session",
-        "Any requirement to use Agent Home"
+        "Agent identity, permissions, or sessions",
+        "Execution of installed skills"
       ],
-      "prerequisites": null,
-      "limits": [],
-      "journey": null,
-      "notPublished": {
-        "headline": "Not available",
-        "body": "The public repository contains a license and Git ignore file, but no implementation or setup guide."
+      "prerequisites": [
+        "A source checkout, Python 3.11 or later, and `uv` or `pip`"
+      ],
+      "limits": [
+        "The local quickstart needs no harness or model account.",
+        "Installation copies skill files without executing them."
+      ],
+      "journey": {
+        "title": "Try a local skill registry",
+        "steps": [],
+        "after": "Follow the disposable quickstart to review, install, and recover a sample skill without changing your harness configuration.",
+        "guides": [
+          {
+            "label": "Install Skillstore from source",
+            "href": "https://github.com/soulsteads/soulsteads-agent-skillstore/blob/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a/README.md#install-from-source"
+          },
+          {
+            "label": "Try the local quickstart",
+            "href": "https://github.com/soulsteads/soulsteads-agent-skillstore/blob/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a/README.md#quickstart"
+          },
+          {
+            "label": "Back up skills without a registry",
+            "href": "https://github.com/soulsteads/soulsteads-agent-skillstore/blob/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a/docs/usage.md#tracking-only-mode"
+          }
+        ]
       },
+      "notPublished": null,
       "links": [
         {
-          "label": "Placeholder repository",
+          "label": "Agent Skillstore on GitHub",
           "href": "https://github.com/soulsteads/soulsteads-agent-skillstore"
         }
-      ]
-    },
-    {
-      "slug": "agent-harness",
-      "name": "Agent Harness",
-      "icon": "\u25c7",
-      "tone": "slate",
-      "kicker": "THE RUNTIME",
-      "tagline": "A first-party runtime project.",
-      "need": "Explore a first-party agent runtime",
-      "maturity": "planned",
-      "maturityDetail": "Reserved public repository; no implementation to install.",
-      "published": {
-        "repo": "soulsteads-agent-harness",
-        "repoExists": true,
-        "implementation": false,
-        "ref": null,
-        "commit": null,
-        "version": null,
-        "license": null,
-        "otherRefs": []
-      },
-      "purpose": "A reserved project for a Soulsteads agent runtime. Use an existing supported harness with Home or Messaging today.",
-      "direction": [],
-      "owns": [],
-      "doesNotOwn": [],
-      "prerequisites": null,
-      "limits": [],
-      "journey": null,
-      "notPublished": {
-        "headline": "Not available",
-        "body": "The public repository is empty."
-      },
-      "links": [
-        {
-          "label": "Reserved repository",
-          "href": "https://github.com/soulsteads/soulsteads-agent-harness"
-        }
-      ]
+      ],
+      "license": "Apache 2.0"
     }
   ],
   "composition": {
-    "title": "One agent, optional connections",
-    "intro": "Keep your chosen harness. Add only the tools you need, and configure each connection explicitly.",
+    "title": "Keep your harness. Run workflows separately.",
+    "intro": "Add tools to your existing agent only when you need them. You can also run Forge without connecting an agent.",
     "steps": [
       {
         "product": "agent-home",
@@ -698,6 +629,11 @@
         "product": "model-router",
         "role": "Reach models through one endpoint",
         "connection": "Point a compatible client at the router's endpoint, limited to the routes its key allows."
+      },
+      {
+        "product": "agent-forge",
+        "role": "Run workflows with Forge",
+        "connection": "Run workflows on demand or on a schedule and inspect each step. The quick start works without a model or harness; harness-backed steps are optional."
       }
     ],
     "notes": [

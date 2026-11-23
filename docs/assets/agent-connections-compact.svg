@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="556" viewBox="0 0 600 556" role="img" aria-labelledby="title desc">
+  <title id="title">One agent, optional tools</title>
+  <desc id="desc">Your chosen agent harness works on its own. Dashed lines show optional connections to Home for configuration, Messaging for chat, Workboard for issues, and Model Router for model requests. Agent Forge is separate: its workflow quick start needs no harness or model.</desc>
+  <defs>
+    <symbol id="glyph-harness" viewBox="0 0 48 48">
+      <rect x="1" y="1" width="46" height="46" rx="11" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-opacity=".44"/>
+      <g fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="13" width="28" height="22" rx="5"/><path d="m16 20 4 4-4 4m9 0h7"/></g>
+    </symbol>
+    <symbol id="glyph-home" viewBox="0 0 48 48">
+      <rect x="1" y="1" width="46" height="46" rx="11" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-opacity=".44"/>
+      <g fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m24 9 13 7v16l-13 7-13-7V16l13-7zM11 16l13 8 13-8M24 24v15"/></g>
+    </symbol>
+    <symbol id="glyph-messaging" viewBox="0 0 48 48">
+      <rect x="1" y="1" width="46" height="46" rx="11" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-opacity=".44"/>
+      <g fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h18a5 5 0 0 1 5 5v12a5 5 0 0 1-5 5h-9l-9 6v-6a5 5 0 0 1-5-5V17a5 5 0 0 1 5-5zM17 21h14m-14 6h9"/></g>
+    </symbol>
+    <symbol id="glyph-workboard" viewBox="0 0 48 48">
+      <rect x="1" y="1" width="46" height="46" rx="11" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-opacity=".44"/>
+      <g fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="12" width="28" height="24" rx="4"/><path d="M10 20h28M20 20v16m6-10h6m-6 5h4"/></g>
+    </symbol>
+    <symbol id="glyph-router" viewBox="0 0 48 48">
+      <rect x="1" y="1" width="46" height="46" rx="11" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-opacity=".44"/>
+      <g fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h26m-6-6 6 6-6 6M38 31H12m6-6-6 6 6 6"/></g>
+    </symbol>
+    <symbol id="glyph-forge" viewBox="0 0 48 48">
+      <rect x="1" y="1" width="46" height="46" rx="11" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-opacity=".44"/>
+      <g fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="20" width="8" height="8" rx="2"/><rect x="32" y="9" width="8" height="8" rx="2"/><rect x="32" y="31" width="8" height="8" rx="2"/><path d="M16 24h8m0 0v-7a4 4 0 0 1 4-4h4m-8 11v7a4 4 0 0 0 4 4h4"/></g>
+    </symbol>
+  </defs>
+  <style>
+    text { font-family: system-ui, sans-serif; fill: #172433; }
+    .heading { font-size: 38px; font-weight: 750; }
+    .name { font-size: 34px; font-weight: 700; }
+    .tool-name { font-size: 29px; font-weight: 700; }
+    .role { font-size: 30px; fill: #435466; }
+    .agent { fill: #315623; }
+    .forge { fill: #663e93; }
+  </style>
+  <rect width="600" height="556" fill="#ffffff"/>
+  <text x="30" y="55" class="heading">One agent, optional tools</text>
+
+  <g id="harness-connections" fill="none" stroke="#526e82" stroke-width="4" stroke-dasharray="6 8" stroke-linecap="round" aria-hidden="true">
+    <path d="M152 170l69 38"/>
+    <path d="M448 170l-69 38"/>
+    <path d="M221 294l-69 38"/>
+    <path d="M379 294l69 38"/>
+  </g>
+  <g>
+    <rect x="110" y="208" width="380" height="86" rx="14" fill="#f2f8ed" stroke="#5d8c46" stroke-width="2"/>
+    <use id="icon-harness" href="#glyph-harness" x="128" y="216" width="34" height="34" color="#41702a" aria-hidden="true"/>
+    <text x="172" y="242" class="tool-name agent">Your agent harness</text>
+    <text x="300" y="281" text-anchor="middle" class="role">Works on its own</text>
+  </g>
+  <g>
+    <rect x="16" y="82" width="272" height="88" rx="12" fill="#f7f9fc" stroke="#bccbd9"/>
+    <use id="icon-home" href="#glyph-home" x="28" y="90" width="34" height="34" color="#41702a" aria-hidden="true"/>
+    <text x="70" y="117" class="tool-name">Home</text>
+    <text x="34" y="156" class="role">Agent config</text>
+  </g>
+  <g>
+    <rect x="312" y="82" width="272" height="88" rx="12" fill="#f7f9fc" stroke="#bccbd9"/>
+    <use id="icon-messaging" href="#glyph-messaging" x="324" y="90" width="34" height="34" color="#2a6499" aria-hidden="true"/>
+    <text x="366" y="117" class="tool-name">Messaging</text>
+    <text x="330" y="156" class="role">Chat access</text>
+  </g>
+  <g>
+    <rect x="16" y="332" width="272" height="88" rx="12" fill="#f7f9fc" stroke="#bccbd9"/>
+    <use id="icon-workboard" href="#glyph-workboard" x="28" y="340" width="34" height="34" color="#2a6499" aria-hidden="true"/>
+    <text x="70" y="367" class="tool-name">Workboard</text>
+    <text x="34" y="406" class="role">Track issues</text>
+  </g>
+  <g>
+    <rect x="312" y="332" width="272" height="88" rx="12" fill="#f7f9fc" stroke="#bccbd9"/>
+    <use id="icon-router" href="#glyph-router" x="324" y="340" width="34" height="34" color="#41702a" aria-hidden="true"/>
+    <text x="366" y="367" class="tool-name">Model Router</text>
+    <text x="330" y="406" class="role">Route requests</text>
+  </g>
+
+  <g id="standalone-forge">
+    <rect x="16" y="438" width="568" height="102" rx="12" fill="#f7f2fd" stroke="#b7a2ce"/>
+    <use id="icon-forge" href="#glyph-forge" x="28" y="449" width="36" height="36" color="#663e93" aria-hidden="true"/>
+    <text x="74" y="477" class="name forge">Agent Forge</text>
+    <text x="34" y="519" class="role">No agent needed to start</text>
+    <text x="566" y="477" text-anchor="end" class="role forge">Workflows</text>
+  </g>
+</svg>
