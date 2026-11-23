@@ -2,114 +2,111 @@
   <title id="title">Soulsteads product lineup</title>
   <desc id="desc">Five independent product cards: Agent Home, Agent Messaging, Agent Workboard, Model Router, and Agent Forge. The cards are not connected, indicating that they may be adopted independently.</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#0c1014"/>
-      <stop offset="1" stop-color="#111a1d"/>
-    </linearGradient>
     <linearGradient id="mintGlow" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#b5f76a" stop-opacity=".17"/>
-      <stop offset="1" stop-color="#8cbdff" stop-opacity=".03"/>
+      <stop stop-color="#41702a" stop-opacity=".17"/>
+      <stop offset="1" stop-color="#2a6499" stop-opacity=".03"/>
     </linearGradient>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
-      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity=".28"/>
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#172433" flood-opacity=".10"/>
     </filter>
     <style>
-      .label { font: 600 14px Inter,Segoe UI,Arial,sans-serif; letter-spacing: 2.4px; fill: #9ca8b0; }
-      .heading { font: 700 46px Inter,Segoe UI,Arial,sans-serif; letter-spacing: -.8px; fill: #eff4f0; }
-      .subhead { font: 400 18px Inter,Segoe UI,Arial,sans-serif; fill: #aebbc0; }
-      .card-title { font: 700 25px Inter,Segoe UI,Arial,sans-serif; fill: #eff4f0; }
-      .card-copy { font: 400 16px Inter,Segoe UI,Arial,sans-serif; fill: #aebbc0; }
-      .pill { font: 600 13px Inter,Segoe UI,Arial,sans-serif; letter-spacing: .5px; fill: #b5f76a; }
-      .num { font: 600 13px Inter,Segoe UI,Arial,sans-serif; letter-spacing: 1px; fill: #708087; }
+      .label { font: 600 14px Inter,Segoe UI,Arial,sans-serif; letter-spacing: 2.4px; fill: #4b586a; }
+      .heading { font: 700 46px Inter,Segoe UI,Arial,sans-serif; letter-spacing: -.8px; fill: #172433; }
+      .subhead { font: 400 18px Inter,Segoe UI,Arial,sans-serif; fill: #435466; }
+      .card-title { font: 700 25px Inter,Segoe UI,Arial,sans-serif; fill: #172433; }
+      .card-copy { font: 400 16px Inter,Segoe UI,Arial,sans-serif; fill: #435466; }
+      .pill { font: 600 13px Inter,Segoe UI,Arial,sans-serif; letter-spacing: .5px; fill: #41702a; }
+      .pill-blue { fill: #2a6499; }
+      .num { font: 600 13px Inter,Segoe UI,Arial,sans-serif; letter-spacing: 1px; fill: #4b586a; }
     </style>
   </defs>
 
-  <rect width="1600" height="900" fill="url(#bg)"/>
-  <circle cx="1480" cy="-38" r="360" fill="#b5f76a" opacity=".035"/>
-  <circle cx="130" cy="898" r="330" fill="#8cbdff" opacity=".025"/>
-  <path d="M80 114H1520" stroke="#293239"/>
-  <path d="M80 786H1520" stroke="#293239"/>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <circle cx="1480" cy="-38" r="360" fill="#41702a" opacity=".035"/>
+  <circle cx="130" cy="898" r="330" fill="#2a6499" opacity=".025"/>
+  <path d="M80 114H1520" stroke="#d7e0e9"/>
+  <path d="M80 786H1520" stroke="#d7e0e9"/>
 
   <text x="80" y="77" class="label">SOULSTEADS / PRODUCT LINEUP</text>
   <text x="80" y="190" class="heading">Start with the job you need.</text>
   <text x="80" y="228" class="subhead">Independent tools for the parts of agent work you want to make durable.</text>
-  <rect x="1284" y="156" width="236" height="42" rx="21" fill="#17221a" stroke="#b5f76a" stroke-opacity=".38"/>
-  <circle cx="1310" cy="177" r="5" fill="#b5f76a"/>
+  <rect x="1284" y="156" width="236" height="42" rx="21" fill="#eef6e7" stroke="#41702a" stroke-opacity=".38"/>
+  <circle cx="1310" cy="177" r="5" fill="#41702a"/>
   <text x="1326" y="182" class="pill">ADOPT IN ANY ORDER</text>
 
   <!-- Card 1 -->
   <g filter="url(#shadow)">
-    <rect x="80" y="310" width="272" height="360" rx="20" fill="#12181d" stroke="#334048"/>
-    <rect x="80" y="310" width="272" height="6" rx="3" fill="#b5f76a"/>
+    <rect x="80" y="310" width="272" height="360" rx="20" fill="#f7f9fc" stroke="#bccbd9"/>
+    <rect x="80" y="310" width="272" height="6" rx="3" fill="#41702a"/>
   </g>
   <text x="108" y="357" class="num">01</text>
-  <g transform="translate(108 390)" fill="none" stroke="#b5f76a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(108 390)" fill="none" stroke="#41702a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M5 12.5 17 5l12 7.5v17L17 37 5 29.5z"/>
     <path d="M17 17v20M5 12.5l12 7 12-7M10 9.5l12 7" opacity=".72"/>
   </g>
   <text x="108" y="470" class="card-title">Agent Home</text>
   <text x="108" y="508" class="card-copy"><tspan x="108" dy="0">Keep identity and configuration</tspan><tspan x="108" dy="25">portable across environments.</tspan></text>
-  <rect x="108" y="600" width="127" height="32" rx="16" fill="#18231a"/>
+  <rect x="108" y="600" width="127" height="32" rx="16" fill="#eef6e7"/>
   <text x="124" y="621" class="pill">PORTABLE SETUP</text>
 
   <!-- Card 2 -->
   <g filter="url(#shadow)">
-    <rect x="376" y="310" width="272" height="360" rx="20" fill="#12181d" stroke="#334048"/>
-    <rect x="376" y="310" width="272" height="6" rx="3" fill="#8cbdff"/>
+    <rect x="376" y="310" width="272" height="360" rx="20" fill="#f7f9fc" stroke="#bccbd9"/>
+    <rect x="376" y="310" width="272" height="6" rx="3" fill="#2a6499"/>
   </g>
   <text x="404" y="357" class="num">02</text>
-  <g transform="translate(404 390)" fill="none" stroke="#8cbdff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(404 390)" fill="none" stroke="#2a6499" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M5 7h24a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H17l-7 7v-7H5a4 4 0 0 1-4-4V11a4 4 0 0 1 4-4Z"/>
     <path d="M9 18h16M9 24h10" opacity=".72"/>
   </g>
   <text x="404" y="470" class="card-title">Agent Messaging</text>
   <text x="404" y="508" class="card-copy"><tspan x="404" dy="0">Reach an agent from the</tspan><tspan x="404" dy="25">chat tools people already use.</tspan></text>
-  <rect x="404" y="600" width="112" height="32" rx="16" fill="#17242d"/>
-  <text x="420" y="621" class="pill" fill="#8cbdff">CHAT BRIDGE</text>
+  <rect x="404" y="600" width="112" height="32" rx="16" fill="#edf5fc"/>
+  <text x="420" y="621" class="pill pill-blue">CHAT BRIDGE</text>
 
   <!-- Card 3 -->
   <g filter="url(#shadow)">
-    <rect x="672" y="310" width="272" height="360" rx="20" fill="#12181d" stroke="#334048"/>
-    <rect x="672" y="310" width="272" height="6" rx="3" fill="#b5f76a"/>
+    <rect x="672" y="310" width="272" height="360" rx="20" fill="#f7f9fc" stroke="#bccbd9"/>
+    <rect x="672" y="310" width="272" height="6" rx="3" fill="#41702a"/>
   </g>
   <text x="700" y="357" class="num">03</text>
-  <g transform="translate(700 390)" fill="none" stroke="#b5f76a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(700 390)" fill="none" stroke="#41702a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <rect x="2" y="5" width="32" height="32" rx="5"/>
     <path d="M2 16h32M13 5v32M20 11h8M20 22h8" opacity=".72"/>
   </g>
   <text x="700" y="470" class="card-title">Agent Workboard</text>
   <text x="700" y="508" class="card-copy"><tspan x="700" dy="0">Coordinate shared issues</tspan><tspan x="700" dy="25">without losing the thread.</tspan></text>
-  <rect x="700" y="600" width="157" height="32" rx="16" fill="#18231a"/>
+  <rect x="700" y="600" width="157" height="32" rx="16" fill="#eef6e7"/>
   <text x="716" y="621" class="pill">SHARED CONTEXT</text>
 
   <!-- Card 4 -->
   <g filter="url(#shadow)">
-    <rect x="968" y="310" width="272" height="360" rx="20" fill="#12181d" stroke="#334048"/>
-    <rect x="968" y="310" width="272" height="6" rx="3" fill="#8cbdff"/>
+    <rect x="968" y="310" width="272" height="360" rx="20" fill="#f7f9fc" stroke="#bccbd9"/>
+    <rect x="968" y="310" width="272" height="6" rx="3" fill="#2a6499"/>
   </g>
   <text x="996" y="357" class="num">04</text>
-  <g transform="translate(996 390)" fill="none" stroke="#8cbdff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(996 390)" fill="none" stroke="#2a6499" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M5 10h16M21 5l5 5-5 5M29 27H13M13 22l-5 5 5 5"/>
     <circle cx="17" cy="18" r="3" opacity=".72"/>
   </g>
   <text x="996" y="470" class="card-title">Model Router</text>
   <text x="996" y="508" class="card-copy"><tspan x="996" dy="0">Route requests to the models</tspan><tspan x="996" dy="25">you already have access to.</tspan></text>
-  <rect x="996" y="600" width="136" height="32" rx="16" fill="#17242d"/>
-  <text x="1012" y="621" class="pill" fill="#8cbdff">MODEL CHOICE</text>
+  <rect x="996" y="600" width="136" height="32" rx="16" fill="#edf5fc"/>
+  <text x="1012" y="621" class="pill pill-blue">MODEL CHOICE</text>
 
   <!-- Card 5 -->
   <g filter="url(#shadow)">
-    <rect x="1264" y="310" width="256" height="360" rx="20" fill="#12181d" stroke="#334048"/>
-    <rect x="1264" y="310" width="256" height="6" rx="3" fill="#b5f76a"/>
+    <rect x="1264" y="310" width="256" height="360" rx="20" fill="#f7f9fc" stroke="#bccbd9"/>
+    <rect x="1264" y="310" width="256" height="6" rx="3" fill="#41702a"/>
   </g>
   <text x="1292" y="357" class="num">05</text>
-  <g transform="translate(1292 390)" fill="none" stroke="#b5f76a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(1292 390)" fill="none" stroke="#41702a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M7 33V19l11-8 11 8v14l-11 7z"/>
     <path d="M18 4v7M13 25h10M18 20v10" opacity=".72"/>
   </g>
   <text x="1292" y="470" class="card-title">Agent Forge</text>
   <text x="1292" y="508" class="card-copy"><tspan x="1292" dy="0">Schedule approved work.</tspan><tspan x="1292" dy="25">Explore the public source.</tspan></text>
-  <rect x="1292" y="600" width="117" height="32" rx="16" fill="#18231a"/>
+  <rect x="1292" y="600" width="117" height="32" rx="16" fill="#eef6e7"/>
   <text x="1308" y="621" class="pill">SCHEDULED</text>
 
   <text x="80" y="835" class="subhead">Choose one, combine several, or keep your current stack.</text>
