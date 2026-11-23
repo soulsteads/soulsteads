@@ -15,7 +15,7 @@ import { tmpdir } from 'node:os';
 import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const skillPath = fileURLToPath(new URL('../skills/soulsteads-setup/SKILL.md', import.meta.url));
+const skillPath = fileURLToPath(new URL('../.agents/skills/soulsteads-setup/SKILL.md', import.meta.url));
 const skill = readFileSync(skillPath, 'utf8');
 const recipe = skill.match(/```sh\n# reviewed-checkout-recipe\n([\s\S]*?)\n```/)?.[1];
 

@@ -4,36 +4,60 @@
 
 **Open-source tools for running AI agents on your own infrastructure.**
 
-Keep the coding agent you already use. Pick a tool for portable configuration, chat access, shared work, or model routing. Each installs separately; there is no suite installer.
+Keep the coding agent you already use. Add only the tools you need; each installs separately.
+
+**[Start here](#start-here)** · [Tools and releases](#released-on-github) · [Set up with an agent](#set-up-with-an-agent)
+
+## How the tools fit together
+
+[![Your agent harness can connect to Home, Messaging, Workboard, and Model Router. Forge runs workflows separately.](docs/assets/agent-connections.svg)](docs/assets/agent-connections.svg)
+
+[Compact diagram](docs/assets/agent-connections-compact.svg)
+
+- **Home** generates native configuration for your harness, which still owns sessions and permissions.
+- **Messaging** bridges chat to your harness. `acp.agentHome` sets a working directory, not an Agent Home import.
+- **Workboard** coordinates issues and claims via MCP, CLI, or HTTP; it doesn't execute work.
+- **Model Router** sends requests from compatible clients to inference servers you already run.
+- **Forge** runs and tracks workflows on demand or on a schedule. Its quick start needs no model or harness.
 
 <!-- readme-start-here -->
 ## Start here
 
-Choose one independent path. The links open component-owned guides; setup commands stay with those components. Tagged sources are source-only, and source previews are pinned to reviewed commits. These are not binary downloads.
+Pick one task and follow its guide. You’ll build from source, not download a binary. Preview links point to exact reviewed commits.
 
-### Start with a ready local Workboard
+### Create a local workboard
 
-Create a useful local board using SQLite. No model or remote database is needed for this ready-to-use path.
+*Agent Workboard · Tagged source v0.1.0*
 
-**Agent Workboard — Tagged source v0.1.0 (source-only, not a binary download).** [Workboard quickstart](https://github.com/soulsteads/soulsteads-agent-workboard/blob/v0.1.0/README.md#quickstart)
+Track issues locally with SQLite. No model or database server needed.
 
-### Connect Telegram to an existing agent
+- [Workboard quickstart](https://github.com/soulsteads/soulsteads-agent-workboard/blob/v0.1.0/README.md#quickstart)
 
-Follow the documented Telegram path using the existing coding-agent harness. This connector path adds no agent runner or model setup.
+### Chat with your agent
 
-**Agent Messaging — Tagged source v0.2.0 (source-only, not a binary download).** [Telegram setup guide](https://github.com/soulsteads/soulsteads-agent-messaging/blob/v0.2.0/README.md)
+*Agent Messaging · Tagged source v0.2.0*
 
-### Try a no-model Forge workflow with dedicated PostgreSQL
+Keep your existing agent harness. Choose a Linux setup guide:
 
-Use Forge's documented no-model example with its own PostgreSQL database, separate from production. Follow the component guide for the supported setup.
+- [Telegram setup](https://github.com/soulsteads/soulsteads-agent-messaging/blob/v0.2.0/docs/SETUP.md#telegram) — Guided setup on Linux for Claude Code or Codex.
+- [Mattermost setup](https://github.com/soulsteads/soulsteads-agent-messaging/blob/v0.2.0/docs/MATTERMOST.md) — Manual Linux setup with a dedicated bot.
+- [Matrix setup](https://github.com/soulsteads/soulsteads-agent-messaging/blob/v0.2.0/docs/MATRIX.md) — Manual Linux setup in an unencrypted room.
 
-**Agent Forge — Source preview (main at reviewed commit 9bcc307946730ac5c00c1a5552790504ba2fea4a).** [Forge source preview guide](https://github.com/soulsteads/soulsteads-agent-forge/blob/9bcc307946730ac5c00c1a5552790504ba2fea4a/README.md)
+### Run your first Forge workflow
 
-### Inspect a read-only Hermes import
+*Agent Forge · Source preview*
 
-Review a Hermes import in Home's default read-only inspection mode before deciding whether to apply it. The source stays unchanged during inspection; use the component guide for supported inputs and boundaries.
+Run and schedule a sample workflow. Use a dedicated PostgreSQL database, not production. No model or agent harness needed.
 
-**Agent Home — Source preview (main at reviewed commit 31d1fc26fe210d82fd414780a4aeae78efea185f).** [Hermes import guide](https://github.com/soulsteads/soulsteads-agent-home/blob/31d1fc26fe210d82fd414780a4aeae78efea185f/docs/hermes-import.md)
+- [Forge source preview guide](https://github.com/soulsteads/soulsteads-agent-forge/blob/9bcc307946730ac5c00c1a5552790504ba2fea4a/README.md)
+
+### Preview a Hermes import
+
+*Agent Home · Source preview*
+
+Use Agent Home to inspect a Hermes import in read-only mode. No files in the source are changed.
+
+- [Hermes import guide](https://github.com/soulsteads/soulsteads-agent-home/blob/31d1fc26fe210d82fd414780a4aeae78efea185f/docs/hermes-import.md)
 
 <!-- end-readme-start-here -->
 <!-- readme-lineup -->
@@ -53,12 +77,8 @@ These are early, **source-only releases**: no prebuilt binaries. Check out the t
 
 - **[Agent Forge](https://github.com/soulsteads/soulsteads-agent-forge/tree/9bcc307946730ac5c00c1a5552790504ba2fea4a)** — Run one-off or recurring workflows, inspect step results, and recover carefully after an interruption. No tagged release; for evaluation.
   **What you need:** Linux, Rust 1.97 or later, and a C compiler · An empty, dedicated PostgreSQL database for DBOS · `jq` for the upstream quick-start example. [Run the first workflow](https://github.com/soulsteads/soulsteads-agent-forge#quick-start) · [Requirements and verification](https://github.com/soulsteads/soulsteads-agent-forge/blob/main/docs/support.md)
-
-### No release to install
-
-- **[Agent Voice](https://github.com/soulsteads/soulsteads-agent-voice)** — The public repository is empty.
-- **[Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore)** — The public repository contains a license and Git ignore file, but no implementation or setup guide.
-- **[Agent Harness](https://github.com/soulsteads/soulsteads-agent-harness)** — The public repository is empty.
+- **[Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore/tree/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a)** — Share reviewed, versioned Agent Skills across projects and harnesses. Preview an update before installing it and recover previous versions offline. No tagged release; for evaluation.
+  **What you need:** A source checkout, Python 3.11 or later, and `uv` or `pip`. [Install Skillstore from source](https://github.com/soulsteads/soulsteads-agent-skillstore/blob/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a/README.md#install-from-source) · [Try the local quickstart](https://github.com/soulsteads/soulsteads-agent-skillstore/blob/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a/README.md#quickstart) · [Back up skills without a registry](https://github.com/soulsteads/soulsteads-agent-skillstore/blob/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a/docs/usage.md#tracking-only-mode)
 
 Public source and releases checked on GitHub: **2026-11-19**.
 
@@ -70,24 +90,14 @@ Public source and releases checked on GitHub: **2026-11-19**.
 
 | Skill | Use it to |
 | --- | --- |
-| [**soulsteads-setup**](skills/soulsteads-setup/SKILL.md) | Select one public tool, check the reviewed source and prerequisites, prepare it, and distinguish local checks from live success. |
-| [**soulsteads-connect**](skills/soulsteads-connect/SKILL.md) | Connect tools that already work independently, using their documented interfaces and keeping each change reversible. |
+| [**soulsteads-setup**](.agents/skills/soulsteads-setup/SKILL.md) | Select one public tool, check the reviewed source and prerequisites, prepare it, and distinguish local checks from live success. |
+| [**soulsteads-connect**](.agents/skills/soulsteads-connect/SKILL.md) | Connect tools that already work independently, using their documented interfaces and keeping each change reversible. |
 
-Review the skill, then copy its directory into your coding agent’s documented skills location or ask the agent to read `SKILL.md` directly from this repository. No special installer or Skillstore is required.
+Both skills live in `.agents/skills/`. In a Git checkout with symlinks enabled, `.claude` and `.codex` point to `.agents`, so the aliases use the same files. Review the skill first, then ask your agent to read it from the checkout or copy it to your agent’s documented skills location.
 
-> Help me set up one Soulsteads tool. Read `skills/soulsteads-setup/SKILL.md` from `soulsteads/soulsteads` and ask which tool I want. Show me the plan before making changes. Keep credentials out of chat and Git. Ask before starting services or making live requests, and report what was actually verified.
+> Help me set up one Soulsteads tool. Read `.agents/skills/soulsteads-setup/SKILL.md` from `soulsteads/soulsteads` and ask which tool I want. Show me the plan before making changes. Keep credentials out of chat and Git. Ask before starting services or making live requests, and report what was actually verified.
 
-## How the tools fit together
-
-![One existing agent harness with optional interfaces to Home, Messaging, Workboard, and Model Router.](docs/assets/agent-connections.svg)
-
-- **Home → harness:** Generate native configuration from your agent’s files. Your harness still owns execution, sessions, and permissions.
-- **Messaging → harness:** Bridge a supported chat to your coding agent. `acp.agentHome` sets a working directory, not an Agent Home import. You don’t need Home to use Messaging.
-- **Agent → Workboard:** Use MCP, the CLI, or HTTP to coordinate issues and claims. Workboard does not execute tasks or prove real-world outcomes.
-- **Compatible client → Model Router:** Send requests to approved model aliases. The router connects to inference servers you already run; it does not host models.
-- **Forge:** Schedule and inspect workflows independently. Its deterministic quick start needs no model, harness, or plugin.
-
-These are explicit connections, not an installer, a shared database, or an agent network. Home and Messaging do not sandbox an agent. Keep credentials out of tracked files, and review each tool’s documented access limits before putting it on a network or connecting a chat account.
+There is no shared installer or database. Connecting tools does not create an agent network. Home and Messaging do not sandbox an agent. Keep credentials out of tracked files, and review each tool’s access limits before connecting it to a network or chat account.
 
 ## Maintain this lineup
 

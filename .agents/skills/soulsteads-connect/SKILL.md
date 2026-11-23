@@ -21,7 +21,7 @@ Use this skill only after each selected tool works independently. A connection i
 | Agent Forge | `cbe32ca5c7caa5563ca0aa1c15a75b68de9b2c6c` | `README.md`, `docs/operations.md` |
 | Model Router | `8621acd55ad293c4140b1e58664f0fc4f5fa650d` | `README.md`, `docs/SETUP.md`, `docs/COMPATIBILITY.md` |
 
-Agent Voice, Agent Harness, and Agent Skillstore have no public connection/setup interface in this reviewed lineup. Do not claim support for them.
+For Agent Skillstore's standalone setup, use `soulsteads-setup`. For harness or registry connections, use Skillstore's own operator guide at the reviewed source pin; this skill does not qualify those connections.
 
 ## Plan every connection separately
 

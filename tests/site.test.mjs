@@ -8,17 +8,15 @@ const html = readFileSync(resolve(root, "docs/index.html"), "utf8");
 
 test("complete lineup has truthful public availability", () => {
   assert.equal((html.match(/data-status="available"/g) || []).length, 4);
-  assert.equal((html.match(/data-status="preview"/g) || []).length, 1);
-  assert.equal((html.match(/data-status="planned"/g) || []).length, 3);
+  assert.equal((html.match(/data-status="preview"/g) || []).length, 2);
+  assert.doesNotMatch(html, /data-(?:status|filter)="planned"|id="agent-(?:voice|harness)"|no public implementation to install/);
   for (const name of [
     "agent-home",
     "agent-messaging",
     "agent-forge",
     "model-router",
     "agent-workboard",
-    "agent-voice",
     "agent-skillstore",
-    "agent-harness",
   ]) {
     assert.ok(html.includes(`id="${name}"`));
     assert.ok(
@@ -26,6 +24,14 @@ test("complete lineup has truthful public availability", () => {
     );
   }
   assert.match(html.replace(/\s+/g, " "), /Forge is an early preview/);
+});
+
+test("Skillstore is a source preview with a pinned setup guide and no model requirement", () => {
+  const card = html.match(/<article\b[^>]*id="agent-skillstore"[\s\S]*?<\/article>/)?.[0];
+  assert.ok(card, "Skillstore has a product card");
+  assert.match(card, /data-status="preview"/);
+  assert.match(card, /soulsteads-agent-skillstore\/blob\/[a-f0-9]{40}\/README\.md#install-from-source/);
+  assert.match(card, /no harness or model account/i);
 });
 test("local resources and anchor targets exist", () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);

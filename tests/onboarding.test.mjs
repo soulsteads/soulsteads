@@ -1,25 +1,38 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, readlinkSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const repoUrl = new URL('../', import.meta.url);
+const read = (path) => readFileSync(new URL(path, repoUrl), 'utf8');
 const catalog = JSON.parse(read('data/products.json'));
 const html = read('docs/index.html');
 const readme = read('README.md');
 
+test('Claude and Codex aliases resolve both skills to the canonical files', () => {
+  assert.equal(existsSync(new URL('skills', repoUrl)), false, 'no duplicate top-level skills directory');
+  for (const alias of ['.claude', '.codex']) {
+    assert.ok(existsSync(new URL(alias, repoUrl)), `${alias} must resolve`);
+    assert.equal(readlinkSync(new URL(alias, repoUrl)), '.agents');
+    for (const name of ['soulsteads-setup', 'soulsteads-connect']) {
+      const skill = `skills/${name}/SKILL.md`;
+      assert.equal(realpathSync(new URL(`${alias}/${skill}`, repoUrl)), realpathSync(new URL(`.agents/${skill}`, repoUrl)));
+    }
+  }
+});
+
 test('every public implementation gets one setup entry, including the Forge preview', () => {
   const setup = html.match(/<section\b[^>]*id="start"[\s\S]*?<\/section>/)[0];
-  const expected = ['agent-forge', 'agent-home', 'agent-messaging', 'agent-workboard', 'model-router'];
+  const expected = ['agent-forge', 'agent-home', 'agent-messaging', 'agent-skillstore', 'agent-workboard', 'model-router'];
   assert.deepEqual([...setup.matchAll(/href="#(agent-[\w-]+|model-router)"/g)].map(([, slug]) => slug).sort(), expected);
   assert.match(setup, /id="agent-setup-prompt"/);
-  assert.match(setup, /soulsteads-setup\/SKILL\.md/);
-  assert.match(setup, /soulsteads-connect\/SKILL\.md/);
+  assert.match(setup, /\/blob\/main\/\.agents\/skills\/soulsteads-setup\/SKILL\.md/);
+  assert.match(setup, /\/blob\/main\/\.agents\/skills\/soulsteads-connect\/SKILL\.md/);
   assert.doesNotMatch(html, /using the release branch|no tagged releases|Next on the horizon/);
   assert.match(html, /GitHub releases.*source-only/i);
-  assert.match(html, /#agent-harness|id="agent-harness"/);
+
 });
 
 test('both public surfaces explain the lineup and share the diagrams', () => {
@@ -29,21 +42,77 @@ test('both public surfaces explain the lineup and share the diagrams', () => {
     assert.match(read(`docs/assets/${name}.svg`), /<title\b/);
   }
   for (const p of catalog.products) assert.ok(readme.includes(p.name), p.name);
-  assert.match(readme, /\]\(skills\/soulsteads-setup\/SKILL\.md\)/);
-  assert.match(readme, /\]\(skills\/soulsteads-connect\/SKILL\.md\)/);
+  assert.match(readme, /\]\(\.agents\/skills\/soulsteads-setup\/SKILL\.md\)/);
+  assert.match(readme, /\]\(\.agents\/skills\/soulsteads-connect\/SKILL\.md\)/);
+});
+
+test('the README leads with the shared diagram and the diagram includes standalone Forge', () => {
+  const overview = readme.indexOf('## How the tools fit together');
+  const diagram = readme.indexOf('(docs/assets/agent-connections.svg)', overview);
+  assert.ok(overview >= 0 && diagram > overview && diagram < readme.indexOf('## Start here'));
+  const svg = read('docs/assets/agent-connections.svg');
+  assert.match(svg, /<text\b[^>]*>Agent Forge<\/text>/);
+  assert.match(svg, /<desc\b[^>]*>[^<]*Forge[^<]*no harness/i);
+  const stack = html.match(/<section\b[^>]*id="stack"[\s\S]*?<\/section>/)[0];
+  assert.match(stack, /assets\/agent-connections\.svg[^>]*alt="[^"]*Forge/);
+  assert.match(stack, /Forge[\s\S]*without a model or harness/);
+});
+
+test('the detailed connection graphic is the main diagram and the compact diagram is optional', () => {
+  const svg = read('docs/assets/agent-connections.svg');
+  assert.match(svg, /SOULSTEADS \/ FLEXIBLE CONNECTIONS/);
+  assert.match(svg, /One agent, optional connections\./);
+  const stack = html.match(/<section\b[^>]*id="stack"[\s\S]*?<\/section>/)[0];
+  assert.match(stack, /<img src="assets\/agent-connections\.svg"/);
+  assert.match(stack, /href="assets\/agent-connections-compact\.svg"/);
+  assert.match(readme, /!\[[^\]]+\]\(docs\/assets\/agent-connections\.svg\)/);
+  assert.match(readme, /\[Compact diagram\]\(docs\/assets\/agent-connections-compact\.svg\)/);
+  assert.match(read('docs/assets/agent-connections-compact.svg'), /<text\b[^>]*>Agent Forge<\/text>/);
+});
+
+test('both connection diagrams have an opaque white canvas', () => {
+  for (const name of ['agent-connections', 'agent-connections-compact']) {
+    const svg = read(`docs/assets/${name}.svg`);
+    const [, width, height] = svg.match(/<svg\b[^>]*viewBox="0 0 (\d+) (\d+)"/);
+    assert.match(svg, new RegExp(`^  <rect width="${width}" height="${height}"(?: rx="\\d+")? fill="#ffffff"`, 'm'), name);
+  }
+});
+
+test('both diagram versions show a distinct icon for each labeled tool and the harness', () => {
+  for (const name of ['agent-connections', 'agent-connections-compact']) {
+    const svg = read(`docs/assets/${name}.svg`);
+    for (const node of ['harness', 'home', 'messaging', 'workboard', 'router', 'forge']) {
+      assert.match(svg, new RegExp(`<symbol id="glyph-${node}"(?:\\s|>)`), `${name}: ${node} icon artwork`);
+      assert.match(svg, new RegExp(`<use id="icon-${node}" href="#glyph-${node}"[^>]*aria-hidden="true"`), `${name}: ${node} visible icon`);
+    }
+  }
+});
+
+test('the diagram shows four optional connections to a chosen harness and no connection to Forge', () => {
+  const svg = read('docs/assets/agent-connections.svg');
+  assert.match(svg, /<text\b[^>]*>User’s chosen agent<\/text>\s*<text\b[^>]*>\/ harness<\/text>/);
+  assert.match(svg, /Works on its own\. Connections stay optional\./);
+  assert.match(svg, /No direct dependencies between capabilities\. Your agent remains the center of the system\.<\/text>\s*<g\b[^>]*id="standalone-forge"/);
+  assert.equal([...svg.matchAll(/<text\b[^>]*>OPTIONAL CONNECTION<\/text>/g)].length, 4);
+  const connections = svg.match(/<g\b[^>]*id="harness-connections"[^>]*>([\s\S]*?)<\/g>/)?.[1];
+  assert.ok(connections, 'The harness needs an explicit group of optional connections');
+  assert.equal([...connections.matchAll(/<path\b/g)].length, 4);
+  const forge = svg.match(/<g\b[^>]*id="standalone-forge"[^>]*>([\s\S]*?)<\/g>/)?.[1];
+  assert.match(forge ?? '', /No agent needed to start/);
+  assert.doesNotMatch(forge, /<path\b/);
 });
 
 test('setup skill covers exactly the published implementations at the reviewed pins', () => {
-  const skill = read('skills/soulsteads-setup/SKILL.md');
+  const skill = read('.agents/skills/soulsteads-setup/SKILL.md');
   const pins = [...skill.matchAll(/\| `https:\/\/github.com\/soulsteads\/([\w-]+)\.git` \/ `main` \| `([a-f0-9]{40})`/g)].map(([, repo, sha]) => `${repo}:${sha}`);
   assert.deepEqual(pins.sort(), catalog.products.filter(p => p.published.implementation).map(p => `${p.published.repo}:${p.published.commit}`).sort());
   for (const name of ['soulsteads-setup', 'soulsteads-connect']) {
-    assert.match(read(`skills/${name}/SKILL.md`), new RegExp(`^---\\nname: ${name}\\ndescription: .{1,60}\\n---\\n`));
+    assert.match(read(`.agents/skills/${name}/SKILL.md`), new RegExp(`^---\\nname: ${name}\\ndescription: .{1,60}\\n---\\n`));
   }
 });
 
 test('Messaging working directory is not treated as Home translation or a history migration', () => {
-  const skill = read('skills/soulsteads-connect/SKILL.md').split('### Agent/host → Agent Workboard')[0];
+  const skill = read('.agents/skills/soulsteads-connect/SKILL.md').split('### Agent/host → Agent Workboard')[0];
   assert.match(skill, /`acp\.backends\.soulsteads`/);
   assert.match(skill, /`soulsteads run <home> -- acp`/);
   assert.match(skill, /`<home>\/workspace`[^.]*not the canonical Home root/);
@@ -56,7 +125,7 @@ test('Start here stories render from shared metadata before the release catalog'
   const journeys = catalog.journeys;
   assert.ok(Array.isArray(journeys), 'journeys must come from the common lineup metadata');
   assert.deepEqual(journeys.map(({ id }) => id), [
-    'workboard-sqlite', 'messaging-telegram', 'forge-postgres', 'home-hermes-import',
+    'workboard-sqlite', 'messaging-chat', 'forge-postgres', 'home-hermes-import',
   ]);
   assert.deepEqual(journeys.map(({ source }) => source), ['tagged', 'tagged', 'preview', 'preview']);
   assert.ok(readme.indexOf('<!-- readme-start-here -->') < readme.indexOf('<!-- readme-lineup -->'));
@@ -71,21 +140,44 @@ test('Start here stories render from shared metadata before the release catalog'
     assert.ok(readme.includes(title), `README is missing ${title}`);
     assert.ok(html.includes(title), `website is missing ${title}`);
   }
-  const copy = journeys.map(({ title, summary }) => `${title}\n${summary}`).join('\n');
+  const copy = journeys.map(({ title, summary, guides }) => [title, summary, ...guides.map(guide => guide.label)].join('\n')).join('\n');
   assert.match(copy, /SQLite/i);
   assert.match(copy, /no model/i);
   assert.match(copy, /Telegram/i);
   assert.match(copy, /existing .*harness/i);
   assert.match(copy, /PostgreSQL/i);
-  assert.match(copy, /Hermes.*read-only/i);
+  assert.match(copy, /Hermes import in read-only/i);
   assert.match(readme, /tagged source/i);
   assert.match(readme, /source preview/i);
-  assert.match(readme, /not (?:a )?binary download/i);
+  assert.match(readme, /build from source, not download a binary/i);
   assert.doesNotMatch(copy, /Agent Harness|Agent Voice/);
 });
 
+test('Start here offers current website chat guides and version-matched README guides', () => {
+  const section = html.match(/<section\b[^>]*id="start-here"[\s\S]*?<\/section>/)[0];
+  const card = section.match(/<article\b[^>]*data-journey="messaging-[^"]+"[\s\S]*?<\/article>/)[0];
+  const markdown = readme.split('<!-- readme-start-here -->')[1].split('<!-- end-readme-start-here -->')[0];
+  const repo = 'https://github.com/soulsteads/soulsteads-agent-messaging/blob/';
+  for (const path of ['SETUP.md#telegram', 'MATTERMOST.md', 'MATRIX.md']) {
+    assert.ok(card.includes(`${repo}main/docs/${path}`), `Website Start here needs ${path}`);
+    assert.ok(markdown.includes(`${repo}v0.2.0/docs/${path}`), `README Start here needs ${path}`);
+  }
+  const options = [
+    ['Telegram', 'Guided setup on Linux for Claude Code or Codex.'],
+    ['Mattermost', 'Manual Linux setup with a dedicated bot.'],
+    ['Matrix', 'Manual Linux setup in an unencrypted room.'],
+  ];
+  for (const [name, note] of options) {
+    const rows = [...card.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(([, body]) => body);
+    assert.ok(rows.some(row => row.includes(`${name} setup`) && row.includes(note)), `${name} needs its own website setup row`);
+    assert.ok(markdown.split('\n').some(line => line.startsWith(`- [${name} setup](`) && line.endsWith(note)), `${name} needs its own README setup bullet`);
+  }
+  assert.doesNotMatch(section, /\b[a-f0-9]{40}\b(?!\/)/, 'Commit pins belong in setup link destinations, not display copy');
+  assert.doesNotMatch(markdown, /\b[a-f0-9]{40}\b(?!\/)/, 'Commit pins belong in setup link destinations, not display copy');
+});
+
 test('the documented reviewed-source recipe pins a detached checkout and fails closed', () => {
-  const skill = read('skills/soulsteads-setup/SKILL.md');
+  const skill = read('.agents/skills/soulsteads-setup/SKILL.md');
   const documented = skill.match(/```sh\n# reviewed-checkout-recipe\n([\s\S]*?)```/);
   assert.ok(documented, 'setup skill must contain the tested reviewed-checkout recipe');
   const recipe = documented[1];

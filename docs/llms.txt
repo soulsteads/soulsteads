@@ -20,6 +20,7 @@ The tools install separately. There is no shared installer, database, or credent
 
 - [Agent Forge quick start](https://github.com/soulsteads/soulsteads-agent-forge/blob/9bcc307946730ac5c00c1a5552790504ba2fea4a/README.md#quick-start): Run a two-step workflow, inspect its result, and optionally schedule it. The example uses a dedicated PostgreSQL database, but no model or agent harness.
 - [Agent Home: preview a Hermes import](https://github.com/soulsteads/soulsteads-agent-home/blob/31d1fc26fe210d82fd414780a4aeae78efea185f/docs/hermes-import.md): Inspect a selected profile without changing it or creating a new home. Applying an import is separate.
+- [Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore/blob/7b24bb6eaf566ab004b6b30591a5369a6a4ec53a/README.md#install-from-source): Review, install, and recover versioned skills. Try the local quickstart without a harness or model account, or use tracking-only mode for private backups.
 
 ## Optional
 

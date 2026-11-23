@@ -18,30 +18,36 @@ function journeyContext(data, journey, { website = false } = {}) {
   const ref = journey.source === 'tagged' ? (website ? product.published.ref : product.published.releaseTag)
     : journey.source === 'preview' ? product.published.commit : null;
   if (!ref) throw Error(`Journey ${journey.id} has no reviewed source reference`);
-  if (!journey.guide?.path || !journey.guide?.label) throw Error(`Journey ${journey.id} requires a guide`);
+  if (!Array.isArray(journey.guides) || !journey.guides.length || journey.guides.some((guide) => !guide?.path || !guide?.label)) {
+    throw Error(`Journey ${journey.id} requires at least one guide with a path and label`);
+  }
   return {
     product,
-    href: `${data.organization}/${product.published.repo}/blob/${ref}/${journey.guide.path}`,
+    guides: journey.guides.map(({ path, label, note }) => ({
+      href: `${data.organization}/${product.published.repo}/blob/${ref}/${path}`,
+      label,
+      note,
+    })),
     sourceLabel: journey.source === 'tagged'
-      ? (website ? 'Source guide' : `Tagged source ${ref} (source-only, not a binary download)`)
-      : (website ? 'Source preview' : `Source preview (main at reviewed commit ${ref})`),
+      ? (website ? 'Source guide' : `Tagged source ${ref}`)
+      : 'Source preview',
   };
 }
 
 function renderStartHereHtml(data) {
   const cards = data.journeys.map((journey) => {
-    const { product, href, sourceLabel } = journeyContext(data, journey, { website: true });
+    const { product, guides, sourceLabel } = journeyContext(data, journey, { website: true });
     return `<article class="start-here-card" data-journey="${escape(journey.id)}" data-source="${escape(journey.source)}">
-      <p class="eyebrow">${escape(product.name)} · ${escape(sourceLabel)}</p>
       <h3>${escape(journey.title)}</h3>
+      <p class="journey-source">${escape(product.name)} · ${escape(sourceLabel)}</p>
       <p>${prose(journey.summary)}</p>
-      <p class="card-guide">${link({ href, label: journey.guide.label })}</p>
+      <ul class="journey-guides">${guides.map(guide => `<li>${link(guide)}${guide.note ? `<div>${prose(guide.note)}</div>` : ''}</li>`).join('')}</ul>
     </article>`;
   }).join('\n');
   return `<section class="section wrap start-here-section" id="start-here" aria-labelledby="start-here-title">
     <div class="section-heading">
       <div><p class="eyebrow">00 / START HERE</p><h2 id="start-here-title">Start here</h2></div>
-      <p>Choose a task and open its source guide. If you’re just exploring, try Workboard first. For instructions for a specific release, see the <a href="https://github.com/soulsteads/soulsteads#released-on-github">release catalog</a>.</p>
+      <p>Choose a task and open its source guide. If you’re just exploring, try Workboard first. For instructions for a specific release, see the <a href="${escape(data.organization)}/soulsteads#released-on-github">release catalog</a>.</p>
     </div>
     <div class="start-here-grid">${cards}</div>
   </section>`;
@@ -49,13 +55,15 @@ function renderStartHereHtml(data) {
 
 function renderStartHereReadme(data) {
   const cards = data.journeys.map((journey) => {
-    const { product, href, sourceLabel } = journeyContext(data, journey);
+    const { product, guides, sourceLabel } = journeyContext(data, journey);
     return [
       `### ${journey.title}`,
       '',
+      `*${product.name} · ${sourceLabel}*`,
+      '',
       journey.summary,
       '',
-      `**${product.name} — ${sourceLabel}.** [${journey.guide.label}](${href})`,
+      ...guides.map(({ href, label, note }) => `- [${label}](${href})${note ? ` — ${note}` : ''}`),
       '',
     ].join('\n');
   });
@@ -101,9 +109,9 @@ ${p.links.length ? `    <div class="card-bottom">${links(p.links)}</div>` : ''}
 export function renderLineup(data, html) {
   const available = publicProducts(data);
   html = block(html, 'start-here', renderStartHereHtml(data));
-  html = block(html, 'product-cards', data.products.map((p) => card(data, p)).join('\n'));
-  for (const filter of ['all', 'available', 'preview', 'planned']) {
-    const count = data.products.filter((p) => filter === 'all' || state(p) === filter).length;
+  html = block(html, 'product-cards', available.map((p) => card(data, p)).join('\n'));
+  for (const filter of ['all', 'available', 'preview']) {
+    const count = available.filter((p) => filter === 'all' || state(p) === filter).length;
     const pattern = new RegExp(`(<button[^>]*data-filter="${filter}"[^>]*>[^<]*<span>)\\d+(</span>)`);
     html = html.replace(pattern, (_, start, end) => start + String(count).padStart(2, '0') + end);
   }
@@ -114,7 +122,7 @@ export function renderLineup(data, html) {
   const tagged = available.filter((p) => p.published.releaseTag);
   const untagged = available.filter((p) => !p.published.releaseTag);
   const generated = {
-    availability: `${names(available)} have public source and setup guides. ${available.filter((p) => p.maturity === 'preview').map((p) => `${p.name} is an early preview.`).join(' ')} ${names(data.products.filter((p) => !p.published.implementation))} have no public implementation to install.`,
+    availability: `${names(available)} have public source and setup guides. ${available.filter((p) => p.maturity === 'preview').map((p) => `${p.name} is an early preview.`).join(' ')}`,
     packaging: `GitHub releases for ${names(tagged)} are source-only. ${names(untagged)} can be built from public source but ${untagged.length === 1 ? 'has' : 'have'} no tagged release. No prebuilt release assets were listed for these tools.`,
     license: `${available.map((p) => `${p.name}: ${p.license}`).join('; ')}. See each repository’s license and notices.`,
   };
@@ -143,16 +151,13 @@ export function renderReadme(data, markdown) {
       `  **What you need:** ${p.prerequisites.join(' · ')}. ${guides}`,
     ].join('\n');
   });
-  const upcoming = data.products.filter((p) => !p.published.implementation).map((p) => {
-    const name = p.published.repoExists ? `[${p.name}](${repoUrl(p)})` : p.name;
-    return `- **${name}** — ${p.notPublished.body}`;
-  });
+
   return block(markdown, 'readme-lineup', [
     '', '## Released on GitHub', '',
     'These are early, **source-only releases**: no prebuilt binaries. Check out the tag before following its setup guide; the guides and features on `main` can differ.', '',
     '| Tool | Release | Use it to | What you need / setup |', '| --- | --- | --- | --- |', ...rows,
     '', '### Public source preview', '', ...previews,
-    '', '### No release to install', '', ...upcoming,
+
     '', `Public source and releases checked on GitHub: **${data.factsCheckedOn}**.`,
     '',
   ].join('\n'));
