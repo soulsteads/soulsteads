@@ -10,9 +10,9 @@ const catalog = JSON.parse(read('data/products.json'));
 const html = read('docs/index.html');
 const readme = read('README.md');
 
-test('every public implementation gets one setup entry, including the Forge preview', () => {
+test('every public implementation gets one setup entry, including both source previews', () => {
   const setup = html.match(/<section\b[^>]*id="start"[\s\S]*?<\/section>/)[0];
-  const expected = ['agent-forge', 'agent-home', 'agent-messaging', 'agent-workboard', 'model-router'];
+  const expected = ['agent-forge', 'agent-home', 'agent-messaging', 'agent-skillstore', 'agent-workboard', 'model-router'];
   assert.deepEqual([...setup.matchAll(/href="#(agent-[\w-]+|model-router)"/g)].map(([, slug]) => slug).sort(), expected);
   assert.match(setup, /id="agent-setup-prompt"/);
   assert.match(setup, /soulsteads-setup\/SKILL\.md/);

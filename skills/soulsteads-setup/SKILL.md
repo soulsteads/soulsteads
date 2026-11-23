@@ -25,8 +25,9 @@ These are reviewed public source pins for this skill, not claims that the pinned
 | Agent Workboard | `https://github.com/soulsteads/soulsteads-agent-workboard.git` / `main` | `143704cf433349ae80592200600e80f66307fcfc` | `README.md`, `docs/operations.md` |
 | Agent Forge | `https://github.com/soulsteads/soulsteads-agent-forge.git` / `main` | `9bcc307946730ac5c00c1a5552790504ba2fea4a` | `README.md`, `docs/support.md`, `docs/operations.md` |
 | Model Router | `https://github.com/soulsteads/soulsteads-model-router.git` / `main` | `8621acd55ad293c4140b1e58664f0fc4f5fa650d` | `README.md`, `docs/SETUP.md`, `docs/COMPATIBILITY.md` |
+| Agent Skillstore | `https://github.com/soulsteads/soulsteads-agent-skillstore.git` / `main` | `10a949a77ea0c6111e79768655b3ff0689f2ea78` | `README.md`, `docs/support.md` |
 
-Agent Voice, Agent Harness, and Agent Skillstore have no public setup path in this reviewed lineup. Do not invent one. Do not treat an empty public repository or an unpublished name as installable source.
+Agent Voice and Agent Harness have no public setup path in this reviewed lineup. Do not invent one. Do not treat an empty public repository or an unpublished name as installable source.
 
 ### Fetch one reviewed source revision
 
@@ -189,6 +190,11 @@ After the approved scope is clear, use only the selected product's current guide
 - From the verified checkout, follow its locked Cargo install/init instructions. Set `FORGE_HOME` to the explicitly chosen private location and set `FORGE_DATABASE_URL` privately; do not inspect or print the operator token in the generated config.
 - `agent-forge serve` starts the loopback service. Registering workflows, running work, or scheduling recurring work creates durable/external effects and each needs explicit scope. A schedule is not verified until a due occurrence and its linked run are inspected.
 - Optional models, harnesses, and executable plugins are separate trust decisions. Do not enable them merely because the core service starts.
+
+### Agent Skillstore
+
+- This is an untagged source preview. Use Python 3.11+ and the pinned README’s install instructions. The local quick start needs no harness or model account.
+- Use a fresh private directory and a synthetic skill for the quick start. Creating a registry and publishing, installing, or removing skills are separate approved effects. Review a skill before installing it. Do not edit an existing harness or tracked Agent Home during the quick start.
 
 ### Model Router
 

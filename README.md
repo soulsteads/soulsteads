@@ -53,11 +53,12 @@ These are early, **source-only releases**: no prebuilt binaries. Check out the t
 
 - **[Agent Forge](https://github.com/soulsteads/soulsteads-agent-forge/tree/9bcc307946730ac5c00c1a5552790504ba2fea4a)** — Run one-off or recurring workflows, inspect step results, and recover carefully after an interruption. No tagged release; for evaluation.
   **What you need:** Linux, Rust 1.97 or later, and a C compiler · An empty, dedicated PostgreSQL database for DBOS · `jq` for the upstream quick-start example. [Run the first workflow](https://github.com/soulsteads/soulsteads-agent-forge#quick-start) · [Requirements and verification](https://github.com/soulsteads/soulsteads-agent-forge/blob/main/docs/support.md)
+- **[Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore/tree/10a949a77ea0c6111e79768655b3ff0689f2ea78)** — Publish, discover, and install reviewed, versioned Agent Skills. No tagged release; for evaluation.
+  **What you need:** Python 3.11 or later · A source checkout and `uv` or `pip`. [Install from source and try the quick start](https://github.com/soulsteads/soulsteads-agent-skillstore/blob/10a949a77ea0c6111e79768655b3ff0689f2ea78/README.md#install-from-source)
 
 ### No release to install
 
 - **[Agent Voice](https://github.com/soulsteads/soulsteads-agent-voice)** — The public repository is empty.
-- **[Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore)** — The public repository contains a license and Git ignore file, but no implementation or setup guide.
 - **[Agent Harness](https://github.com/soulsteads/soulsteads-agent-harness)** — The public repository is empty.
 
 Public source and releases checked on GitHub: **2026-11-19**.
