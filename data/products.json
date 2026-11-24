@@ -3,7 +3,7 @@
   "factsCheckedOn": "2026-11-24",
   "organization": "https://github.com/soulsteads",
   "siteUrl": "https://soulsteads.github.io/soulsteads/",
-  "journeyIntro": "Pick one task and follow its guide. Use the release catalog below to find downloads or build from the matching tag.",
+  "journeyIntro": "Try one of these tasks with a guide for the matching release.",
   "journeys": [
     {
       "id": "workboard-sqlite",
@@ -77,24 +77,29 @@
       "tagline": "Keep the agent yours.",
       "need": "Keep my agent\u2019s identity and instructions portable",
       "maturity": "early",
-      "maturityDetail": "Source-only release.",
+      "maturityDetail": "Python wheel and source distribution are available.",
       "published": {
         "repo": "soulsteads-agent-home",
         "repoExists": true,
         "implementation": true,
-        "ref": "main",
-        "commit": "e52aaa5bafc83af51848f1bd4d787e9c64cc8913",
-        "version": "0.1.0",
+        "ref": "2873e7d7b5d863a3463c452d8103331d3d1dedd7",
+        "commit": "2873e7d7b5d863a3463c452d8103331d3d1dedd7",
+        "version": "0.3.0",
         "license": "Apache-2.0",
         "otherRefs": [],
-        "releaseTag": "v0.1.0",
-        "assets": []
+        "releaseTag": "v0.3.0",
+        "assets": ["SHA256SUMS", "soulsteads-0.3.0-py3-none-any.whl", "soulsteads-0.3.0.tar.gz"],
+        "installer": {
+          "asset": "soulsteads-0.3.0-py3-none-any.whl",
+          "sha256": "6561dcc75b637e4b995ccadd49d9e88997e8753c5ed66416e04f8d446f0c5546",
+          "commands": ["soulsteads"]
+        }
       },
       "purpose": "Keep your agent\u2019s identity, instructions, skills, and configuration in files you control, with local Git history.",
       "taggedSetup": {
         "summary": "Keep one agent’s instructions, skills, and configuration in a portable, Git-tracked home.",
         "requirements": "Python 3.11+, Git, and a supported agent runtime to launch it.",
-        "guide": "README.md#other-installation-options"
+        "guide": "README.md#get-started"
       },
       "does": [
         "Maps one portable agent definition into native configuration for pi, OpenCode, Codex, and Claude Code.",
@@ -114,12 +119,12 @@
       ],
       "prerequisites": [
         "Python 3.11 or newer, and Git",
-        "`uv` for the install command shown (the README also documents `pipx`)",
+        "`uv` for the source install shown below",
         "One supported harness (OpenCode, pi, Claude Code, or Codex), installed and authenticated separately"
       ],
       "limits": [
         "Not a sandbox or a secret scanner: your harness keeps its machine permissions and can still load its own global configuration.",
-        "Refreshing native files is an explicit command in the published version. Start a new native session afterwards.",
+        "Start a new native session to load refreshed settings. Home-managed runs refresh the settings they own; native-only options remain harness-specific.",
         "`soulsteads verify` is an offline structural check. It never launches an agent, so it does not prove that a harness loaded the configuration."
       ],
       "journey": {
@@ -130,21 +135,21 @@
             "kind": "commands",
             "lang": "sh",
             "note": null,
-            "code": "uv tool install git+https://github.com/soulsteads/soulsteads-agent-home.git@e52aaa5bafc83af51848f1bd4d787e9c64cc8913\nsoulsteads create helper --runtime opencode\nsoulsteads verify helper\nsoulsteads run helper --dry-run",
+            "code": "uv tool install git+https://github.com/soulsteads/soulsteads-agent-home.git@2873e7d7b5d863a3463c452d8103331d3d1dedd7\nsoulsteads create helper --runtime opencode --path \"$HOME/agent-home-example\"\nsoulsteads verify \"$HOME/agent-home-example\"\nsoulsteads run \"$HOME/agent-home-example\" --dry-run",
             "source": {
               "path": "README.md"
             }
           }
         ],
-        "after": "Choose `pi`, `claude`, or `codex` instead of `opencode` if that is the harness you use. Once it is installed and authenticated, launch it with `soulsteads run helper`.",
+        "after": "Choose `pi`, `claude`, or `codex` instead of `opencode` if that is the harness you use. Once it is installed and authenticated, launch it with `soulsteads run \"$HOME/agent-home-example\"`.",
         "guides": [
           {
             "label": "Create and verify a home",
-            "href": "https://github.com/soulsteads/soulsteads-agent-home#get-started"
+            "href": "https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/README.md#get-started"
           },
           {
             "label": "Harness adapters and limits",
-            "href": "https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/runtimes.md"
+            "href": "https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/docs/runtimes.md"
           }
         ]
       },
@@ -183,7 +188,13 @@
           }
         ],
         "releaseTag": "v0.4.0",
-        "assets": ["SHA256SUMS", "soulsteads-agent-messaging-linux-x86_64.tar.gz"]
+        "assets": ["SHA256SUMS", "soulsteads-agent-messaging-linux-x86_64.tar.gz"],
+        "installer": {
+          "asset": "soulsteads-agent-messaging-linux-x86_64.tar.gz",
+          "sha256": "bfb0aff6004a37da492ab2de64c6da58eed944bb189d9713027c8d791a8d557a",
+          "commands": ["soulsteads-messaging"],
+          "glibc": "2.39"
+        }
       },
       "purpose": "Use your existing coding agent from Telegram, Matrix, Mattermost, Slack, Discord, WhatsApp, or the built-in web interface.",
       "taggedSetup": {
@@ -300,7 +311,13 @@
         "license": "Apache-2.0",
         "otherRefs": [],
         "releaseTag": "v0.3.0",
-        "assets": ["SHA256SUMS", "soulsteads-agent-workboard-linux-x86_64.tar.gz"]
+        "assets": ["SHA256SUMS", "soulsteads-agent-workboard-linux-x86_64.tar.gz"],
+        "installer": {
+          "asset": "soulsteads-agent-workboard-linux-x86_64.tar.gz",
+          "sha256": "232f42b00205bdcb731dd924bf25ae5459d96e4028a0877b88b3a7b2f93cb6df",
+          "commands": ["soulsteads-workboard"],
+          "glibc": "2.34"
+        }
       },
       "purpose": "Give agents a shared issue board with dependencies, one active claim per issue, and a dashboard people can follow.",
       "taggedSetup": {
@@ -414,7 +431,13 @@
         "license": "Apache-2.0",
         "otherRefs": [],
         "releaseTag": "v0.3.0",
-        "assets": ["SHA256SUMS", "soulsteads-model-router-linux-x86_64.tar.gz"]
+        "assets": ["SHA256SUMS", "soulsteads-model-router-linux-x86_64.tar.gz"],
+        "installer": {
+          "asset": "soulsteads-model-router-linux-x86_64.tar.gz",
+          "sha256": "0c37339d2f4cb595f04bce535100bb7ec5e1c8a43395eb4e141996d8a6e30a38",
+          "commands": ["soulsteads-router"],
+          "glibc": "2.34"
+        }
       },
       "purpose": "Route compatible requests to existing model servers through stable aliases, per-client access rules, and shared capacity limits.",
       "taggedSetup": {
@@ -494,7 +517,13 @@
         "license": "Apache-2.0",
         "otherRefs": [],
         "releaseTag": "v0.2.0",
-        "assets": ["SHA256SUMS", "soulsteads-agent-forge-linux-x86_64.tar.gz"]
+        "assets": ["SHA256SUMS", "soulsteads-agent-forge-linux-x86_64.tar.gz"],
+        "installer": {
+          "asset": "soulsteads-agent-forge-linux-x86_64.tar.gz",
+          "sha256": "6c09784d4c29c0f7561817dea6977e3ad7159f5fcf8909f44da56476d658e0ee",
+          "commands": ["soulsteads-forge"],
+          "glibc": "2.39"
+        }
       },
       "purpose": "Run one-off or recurring workflows, inspect step results, and recover carefully after an interruption.",
       "taggedSetup": {
@@ -568,7 +597,12 @@
         "license": "Apache-2.0",
         "otherRefs": [],
         "releaseTag": "v0.2.0",
-        "assets": ["SHA256SUMS", "soulsteads_agent_skillstore-0.2.0-py3-none-any.whl", "soulsteads_agent_skillstore-0.2.0.tar.gz"]
+        "assets": ["SHA256SUMS", "soulsteads_agent_skillstore-0.2.0-py3-none-any.whl", "soulsteads_agent_skillstore-0.2.0.tar.gz"],
+        "installer": {
+          "asset": "soulsteads_agent_skillstore-0.2.0-py3-none-any.whl",
+          "sha256": "b59bcdb402f39108e3a83d6ca9dfaf4763b3a448b1762f1762a7ac1e168159b9",
+          "commands": ["skillstore", "soulsteads-skillstore"]
+        }
       },
       "purpose": "Share reviewed, versioned Agent Skills across projects and harnesses. Preview an update before installing it and recover previous versions offline.",
       "taggedSetup": {
@@ -688,7 +722,7 @@
       "links": [
         {
           "label": "Read the import guide",
-          "href": "https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/hermes-import.md"
+          "href": "https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/docs/hermes-import.md"
         }
       ]
     },

@@ -2,24 +2,26 @@
 
 > Open-source tools for running AI agents on your own infrastructure. Keep the agent you already use and add only what you need: versioned agent configuration, chat access, work tracking, or model routing. Agent Forge runs workflows independently.
 
-The tools install separately. There is no shared installer, database, or credential store. Use the release catalog for downloads, checksums, and version-matched instructions. The setup links below are for current source unless noted.
+The tools install separately and do not share a database or credential store. Use the release catalog for downloads, checksums, and version-matched instructions. The setup links below are for current source unless noted.
 
 ## Getting started
 
 - [Start here](https://soulsteads.github.io/soulsteads/#start-here): Choose a first task and its setup guide. If you are just exploring, Workboard’s local SQLite quickstart needs no model, chat account, or database server.
-- [Soulsteads README](https://github.com/soulsteads/soulsteads/blob/main/README.md): Product boundaries, release status, and links to the agent setup and connection skills.
+- [Soulsteads README](https://github.com/soulsteads/soulsteads/blob/main/README.md): What each tool does and how to get started.
+- [Release catalog](https://github.com/soulsteads/soulsteads/blob/main/RELEASES.md): Releases, downloads, requirements, and setup guides for the matching tags.
+- [Bash installer](https://github.com/soulsteads/soulsteads/blob/main/RELEASES.md#bash-installer): Verify and install one pinned CLI for your user without configuring or starting it.
 
 - [Offline setup planner](https://github.com/soulsteads/soulsteads#print-a-setup-plan): Print requirements, release downloads, and the corresponding guide for one tool without installing anything.
 
 ## Setup guides
 
-- [Agent Home](https://github.com/soulsteads/soulsteads-agent-home/blob/main/README.md#get-started): Keep instructions, skills, and configuration in a private Git-tracked home. Home does not install, authenticate, or sandbox the agent harness.
+- [Agent Home](https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/README.md#get-started): Use the release-matched guide to keep instructions, skills, and configuration in a private Git-tracked home. Home does not install, authenticate, or sandbox the agent harness.
 - [Agent Messaging](https://github.com/soulsteads/soulsteads-agent-messaging/blob/main/docs/SETUP.md#before-you-start): Connect a supported, already-authenticated coding agent to chat. Choose a connector and configure its sender allowlist before starting it.
 - [Agent Workboard](https://github.com/soulsteads/soulsteads-agent-workboard/blob/main/README.md#quickstart): Create a project and a ready issue, then read the board back. Workboard coordinates work; it does not execute it.
 - [Model Router](https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/SETUP.md#prerequisites): Route requests to an inference server you already run. Check the guide for the supported listener modes and backend requirements.
 
 - [Agent Forge quick start](https://github.com/soulsteads/soulsteads-agent-forge/blob/main/README.md#quick-start): Run a two-step workflow, inspect its result, and optionally schedule it. The example uses a dedicated PostgreSQL database, but no model or agent harness.
-- [Agent Home: preview a Hermes import](https://github.com/soulsteads/soulsteads-agent-home/blob/e52aaa5bafc83af51848f1bd4d787e9c64cc8913/docs/hermes-import.md): Use the reviewed release guide to inspect a profile without changing it or creating a new home. Applying an import is separate.
+- [Agent Home: preview a Hermes import](https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/docs/hermes-import.md): Use the reviewed release guide to inspect a profile without changing it or creating a new home. Applying an import is separate.
 - [Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore/blob/main/README.md#quickstart): Review, install, and recover versioned skills. Try the local quickstart without a harness or model account, or use tracking-only mode for private backups.
 
 ## Optional

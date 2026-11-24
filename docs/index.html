@@ -145,7 +145,7 @@
 <section class="section wrap start-here-section" id="start-here" aria-labelledby="start-here-title">
     <div class="section-heading">
       <div><p class="eyebrow">00 / START HERE</p><h2 id="start-here-title">Start here</h2></div>
-      <p>Choose a task and open its source guide. If you’re just exploring, try Workboard first. For instructions for a specific release, see the <a href="https://github.com/soulsteads/soulsteads#released-on-github">release catalog</a>.</p>
+      <p>Choose a task and open its source guide. If you’re just exploring, try Workboard first. For instructions for a specific release, see the <a href="https://github.com/soulsteads/soulsteads/blob/main/RELEASES.md">release catalog</a>.</p>
     </div>
     <div class="start-here-grid"><article class="start-here-card" data-journey="workboard-sqlite" data-source="tagged">
       <h3>Create a local workboard</h3>
@@ -169,7 +169,7 @@
       <h3>Preview a Hermes import</h3>
       <p class="journey-source">Agent Home · Source guide</p>
       <p>Use Agent Home to inspect a Hermes import in read-only mode. No files in the source are changed.</p>
-      <ul class="journey-guides"><li><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/hermes-import.md">Hermes import guide <span aria-hidden="true">↗</span></a></li></ul>
+      <ul class="journey-guides"><li><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/docs/hermes-import.md">Hermes import guide <span aria-hidden="true">↗</span></a></li></ul>
     </article></div>
   </section>
 <!-- end-start-here -->
@@ -209,20 +209,20 @@
 <!-- product-cards -->
 <article class="product-card" data-status="available" id="agent-home">
     <div class="card-top"><span class="product-icon mint" aria-hidden="true">⌂</span><span class="badge">EARLY RELEASE</span></div>
-    <h3>Agent Home</h3><p class="card-description">Keep your agent’s identity, instructions, skills, and configuration in files you control, with local Git history.</p><p class="fine-print">Source-only release.</p>
-    <p class="card-guide"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home#get-started">Create and verify a home <span aria-hidden="true">↗</span></a></p>
-    <details class="product-details"><summary>Setup details and limits</summary><h4>Before you start</h4><ul class="feature-list"><li>Python 3.11 or newer, and Git</li><li><code>uv</code> for the install command shown (the README also documents <code>pipx</code>)</li><li>One supported harness (OpenCode, pi, Claude Code, or Codex), installed and authenticated separately</li></ul>
+    <h3>Agent Home</h3><p class="card-description">Keep your agent’s identity, instructions, skills, and configuration in files you control, with local Git history.</p><p class="fine-print">Python wheel and source distribution are available.</p>
+    <p class="card-guide"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/README.md#get-started">Create and verify a home <span aria-hidden="true">↗</span></a></p>
+    <details class="product-details"><summary>Setup details and limits</summary><h4>Before you start</h4><ul class="feature-list"><li>Python 3.11 or newer, and Git</li><li><code>uv</code> for the source install shown below</li><li>One supported harness (OpenCode, pi, Claude Code, or Codex), installed and authenticated separately</li></ul>
 <h4>Published capabilities</h4><ul class="feature-list"><li>Maps one portable agent definition into native configuration for pi, OpenCode, Codex, and Claude Code.</li><li>Keeps each home in a private local Git repository: commit changes, read the history, and restore earlier tracked contents as a new commit.</li><li>Refreshes native files from your edited Markdown with <code>soulsteads config &lt;agent&gt; --sync</code>.</li><li>Installs local skill directories, and can inspect and then optionally import selected Hermes profile files.</li></ul>
 <h4>What it owns</h4><ul class="feature-list"><li>The agent definition: identity, instructions, memory documents, skills, and learning preferences</li><li>Generated native configuration files inside the home</li><li>The home's tracked local Git history</li></ul>
 <h4>What stays separate</h4><ul class="feature-list"><li>Execution, native sessions, tools, or permissions: your harness keeps those</li><li>Harness installation, authentication, or global harness configuration</li><li>Models, gateways, scheduled jobs, or chat accounts</li></ul>
-<h4>Current limits</h4><ul class="feature-list"><li>Not a sandbox or a secret scanner: your harness keeps its machine permissions and can still load its own global configuration.</li><li>Refreshing native files is an explicit command in the published version. Start a new native session afterwards.</li><li><code>soulsteads verify</code> is an offline structural check. It never launches an agent, so it does not prove that a harness loaded the configuration.</li></ul>
+<h4>Current limits</h4><ul class="feature-list"><li>Not a sandbox or a secret scanner: your harness keeps its machine permissions and can still load its own global configuration.</li><li>Start a new native session to load refreshed settings. Home-managed runs refresh the settings they own; native-only options remain harness-specific.</li><li><code>soulsteads verify</code> is an offline structural check. It never launches an agent, so it does not prove that a harness loaded the configuration.</li></ul>
 
     <h4>Create a home and preview its launch</h4>
-    <h5>Install the CLI, create a home, preview the launch command</h5><pre tabindex="0" role="region" aria-label="Install the CLI, create a home, preview the launch command"><code>uv tool install git+https://github.com/soulsteads/soulsteads-agent-home.git@e52aaa5bafc83af51848f1bd4d787e9c64cc8913
-soulsteads create helper --runtime opencode
-soulsteads verify helper
-soulsteads run helper --dry-run</code></pre>
-    <p>Choose <code>pi</code>, <code>claude</code>, or <code>codex</code> instead of <code>opencode</code> if that is the harness you use. Once it is installed and authenticated, launch it with <code>soulsteads run helper</code>.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home#get-started">Create and verify a home <span aria-hidden="true">↗</span></a> · <a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/runtimes.md">Harness adapters and limits <span aria-hidden="true">↗</span></a></details>
+    <h5>Install the CLI, create a home, preview the launch command</h5><pre tabindex="0" role="region" aria-label="Install the CLI, create a home, preview the launch command"><code>uv tool install git+https://github.com/soulsteads/soulsteads-agent-home.git@2873e7d7b5d863a3463c452d8103331d3d1dedd7
+soulsteads create helper --runtime opencode --path &quot;$HOME/agent-home-example&quot;
+soulsteads verify &quot;$HOME/agent-home-example&quot;
+soulsteads run &quot;$HOME/agent-home-example&quot; --dry-run</code></pre>
+    <p>Choose <code>pi</code>, <code>claude</code>, or <code>codex</code> instead of <code>opencode</code> if that is the harness you use. Once it is installed and authenticated, launch it with <code>soulsteads run &quot;$HOME/agent-home-example&quot;</code>.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/README.md#get-started">Create and verify a home <span aria-hidden="true">↗</span></a> · <a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/docs/runtimes.md">Harness adapters and limits <span aria-hidden="true">↗</span></a></details>
     <div class="card-bottom"><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home">Agent Home on GitHub <span aria-hidden="true">↗</span></a></div>
   </article>
 <article class="product-card" data-status="available" id="agent-messaging">
@@ -395,10 +395,10 @@ soulsteads-workboard web</code></pre>
               <p class="eyebrow">04 / GET STARTED</p>
               <h2 id="start-title">Pick one tool.<br /><span class="mint-text">Use its guide.</span></h2>
             </div>
-            <p class="section-intro">Follow the project’s instructions yourself, or ask a coding agent to plan and verify setup. There is no suite installer. Use the <a href="https://github.com/soulsteads/soulsteads#released-on-github">release catalog</a> for downloads or try the <a href="https://github.com/soulsteads/soulsteads#print-a-setup-plan">offline setup planner</a>.</p>
+            <p class="section-intro">Follow the project’s instructions yourself, or ask a coding agent to plan and verify setup. There is no suite installer. Use the <a href="https://github.com/soulsteads/soulsteads/blob/main/RELEASES.md">release catalog</a> for downloads or try the <a href="https://github.com/soulsteads/soulsteads#print-a-setup-plan">offline setup planner</a>.</p>
           </div>
           <!-- setup-links -->
-<ul class="setup-choices"><li><div><strong>Agent Home</strong><p>Keep my agent’s identity and instructions portable</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home#get-started">Create and verify a home <span aria-hidden="true">↗</span></a><a href="#agent-home">Agent Home details</a></div></li>
+<ul class="setup-choices"><li><div><strong>Agent Home</strong><p>Keep my agent’s identity and instructions portable</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/README.md#get-started">Create and verify a home <span aria-hidden="true">↗</span></a><a href="#agent-home">Agent Home details</a></div></li>
 <li><div><strong>Agent Messaging</strong><p>Talk to my coding agent from chat</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-messaging/blob/main/docs/SETUP.md">Messaging setup guide <span aria-hidden="true">↗</span></a><a href="#agent-messaging">Agent Messaging details</a></div></li>
 <li><div><strong>Agent Workboard</strong><p>Give multiple agents one shared issue board</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-workboard#quickstart">Create a sandbox board <span aria-hidden="true">↗</span></a><a href="#agent-workboard">Agent Workboard details</a></div></li>
 <li><div><strong>Model Router</strong><p>Give compatible clients one endpoint for existing models</p></div><div><a class="text-link" href="https://github.com/soulsteads/soulsteads-model-router/blob/main/docs/SETUP.md">Router setup guide <span aria-hidden="true">↗</span></a><a href="#model-router">Model Router details</a></div></li>
@@ -453,9 +453,9 @@ Report what passed and what remains untested.</code></pre>
 <details><summary>Is this a hosted AI service?<span aria-hidden="true">+</span></summary><p>No. The published tools run on your machine. You bring your own harness, model access, chat accounts, and credentials. Your model and messaging providers' costs and privacy policies still apply.</p></details>
 <details><summary>Is my agent sandboxed?<span aria-hidden="true">+</span></summary><p>No. Agent Home and Agent Messaging do not sandbox your agent: it keeps its machine permissions. Keep secrets out of tracked files, and use an account and workspace you are comfortable giving the agent.</p></details>
 <details><summary>Can I cancel a remote task safely?<span aria-hidden="true">+</span></summary><p>Messaging's <code>/cancel</code> is not a kill switch. In the known Codex cancellation case a shell process can keep running, and unattended remote command execution is not qualified. Read the Messaging README before connecting a powerful agent.</p></details>
-<details><summary>Can I bring an existing Hermes agent?<span aria-hidden="true">+</span></summary><p>Agent Home has an optional Hermes importer. Inspect an explicitly selected source first; applying creates a fresh home, not a live messaging cutover. Unsupported settings are reported, and incomplete imports need acknowledgement.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/main/docs/hermes-import.md">Read the import guide <span aria-hidden="true">↗</span></a></details>
+<details><summary>Can I bring an existing Hermes agent?<span aria-hidden="true">+</span></summary><p>Agent Home has an optional Hermes importer. Inspect an explicitly selected source first; applying creates a fresh home, not a live messaging cutover. Unsupported settings are reported, and incomplete imports need acknowledgement.</p><a class="text-link" href="https://github.com/soulsteads/soulsteads-agent-home/blob/2873e7d7b5d863a3463c452d8103331d3d1dedd7/docs/hermes-import.md">Read the import guide <span aria-hidden="true">↗</span></a></details>
 <details><summary>Is there an agent network?<span aria-hidden="true">+</span></summary><p>No. Messaging's optional local agent tools let one conversation ask another already-attached agent on the same machine a question, with nothing queued and no cross-machine delivery. A separate agent network is a possible future decision, not a product.</p></details>
-<details><summary>Are binaries available, or do I build from source?<span aria-hidden="true">+</span></summary><p>Agent Messaging, Agent Workboard, Model Router, Agent Forge, Agent Skillstore publish downloads on GitHub Releases. Check the release for the platform and checksum. Agent Home installs from tagged source.</p></details>
+<details><summary>Are binaries available, or do I build from source?<span aria-hidden="true">+</span></summary><p>Agent Home, Agent Messaging, Agent Workboard, Model Router, Agent Forge, Agent Skillstore publish downloads on GitHub Releases. Check the release for the platform and checksum.</p></details>
 <details><summary>Is Soulsteads open source?<span aria-hidden="true">+</span></summary><p>Agent Home: Apache 2.0; Agent Messaging: Apache 2.0; Agent Workboard: Apache 2.0; Model Router: Apache 2.0; Agent Forge: Apache 2.0; Agent Skillstore: Apache 2.0. See each repository’s license and notices.</p></details>
 <!-- end-faq-items -->
 </div>

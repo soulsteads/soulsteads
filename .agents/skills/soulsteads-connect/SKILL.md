@@ -10,12 +10,12 @@ Use this skill only after each selected tool works independently. A connection i
 ## Source boundary and human installation
 
 1. Read this `SKILL.md` from the checkout or from the runtime's documented skill location before acting. Copying it there is optional; portable skills have no universal automatic discovery mechanism.
-2. Verify each selected checkout against the reviewed tag and resolved commit below, then read its interface documentation. Follow the separate source pin noted below only for the optional Home-managed Messaging launch. If the source is at another branch or commit, the guide is missing, or the product exposes a different contract, stop and report; do not bridge the gap with private code or guessed configuration.
+2. Verify each selected checkout against the reviewed tag and resolved commit below, then read its interface documentation. If the source is at another branch or commit, the guide is missing, or the product exposes a different contract, stop and report; do not bridge the gap with private code or guessed configuration.
 3. Ask for approval of the exact configuration file/host, the interface, all secret references, and the test. Do not start/restart a service, create a key, modify a native/global provider configuration, migrate a client, or send a live request without specific authorization.
 
 | Product | Release tag | Reviewed commit | Interface documentation |
 | --- | --- | --- | --- |
-| Agent Home | `v0.1.0` | `e52aaa5bafc83af51848f1bd4d787e9c64cc8913` | `README.md`, `docs/runtimes.md` |
+| Agent Home | `v0.3.0` | `2873e7d7b5d863a3463c452d8103331d3d1dedd7` | `README.md`, `docs/runtimes.md` |
 | Agent Messaging | `v0.4.0` | `32660af4a43b8b9bbf261a24e8584c9616bc51c3` | `README.md`, `docs/SETUP.md` |
 | Agent Workboard | `v0.3.0` | `ae7bd0f343a7ae64bdc3c553d6aefe81de4a849f` | `README.md`, `docs/operations.md` |
 | Agent Forge | `v0.2.0` | `04d78410d41ce9f239a6c17d39fc331e6702ab06` | `README.md`, `docs/operations.md` |
@@ -41,7 +41,7 @@ Do not modify an endpoint just because another endpoint passed. If the desired e
 
 Messaging's generic `acp.agentHome` sets an existing working directory for the selected backend; it does not import a Home, translate native settings, or transfer a login. Read Messaging's `docs/SETUP.md` for backend constraints and OpenCode profile-copy incompatibility.
 
-1. For a Home-managed ACP launch, read [Agent Home's documented native backend setup](https://github.com/soulsteads/soulsteads-agent-home/blob/54851fe43a18ffe15598277c917ab9edb734db8a/docs/runtimes.md#launch-through-messaging). This is an advanced path documented at a separate Agent Home source pin, not a feature qualified for the Agent Home release above. It requires a separately installed, compatible native Soulsteads harness. The public Agent Harness repository is empty; if the operator does not already have that prerequisite, report this path as blocked. Do not substitute an unrelated backend or private source.
+1. For a Home-managed ACP launch, read [Agent Home's documented native backend setup](https://github.com/soulsteads/soulsteads-agent-home/blob/v0.3.0/docs/runtimes.md#launch-through-messaging). It requires a separately installed, compatible native Soulsteads harness; if the operator does not already have that prerequisite, report this path as blocked. Do not substitute an unrelated backend or private source.
 2. With that prerequisite present, verify the selected Home with `soulsteads verify <home>`. Follow the documented `acp.backends.soulsteads` command, args, workspace grant, and environment fragment. It invokes `soulsteads run <home> -- acp`; the backend `agentHome` must match `<home>/workspace`, not the canonical Home root. The fragment is not a complete connector config.
 3. Preserve connector secrets as private `{env:NAME}` references and set a narrow allowlist. Keep the old config and session state. Run `soulsteads-messaging --check-config` before a restart; a changed working directory or backend identity can prevent old sessions from resuming.
 4. Do not use `/clear` or `/reset` to troubleshoot continuity. They delete current session history; any deliberate deletion requires explicit approval and a retention decision.

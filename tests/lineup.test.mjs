@@ -1,14 +1,16 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { renderLineup, renderReadme, renderSetupSkill } from "../scripts/render-lineup.mjs";
+import { renderLineup, renderReadme, renderReleases, renderSetupSkill } from "../scripts/render-lineup.mjs";
 const data=JSON.parse(readFileSync(new URL("../data/products.json",import.meta.url),"utf8"));
 const html=readFileSync(new URL("../docs/index.html",import.meta.url),"utf8");
 const readme=readFileSync(new URL("../README.md",import.meta.url),"utf8");
+const releasesDoc=readFileSync(new URL("../RELEASES.md",import.meta.url),"utf8");
 const skill=readFileSync(new URL("../.agents/skills/soulsteads-setup/SKILL.md",import.meta.url),"utf8");
 test("committed lineup exactly reflects public source data",()=>{
   assert.equal(renderLineup(data,html),html);
   assert.equal(renderReadme(data,readme),readme);
+  assert.equal(renderReleases(data,releasesDoc),releasesDoc);
   assert.equal(renderSetupSkill(data,skill),skill);
   assert.doesNotMatch(html,/data-filter="preview"/);
   for(const product of data.products.filter(p=>p.published.implementation))assert.ok(html.includes(`id="${product.slug}"`));
@@ -27,6 +29,7 @@ test("regeneration updates counts and FAQ without publishing the catalog review 
   assert.ok(rendered.includes("Updated fixture answer."));
   assert.equal(renderLineup(changed,rendered),rendered);
   assert.ok(!renderReadme(changed,readme).includes(changed.factsCheckedOn), 'review date must not appear in the README');
+  assert.ok(!renderReleases(changed,releasesDoc).includes(changed.factsCheckedOn), 'review date must not appear in the release catalog');
 });
 
 test('the connection diagram is accompanied by all declared notes and limits', () => {
@@ -40,32 +43,56 @@ test('the connection diagram is accompanied by all declared notes and limits', (
   }
 });
 
-test('README leads with tagged releases and lists only actual source previews', () => {
-  const text = renderReadme(data, readme);
-  const releases = text.split('## Released on GitHub\n')[1]?.split('\n### ')[0];
-  assert.ok(releases, 'A release-first section is visible in the README');
-  const preview = text.split('### Public source preview\n')[1]?.split('\n### ')[0];
+test('README and public site point to a separate release catalog', () => {
+  assert.doesNotMatch(readme, /^## Released on GitHub$/m, 'the full release catalog stays out of the README');
+  assert.match(readme, /\]\(RELEASES\.md\)/);
+  assert.match(readme, /<a name="released-on-github"><\/a>/, 'preserve old catalog bookmarks');
+  assert.doesNotMatch(readme, /\/releases\/tag\//);
+  const lineup = readme.split('<!-- readme-lineup -->')[1]?.split('<!-- end-readme-lineup -->')[0];
+  assert.ok(lineup, 'the README keeps the product overview');
+  for (const product of data.products.filter(p => p.published.implementation)) {
+    assert.ok(lineup.includes(`- **${product.name}**`), `${product.name} in the overview`);
+  }
+
+  const catalogUrl = `${data.organization}/soulsteads/blob/main/RELEASES.md`;
+  const siteCatalogLinks = [...html.matchAll(/href="([^"]+)">release catalog<\/a>/g)].map(([, href]) => href);
+  assert.ok(siteCatalogLinks.length > 0, 'the website offers the release catalog');
+  assert.ok(siteCatalogLinks.every(href => href === catalogUrl));
+  const llms = readFileSync(new URL('../docs/llms.txt', import.meta.url), 'utf8');
+  assert.ok(llms.includes(`](${catalogUrl})`));
+});
+
+test('the separate catalog gives each tagged tool a purpose and matching links', () => {
+  const text = renderReleases(data, releasesDoc);
+  assert.match(text, /downloads and checksums/i);
+  const releases = text.split('<!-- release-catalog -->')[1]?.split('<!-- end-release-catalog -->')[0];
+  assert.ok(releases, 'the catalog has a generated release section');
+  const [tagged, preview] = releases.split('\n## Public source preview\n');
+  const entries = tagged.split('\n## ').slice(1);
+  const products = data.products.filter(p => p.published.implementation && p.published.releaseTag);
+  assert.deepEqual(entries.map(entry => entry.split('\n')[0]), products.map(p => p.name));
   assert.doesNotMatch(text, /No release to install|\[Agent Voice\]|\[Agent Harness\]/);
-  for (const p of data.products.filter(p => p.published.implementation)) {
-    const { releaseTag } = p.published;
-    if (releaseTag) {
-      const row = releases.split('\n').find(line => line.startsWith(`| **${p.name}**`));
-      assert.ok(row?.includes(`/releases/tag/${releaseTag}`), p.name);
-      assert.ok(row.includes(`/blob/${releaseTag}/`), `${p.name} setup must match the tag`);
-    } else {
-      assert.ok(!releases.includes(p.name), p.name);
-      assert.ok(preview?.includes(p.name), p.name);
-    }
+  for (const [i, p] of products.entries()) {
+    const { repo, releaseTag } = p.published;
+    const repoUrl = `${data.organization}/${repo}`;
+    const [, purpose, links, requirements] = entries[i].trim().split('\n\n');
+    assert.equal(purpose, p.purpose, `${p.name} explains its value before setup details`);
+    assert.ok(links?.includes(`${repoUrl}/releases/tag/${releaseTag}`), p.name);
+    assert.ok(links?.includes(`${repoUrl}/blob/${releaseTag}/${p.taggedSetup.guide}`), `${p.name} setup must match the release`);
+    assert.ok(requirements?.includes(p.taggedSetup.requirements), `${p.name} keeps its prerequisites`);
   }
   assert.match(releases, /Linux x86-64 archive/);
   assert.match(releases, /Python packages/);
-  assert.match(releases, /Source only/);
+  const sourceOnly = structuredClone(data);
+  sourceOnly.products.find(p => p.slug === 'agent-home').published.assets = [];
+  assert.match(renderReleases(sourceOnly, releasesDoc), /## Agent Home\n\n[^\n]+\n\n[^\n]+ · Source only/);
   assert.match(releases, /nonempty sender allowlist/);
   assert.match(releases, /Tailnet IPv4/);
   assert.equal(preview, undefined);
   const untagged = structuredClone(data);
   const skillstore = untagged.products.find(p => p.slug === "agent-skillstore");
   skillstore.published.releaseTag = null;
-  assert.match(renderReadme(untagged, readme), /\[Agent Skillstore\][^\n]*No tagged release/);
-  assert.ok(text.indexOf('## Released on GitHub') < text.indexOf('lineup-map.svg'));
+  const previewText = renderReleases(untagged, releasesDoc);
+  assert.doesNotMatch(previewText, /^## Agent Skillstore$/m);
+  assert.match(previewText, /## Public source preview\n\n- \*\*\[Agent Skillstore\][^\n]*No tagged release/);
 });

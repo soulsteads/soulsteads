@@ -25,7 +25,7 @@ These are reviewed public source pins for this skill, not claims that the pinned
 <!-- setup-pins -->
 | Product | Public repository / release tag | Reviewed commit | Read first |
 | --- | --- | --- | --- |
-| Agent Home | `https://github.com/soulsteads/soulsteads-agent-home.git` / `v0.1.0` | `e52aaa5bafc83af51848f1bd4d787e9c64cc8913` | [Setup guide](https://github.com/soulsteads/soulsteads-agent-home/blob/v0.1.0/README.md#other-installation-options) |
+| Agent Home | `https://github.com/soulsteads/soulsteads-agent-home.git` / `v0.3.0` | `2873e7d7b5d863a3463c452d8103331d3d1dedd7` | [Setup guide](https://github.com/soulsteads/soulsteads-agent-home/blob/v0.3.0/README.md#get-started) |
 | Agent Messaging | `https://github.com/soulsteads/soulsteads-agent-messaging.git` / `v0.4.0` | `32660af4a43b8b9bbf261a24e8584c9616bc51c3` | [Setup guide](https://github.com/soulsteads/soulsteads-agent-messaging/blob/v0.4.0/docs/SETUP.md#before-you-start) |
 | Agent Workboard | `https://github.com/soulsteads/soulsteads-agent-workboard.git` / `v0.3.0` | `ae7bd0f343a7ae64bdc3c553d6aefe81de4a849f` | [Setup guide](https://github.com/soulsteads/soulsteads-agent-workboard/blob/v0.3.0/README.md#quickstart) |
 | Model Router | `https://github.com/soulsteads/soulsteads-model-router.git` / `v0.3.0` | `2fe51ad7bbb8be4e01e7db072896dead812366cb` | [Setup guide](https://github.com/soulsteads/soulsteads-model-router/blob/v0.3.0/docs/SETUP.md#prerequisites) |
@@ -171,8 +171,8 @@ After the approved scope is clear, follow only the selected release's installati
 
 ### Agent Home
 
-- Prerequisites: Python 3.11+, Git, `uv` for the documented source install, and one separately installed/authenticated supported harness.
-- From the verified checkout, the documented minimal preparation is `uv tool install .`, then `soulsteads create <name> --runtime <opencode|pi|claude|codex> --path <new-home>`.
+- Prerequisites: Python 3.11+, Git, and one separately installed and authenticated supported harness if launching it.
+- Use the verified release wheel or run `uv tool install .` from the verified source checkout. Then follow the tagged quickstart to create a disposable Home with `soulsteads create <name> --runtime <opencode|pi|claude|codex> --path <new-home>`.
 - A Home owns portable identity, instructions, skills, memory documents, generated native files, and its private local Git history. It does not install/authenticate a harness, run models, configure chat, or sandbox the harness.
 - Use `soulsteads config <home> --sync` only for an explicitly chosen Home after reviewing changed canonical files. Starting a new native session is separate scope.
 

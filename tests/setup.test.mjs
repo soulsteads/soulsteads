@@ -57,3 +57,11 @@ test('the setup helper rejects unknown selections or extra arguments without pri
     assert.match(result.stderr, /usage/i);
   }
 });
+
+test('the Agent Home plan links to the published wheel and matching quickstart', () => {
+  const { published } = catalog.products.find(p => p.slug === 'agent-home');
+  const plan = run('agent-home');
+  assert.equal(plan.status, 0, plan.stderr);
+  assert.ok(plan.stdout.includes(`/releases/download/${published.releaseTag}/soulsteads-${published.version}-py3-none-any.whl`), 'Home has a packaged install');
+  assert.ok(plan.stdout.includes(`/blob/${published.releaseTag}/README.md#get-started`));
+});

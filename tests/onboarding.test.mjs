@@ -46,10 +46,12 @@ test('both public surfaces explain the lineup and share the diagrams', () => {
   assert.match(readme, /\]\(\.agents\/skills\/soulsteads-connect\/SKILL\.md\)/);
 });
 
-test('the README leads with the shared diagram and the diagram includes standalone Forge', () => {
+test('the README introduces the lineup before the optional diagrams, which show standalone Forge', () => {
   const overview = readme.indexOf('## How the tools fit together');
   const diagram = readme.indexOf('(docs/assets/agent-connections.svg)', overview);
-  assert.ok(overview >= 0 && diagram > overview && diagram < readme.indexOf('## Start here'));
+  const lineup = readme.indexOf('## Tools at a glance');
+  const start = readme.indexOf('## Start here');
+  assert.ok(lineup >= 0 && lineup < start && start < overview && overview < diagram);
   const svg = read('docs/assets/agent-connections.svg');
   assert.match(svg, /<text\b[^>]*>Agent Forge<\/text>/);
   assert.match(svg, /<desc\b[^>]*>[^<]*Forge[^<]*no harness/i);
@@ -121,14 +123,13 @@ test('Messaging working directory is not treated as Home translation or a histor
   assert.match(readme, /working directory, not an Agent Home import/);
 });
 
-test('Start here stories render from shared metadata before the release catalog', () => {
+test('Start here stories render from shared metadata on the README and website', () => {
   const journeys = catalog.journeys;
   assert.ok(Array.isArray(journeys), 'journeys must come from the common lineup metadata');
   assert.deepEqual(journeys.map(({ id }) => id), [
     'workboard-sqlite', 'messaging-chat', 'forge-postgres', 'home-hermes-import',
   ]);
   assert.deepEqual(journeys.map(({ source }) => source), ['tagged', 'tagged', 'tagged', 'tagged']);
-  assert.ok(readme.indexOf('<!-- readme-start-here -->') < readme.indexOf('<!-- readme-lineup -->'));
   assert.ok(html.indexOf('id="start-here"') < html.indexOf('id="lineup-title"'));
   const sectionStart = html.indexOf('id="start-here"');
   const sectionClose = html.indexOf('</section>', sectionStart);
@@ -148,7 +149,6 @@ test('Start here stories render from shared metadata before the release catalog'
   assert.match(copy, /PostgreSQL/i);
   assert.match(copy, /Hermes import in read-only/i);
   assert.match(readme, /tagged source/i);
-  assert.match(readme, /downloads and checksums/i);
   assert.doesNotMatch(copy, /Agent Harness|Agent Voice/);
 });
 

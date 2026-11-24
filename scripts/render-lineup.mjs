@@ -47,7 +47,7 @@ function renderStartHereHtml(data) {
   return `<section class="section wrap start-here-section" id="start-here" aria-labelledby="start-here-title">
     <div class="section-heading">
       <div><p class="eyebrow">00 / START HERE</p><h2 id="start-here-title">Start here</h2></div>
-      <p>Choose a task and open its source guide. If you’re just exploring, try Workboard first. For instructions for a specific release, see the <a href="${escape(data.organization)}/soulsteads#released-on-github">release catalog</a>.</p>
+      <p>Choose a task and open its source guide. If you’re just exploring, try Workboard first. For instructions for a specific release, see the <a href="${escape(data.organization)}/soulsteads/blob/main/RELEASES.md">release catalog</a>.</p>
     </div>
     <div class="start-here-grid">${cards}</div>
   </section>`;
@@ -76,9 +76,9 @@ function renderStartHereReadme(data) {
   ].join('\n');
 }
 
-function block(text, name, content) {
-  const begin = `<!-- ${name} -->`;
-  const end = `<!-- end-${name} -->`;
+function block(text, name, content, marker = (label) => `<!-- ${label} -->`) {
+  const begin = marker(name);
+  const end = marker(`end-${name}`);
   const start = text.indexOf(begin);
   const stop = text.indexOf(end, start + begin.length);
   if (start < 0 || stop < 0) throw Error(`Missing generation markers: ${name}`);
@@ -142,16 +142,28 @@ export function renderLineup(data, html) {
 }
 
 export function renderReadme(data, markdown) {
-  const products = publicProducts(data);
   markdown = block(markdown, 'readme-start-here', renderStartHereReadme(data));
+  const entries = publicProducts(data).map(p => p.published.releaseTag
+    ? `- **${p.name}** — ${p.taggedSetup.summary}`
+    : `- **${p.name}** (source preview) — ${p.purpose}`);
+  return block(markdown, 'readme-lineup', entries.join('\n'));
+}
+
+export function renderReleases(data, markdown) {
+  const products = publicProducts(data);
   const repoUrl = (p) => `${data.organization}/${p.published.repo}`;
-  const rows = products.filter((p) => p.published.releaseTag).map((p) => {
+  const releases = products.filter((p) => p.published.releaseTag).map((p) => {
     const repo = repoUrl(p);
     const tag = p.published.releaseTag;
-    const { summary, requirements, guide } = p.taggedSetup;
+    const { requirements, guide } = p.taggedSetup;
     const format = p.published.assets.some(name => name.endsWith('.whl')) ? 'Python packages'
       : p.published.assets.length ? 'Linux x86-64 archive' : 'Source only';
-    return `| **${p.name}** | [${tag}](${repo}/releases/tag/${tag}) · ${format} | ${summary} | ${requirements} [Setup at ${tag}](${repo}/blob/${tag}/${guide}) |`;
+    return [
+      `## ${p.name}`,
+      p.purpose,
+      `[${p.name} setup](${repo}/blob/${tag}/${guide}) · [Release ${tag}](${repo}/releases/tag/${tag}) · ${format}`,
+      `**Before you start:** ${requirements}`,
+    ].join('\n\n');
   });
   const previews = products.filter((p) => !p.published.releaseTag).map((p) => {
     const guides = p.journey.guides.map(({ href, label }) => `[${label}](${href})`).join(' · ');
@@ -161,13 +173,9 @@ export function renderReadme(data, markdown) {
     ].join('\n');
   });
 
-  return block(markdown, 'readme-lineup', [
-    '', '## Released on GitHub', '',
-    'These are early releases. Use the release link for downloads and checksums, or check out the tag to install from source. Guides on `main` can differ from the tagged instructions.', '',
-    '| Tool | Release | Use it to | What you need / setup |', '| --- | --- | --- | --- |', ...rows,
-    ...(previews.length ? ['', '### Public source preview', '', ...previews] : []),
-
-    '',
+  return block(markdown, 'release-catalog', [
+    releases.join('\n\n'),
+    ...(previews.length ? ['', '## Public source preview', '', ...previews] : []),
   ].join('\n'));
 }
 
@@ -182,11 +190,36 @@ export function renderSetupSkill(data, markdown) {
   ].join('\n'));
 }
 
+export function renderInstaller(data, script) {
+  const rows = data.lineup.flatMap((slug) => {
+    const p = publicProducts(data).find(p => p.slug === slug);
+    if (!p?.published.installer) return [];
+    const { repo, releaseTag, assets, installer: { asset, sha256, commands, glibc } } = p.published;
+    const guide = p.taggedSetup?.guide;
+    const matches = (value, pattern) => typeof value === 'string' && pattern.test(value);
+    // These tokens are emitted into a single-quoted Bash block with pipe separators.
+    const name = /^[a-z0-9][a-z0-9-]*$/;
+    const wheel = matches(asset, /^[a-z0-9][a-z0-9_]*-[a-z0-9_.-]+\.whl$/);
+    const archive = asset === `${repo}-linux-x86_64.tar.gz`;
+    if (!matches(slug, name) || !matches(repo, name) || !matches(releaseTag, /^v\d+\.\d+\.\d+$/) ||
+        (!wheel && !archive) || !assets.includes(asset) || !matches(sha256, /^[0-9a-f]{64}$/) ||
+        (archive ? !matches(glibc, /^[1-9][0-9]?\.[0-9]{1,3}$/) : glibc !== undefined) ||
+        !Array.isArray(commands) || !commands.length || (archive && commands.length !== 1) ||
+        !commands.every(command => matches(command, name)) || !matches(guide, /^[a-z0-9][a-z0-9_./#-]*$/i)) {
+      throw Error(`Invalid installer metadata for ${slug}`);
+    }
+    return [[slug, repo, releaseTag, asset, sha256, commands.join(' '), guide, glibc ?? '-'].join('|')];
+  });
+  return block(script, 'installer-releases', rows.join('\n'), label => `# ${label}`);
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const data = JSON.parse(readFileSync(new URL('data/products.json', root), 'utf8'));
   for (const [path, render] of [
     ['docs/index.html', renderLineup], ['README.md', renderReadme],
+    ['RELEASES.md', renderReleases],
     ['.agents/skills/soulsteads-setup/SKILL.md', renderSetupSkill],
+    ['install.sh', renderInstaller],
   ]) {
     const file = new URL(path, root);
     const current = readFileSync(file, 'utf8');

@@ -20,8 +20,28 @@ test('the published llms.txt points to current setup guides', () => {
   }
 
   assert.ok(urls.has(`${catalog.organization}/soulsteads#print-a-setup-plan`));
-  const { published } = catalog.products.find(p => p.slug === 'agent-home');
-  assert.ok(urls.has(`${catalog.organization}/${published.repo}/blob/${published.commit}/docs/hermes-import.md`));
+});
+
+test('Agent Home website guides use the same release commit as the catalog', () => {
+  const { published, taggedSetup } = catalog.products.find(p => p.slug === 'agent-home');
+  const repo = `${catalog.organization}/${published.repo}`;
+  const guideRoot = `${repo}/blob/${published.commit}/`;
+  const html = read('docs/index.html');
+  const index = read('docs/llms.txt');
+  const siteLinks = [...html.matchAll(/href="([^"]+)"/g)].map(([, url]) => url);
+  const indexLinks = [...index.matchAll(/\]\((https:\/\/[^)]+)\)/g)].map(([, url]) => url);
+
+  for (const { surface, urls, guides } of [
+    { surface: 'website', urls: siteLinks, guides: [taggedSetup.guide, 'docs/runtimes.md', 'docs/hermes-import.md'] },
+    { surface: 'llms.txt', urls: indexLinks, guides: [taggedSetup.guide, 'docs/hermes-import.md'] },
+  ]) {
+    for (const url of urls.filter(url => url.startsWith(`${repo}/blob/`) || url.startsWith(`${repo}#`))) {
+      assert.ok(url.startsWith(guideRoot), `${surface} guide is not release-pinned: ${url}`);
+    }
+    for (const path of guides) {
+      assert.ok(urls.includes(`${guideRoot}${path}`), `${surface} is missing ${path} at the release commit`);
+    }
+  }
 });
 
 test('the site does not advertise specific tagged releases', () => {
