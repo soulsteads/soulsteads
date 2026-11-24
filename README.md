@@ -13,12 +13,12 @@ Just exploring? [Create a local Workboard](#create-a-local-workboard) without a 
 ## Tools at a glance
 
 <!-- readme-lineup -->
-- **Agent Home** — Keep one agent’s instructions, skills, and configuration in a portable, Git-tracked home.
-- **Agent Messaging** — Talk to an existing coding agent from chat or the built-in web interface.
-- **Agent Workboard** — Coordinate issues, dependencies, and agent claims on a shared board.
-- **Model Router** — Route compatible requests to existing inference servers through one endpoint.
-- **Agent Forge** — Run and schedule workflows, then inspect their step results.
-- **Agent Skillstore** — Review, install, and recover versioned agent skills.
+- **[Agent Home](https://github.com/soulsteads/soulsteads-agent-home)** — Keep one agent’s instructions, skills, and configuration in a portable, Git-tracked home.
+- **[Agent Messaging](https://github.com/soulsteads/soulsteads-agent-messaging)** — Talk to an existing coding agent from chat or the built-in web interface.
+- **[Agent Workboard](https://github.com/soulsteads/soulsteads-agent-workboard)** — Coordinate issues, dependencies, and agent claims on a shared board.
+- **[Model Router](https://github.com/soulsteads/soulsteads-model-router)** — Route compatible requests to existing inference servers through one endpoint.
+- **[Agent Forge](https://github.com/soulsteads/soulsteads-agent-forge)** — Run and schedule workflows, then inspect their step results.
+- **[Agent Skillstore](https://github.com/soulsteads/soulsteads-agent-skillstore)** — Review, install, and recover versioned agent skills.
 <!-- end-readme-lineup -->
 
 <a name="released-on-github"></a>

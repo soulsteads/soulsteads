@@ -140,9 +140,12 @@ export function renderLineup(data, html) {
 
 export function renderReadme(data, markdown) {
   markdown = block(markdown, 'readme-start-here', renderStartHereReadme(data));
-  const entries = publicProducts(data).map(p => p.published.releaseTag
-    ? `- **${p.name}** — ${p.taggedSetup.summary}`
-    : `- **${p.name}** (source preview) — ${p.purpose}`);
+  const entries = publicProducts(data).map(p => {
+    const name = `**[${p.name}](${data.organization}/${p.published.repo})**`;
+    return p.published.releaseTag
+      ? `- ${name} — ${p.taggedSetup.summary}`
+      : `- ${name} (source preview) — ${p.purpose}`;
+  });
   return block(markdown, 'readme-lineup', entries.join('\n'));
 }
 

@@ -48,11 +48,6 @@ test('README and public site point to a separate release catalog', () => {
   assert.match(readme, /\]\(RELEASES\.md\)/);
   assert.match(readme, /<a name="released-on-github"><\/a>/, 'preserve old catalog bookmarks');
   assert.doesNotMatch(readme, /\/releases\/tag\//);
-  const lineup = readme.split('<!-- readme-lineup -->')[1]?.split('<!-- end-readme-lineup -->')[0];
-  assert.ok(lineup, 'the README keeps the product overview');
-  for (const product of data.products.filter(p => p.published.implementation)) {
-    assert.ok(lineup.includes(`- **${product.name}**`), `${product.name} in the overview`);
-  }
 
   const catalogUrl = `${data.organization}/soulsteads/blob/main/RELEASES.md`;
   const siteCatalogLinks = [...html.matchAll(/href="([^"]+)">release catalog<\/a>/g)].map(([, href]) => href);
@@ -60,6 +55,18 @@ test('README and public site point to a separate release catalog', () => {
   assert.ok(siteCatalogLinks.every(href => href === catalogUrl));
   const llms = readFileSync(new URL('../docs/llms.txt', import.meta.url), 'utf8');
   assert.ok(llms.includes(`](${catalogUrl})`));
+});
+
+test('Tools at a glance links each product name to its GitHub repository', () => {
+  const lineup = readme.split('<!-- readme-lineup -->')[1]?.split('<!-- end-readme-lineup -->')[0];
+  assert.ok(lineup, 'the README keeps the product overview');
+  const products = data.products.filter(p => p.published.implementation);
+  assert.deepEqual(lineup.trim().split('\n'), products.map(p => {
+    const prefix = `- **[${p.name}](${data.organization}/${p.published.repo})**`;
+    return p.published.releaseTag
+      ? `${prefix} — ${p.taggedSetup.summary}`
+      : `${prefix} (source preview) — ${p.purpose}`;
+  }));
 });
 
 test('the separate catalog gives each tagged tool a purpose and matching links', () => {
