@@ -19,20 +19,14 @@ test('the published llms.txt points to current setup guides', () => {
       `${product.name} needs its current setup guide`);
   }
 
-  const preview = index.split('## Source previews\n')[1]?.split('\n## ')[0];
-  for (const [slug, path] of [
-    ['agent-forge', 'README.md#quick-start'], ['agent-home', 'docs/hermes-import.md'],
-    ['agent-skillstore', 'README.md#install-from-source'],
-  ]) {
-    const { published } = catalog.products.find(p => p.slug === slug);
-    assert.ok(preview?.includes(`${catalog.organization}/${published.repo}/blob/${published.commit}/${path}`),
-      `${slug} must link to its reviewed preview`);
-  }
+  assert.ok(urls.has(`${catalog.organization}/soulsteads#print-a-setup-plan`));
+  const { published } = catalog.products.find(p => p.slug === 'agent-home');
+  assert.ok(urls.has(`${catalog.organization}/${published.repo}/blob/${published.commit}/docs/hermes-import.md`));
 });
 
 test('the site does not advertise specific tagged releases', () => {
   const pages = readdirSync(new URL('../docs/', import.meta.url), { recursive: true }).filter(path => path.endsWith('.html'));
-  const version = /\bTagged source\b|(?<![\w.])v?\d+\.\d+\.\d+(?!\w|\.\d)/i;
+  const version = /(?<![\w.])v?\d+\.\d+\.\d+(?!\w|\.\d)/i;
   for (const name of [...pages, 'llms.txt']) {
     assert.equal(read(`docs/${name}`).match(version)?.[0], undefined, name);
   }

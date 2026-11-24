@@ -58,18 +58,18 @@ try {
   await missing.close();
   await page.locator(".filter-row").waitFor();
   assert.equal(await page.locator(".product-card:visible").count(), 6);
-  await page.locator('[data-filter="preview"]').click();
-  assert.equal(await page.locator(".product-card:visible").count(), 2);
+  assert.equal(await page.locator('[data-filter="preview"]').count(), 0);
   assert.equal(await page.locator("#agent-skillstore").isVisible(), true);
-  assert.match(await page.locator("#filter-status").innerText(), /2 products shown/);
   await page.locator('[data-filter="available"]').click();
   assert.equal(await page.locator(".preview-card:visible").count(), 0);
   assert.equal(await page.locator("#model-router").isVisible(), true);
-  assert.equal(await page.locator(".product-card:visible").count(), 4);
+  assert.equal(await page.locator(".product-card:visible").count(), 6);
   assert.equal(await page.locator('[data-filter="planned"]').count(), 0);
   assert.equal(await page.locator('.setup-choices li').count(), 6);
   await page.getByRole('link', { name: 'Agent Forge details' }).click();
-  assert.equal(await page.locator('#agent-forge').isVisible(), true, 'Setup link reveals a filtered card');
+  assert.equal(new URL(page.url()).hash, '#agent-forge');
+  assert.equal(await page.locator('#agent-forge').isVisible(), true);
+  await page.locator('[data-filter="all"]').click();
   assert.equal(await page.locator('[data-filter="all"]').getAttribute('aria-pressed'), 'true');
   await page.locator('[data-copy="agent-setup-prompt"]').click();
   assert.match(

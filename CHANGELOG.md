@@ -6,7 +6,8 @@ Changes since [`v0.1.0`](https://github.com/soulsteads/soulsteads/releases/tag/v
 
 ### Highlights
 
-- Publish the full Soulsteads product lineup, separating tagged source-only releases from previews and reserved repositories.
+- List the released Soulsteads tools with version-matched guides and distinguish binary archives, Python packages, and source-only installs.
+- Add an offline setup planner for selecting one tool and finding its requirements, release assets, checksums, and guide.
 - Add release-specific setup links, portable setup and connection skills, and diagrams for optional product connections.
 - Update the generated website and lineup, with navigation, onboarding and browser regression coverage.
 - Standardize `LICENSE` and `NOTICE` with author Scott Glover and `Copyright (c) 2026 Soulsteads`. The Apache-2.0 terms are unchanged.

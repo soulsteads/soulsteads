@@ -23,7 +23,7 @@ test('Claude and Codex aliases resolve both skills to the canonical files', () =
   }
 });
 
-test('every public implementation gets one setup entry, including the Forge preview', () => {
+test('every public implementation gets one setup entry, including Forge and Skillstore', () => {
   const setup = html.match(/<section\b[^>]*id="start"[\s\S]*?<\/section>/)[0];
   const expected = ['agent-forge', 'agent-home', 'agent-messaging', 'agent-skillstore', 'agent-workboard', 'model-router'];
   assert.deepEqual([...setup.matchAll(/href="#(agent-[\w-]+|model-router)"/g)].map(([, slug]) => slug).sort(), expected);
@@ -31,7 +31,7 @@ test('every public implementation gets one setup entry, including the Forge prev
   assert.match(setup, /\/blob\/main\/\.agents\/skills\/soulsteads-setup\/SKILL\.md/);
   assert.match(setup, /\/blob\/main\/\.agents\/skills\/soulsteads-connect\/SKILL\.md/);
   assert.doesNotMatch(html, /using the release branch|no tagged releases|Next on the horizon/);
-  assert.match(html, /GitHub releases.*source-only/i);
+  assert.match(html, /publish downloads on GitHub Releases/);
 
 });
 
@@ -104,8 +104,8 @@ test('the diagram shows four optional connections to a chosen harness and no con
 
 test('setup skill covers exactly the published implementations at the reviewed pins', () => {
   const skill = read('.agents/skills/soulsteads-setup/SKILL.md');
-  const pins = [...skill.matchAll(/\| `https:\/\/github.com\/soulsteads\/([\w-]+)\.git` \/ `main` \| `([a-f0-9]{40})`/g)].map(([, repo, sha]) => `${repo}:${sha}`);
-  assert.deepEqual(pins.sort(), catalog.products.filter(p => p.published.implementation).map(p => `${p.published.repo}:${p.published.commit}`).sort());
+  const pins = [...skill.matchAll(/\| `https:\/\/github.com\/soulsteads\/([\w-]+)\.git` \/ `(v[^`]+)` \| `([a-f0-9]{40})`/g)].map(([, repo, tag, sha]) => `${repo}:${tag}:${sha}`);
+  assert.deepEqual(pins.sort(), catalog.products.filter(p => p.published.implementation).map(p => `${p.published.repo}:${p.published.releaseTag}:${p.published.commit}`).sort());
   for (const name of ['soulsteads-setup', 'soulsteads-connect']) {
     assert.match(read(`.agents/skills/${name}/SKILL.md`), new RegExp(`^---\\nname: ${name}\\ndescription: .{1,60}\\n---\\n`));
   }
@@ -127,7 +127,7 @@ test('Start here stories render from shared metadata before the release catalog'
   assert.deepEqual(journeys.map(({ id }) => id), [
     'workboard-sqlite', 'messaging-chat', 'forge-postgres', 'home-hermes-import',
   ]);
-  assert.deepEqual(journeys.map(({ source }) => source), ['tagged', 'tagged', 'preview', 'preview']);
+  assert.deepEqual(journeys.map(({ source }) => source), ['tagged', 'tagged', 'tagged', 'tagged']);
   assert.ok(readme.indexOf('<!-- readme-start-here -->') < readme.indexOf('<!-- readme-lineup -->'));
   assert.ok(html.indexOf('id="start-here"') < html.indexOf('id="lineup-title"'));
   const sectionStart = html.indexOf('id="start-here"');
@@ -148,8 +148,7 @@ test('Start here stories render from shared metadata before the release catalog'
   assert.match(copy, /PostgreSQL/i);
   assert.match(copy, /Hermes import in read-only/i);
   assert.match(readme, /tagged source/i);
-  assert.match(readme, /source preview/i);
-  assert.match(readme, /build from source, not download a binary/i);
+  assert.match(readme, /downloads and checksums/i);
   assert.doesNotMatch(copy, /Agent Harness|Agent Voice/);
 });
 
@@ -160,7 +159,7 @@ test('Start here offers current website chat guides and version-matched README g
   const repo = 'https://github.com/soulsteads/soulsteads-agent-messaging/blob/';
   for (const path of ['SETUP.md#telegram', 'MATTERMOST.md', 'MATRIX.md']) {
     assert.ok(card.includes(`${repo}main/docs/${path}`), `Website Start here needs ${path}`);
-    assert.ok(markdown.includes(`${repo}v0.2.0/docs/${path}`), `README Start here needs ${path}`);
+    assert.ok(markdown.includes(`${repo}v0.4.0/docs/${path}`), `README Start here needs ${path}`);
   }
   const options = [
     ['Telegram', 'Guided setup on Linux for Claude Code or Codex.'],

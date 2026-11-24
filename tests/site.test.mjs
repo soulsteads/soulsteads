@@ -7,8 +7,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const html = readFileSync(resolve(root, "docs/index.html"), "utf8");
 
 test("complete lineup has truthful public availability", () => {
-  assert.equal((html.match(/data-status="available"/g) || []).length, 4);
-  assert.equal((html.match(/data-status="preview"/g) || []).length, 2);
+  assert.equal((html.match(/data-status="available"/g) || []).length, 6);
+  assert.equal((html.match(/data-status="preview"/g) || []).length, 0);
   assert.doesNotMatch(html, /data-(?:status|filter)="planned"|id="agent-(?:voice|harness)"|no public implementation to install/);
   for (const name of [
     "agent-home",
@@ -23,14 +23,15 @@ test("complete lineup has truthful public availability", () => {
       html.includes(`https://github.com/soulsteads/soulsteads-${name}`),
     );
   }
-  assert.match(html.replace(/\s+/g, " "), /Forge is an early preview/);
+  assert.doesNotMatch(html, /Forge is an early preview|data-filter="preview"/);
 });
 
-test("Skillstore is a source preview with a pinned setup guide and no model requirement", () => {
+test("Skillstore is released with a setup guide and no model requirement", () => {
   const card = html.match(/<article\b[^>]*id="agent-skillstore"[\s\S]*?<\/article>/)?.[0];
   assert.ok(card, "Skillstore has a product card");
-  assert.match(card, /data-status="preview"/);
-  assert.match(card, /soulsteads-agent-skillstore\/blob\/[a-f0-9]{40}\/README\.md#install-from-source/);
+  assert.match(card, /data-status="available"/);
+  assert.match(card, /Python wheel/);
+  assert.match(card, /soulsteads-agent-skillstore\/blob\/main\/README\.md#install-from-source/);
   assert.match(card, /no harness or model account/i);
 });
 test("local resources and anchor targets exist", () => {
@@ -61,7 +62,7 @@ test("setup and safety information survive without JavaScript", () => {
 test("Router is documented with setup links and release limitations", () => {
   const card = html.match(/<article\b[^>]*id="model-router"[\s\S]*?<\/article>/)[0];
   assert.match(card, /data-status="available"/);
-  assert.match(card, /EARLY SOURCE RELEASE/);
+  assert.match(card, /EARLY RELEASE/);
   assert.match(card, /capacity/i);
   assert.doesNotMatch(card, /not yet published|ON THE HORIZON/);
   for (const guide of ["SETUP", "COMPATIBILITY"]) {

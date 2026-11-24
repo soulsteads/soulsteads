@@ -110,20 +110,27 @@ export function renderLineup(data, html) {
   const available = publicProducts(data);
   html = block(html, 'start-here', renderStartHereHtml(data));
   html = block(html, 'product-cards', available.map((p) => card(data, p)).join('\n'));
-  for (const filter of ['all', 'available', 'preview']) {
-    const count = available.filter((p) => filter === 'all' || state(p) === filter).length;
-    const pattern = new RegExp(`(<button[^>]*data-filter="${filter}"[^>]*>[^<]*<span>)\\d+(</span>)`);
-    html = html.replace(pattern, (_, start, end) => start + String(count).padStart(2, '0') + end);
-  }
-  html = block(html, 'publication', `<p class="fine-print" id="lineup-publication">Public source checked ${escape(data.factsCheckedOn)} on <a href="${escape(data.organization)}">GitHub</a>. Source availability does not imply a supported deployment.</p>`);
+  const buttons = [['all', 'All products'], ['available', 'Available now'], ['preview', 'Source previews']]
+    .map(([filter, label]) => {
+      const count = available.filter((p) => filter === 'all' || state(p) === filter).length;
+      return count ? `<button data-filter="${filter}" aria-pressed="${filter === 'all'}">${label} <span>${String(count).padStart(2, '0')}</span></button>` : '';
+    }).filter(Boolean);
+  html = block(html, 'product-filters', buttons.join('\n'));
+
   html = block(html, 'optional-combination', `<div class="optional-combination"><h3>${escape(data.composition.title)}</h3><p>${escape(data.composition.intro)}</p>${list(data.composition.steps.map((s) => `${s.role}: ${s.connection}`))}${[...data.composition.notes, ...data.composition.limits].map((text) => `<p>${prose(text)}</p>`).join('')}</div>`);
   html = block(html, 'setup-links', `<ul class="setup-choices">${available.map((p) => `<li><div><strong>${escape(p.name)}</strong>${p.maturity === 'preview' ? ' <span class="badge">SOURCE PREVIEW</span>' : ''}<p>${escape(p.need)}</p></div><div>${link(p.journey.guides[0])}<a href="#${escape(p.slug)}">${escape(p.name)} details</a></div></li>`).join('\n')}</ul>`);
   const names = (products) => products.map((p) => p.name).join(', ');
   const tagged = available.filter((p) => p.published.releaseTag);
   const untagged = available.filter((p) => !p.published.releaseTag);
+  const packaged = tagged.filter(p => p.published.assets.length);
+  const sourceOnly = tagged.filter(p => !p.published.assets.length);
   const generated = {
-    availability: `${names(available)} have public source and setup guides. ${available.filter((p) => p.maturity === 'preview').map((p) => `${p.name} is an early preview.`).join(' ')}`,
-    packaging: `GitHub releases for ${names(tagged)} are source-only. ${names(untagged)} can be built from public source but ${untagged.length === 1 ? 'has' : 'have'} no tagged release. No prebuilt release assets were listed for these tools.`,
+    availability: [`${names(available)} have public source and setup guides.`, ...available.filter((p) => p.maturity === 'preview').map((p) => `${p.name} is an early preview.`)].join(' '),
+    packaging: [
+      packaged.length && `${names(packaged)} publish downloads on GitHub Releases. Check the release for the platform and checksum.`,
+      sourceOnly.length && `${names(sourceOnly)} ${sourceOnly.length === 1 ? 'installs' : 'install'} from tagged source.`,
+      untagged.length && `${names(untagged)} ${untagged.length === 1 ? 'has' : 'have'} public source but no tagged release.`,
+    ].filter(Boolean).join(' '),
     license: `${available.map((p) => `${p.name}: ${p.license}`).join('; ')}. See each repository’s license and notices.`,
   };
   const faq = data.faq.map((item) => {
@@ -142,7 +149,9 @@ export function renderReadme(data, markdown) {
     const repo = repoUrl(p);
     const tag = p.published.releaseTag;
     const { summary, requirements, guide } = p.taggedSetup;
-    return `| **${p.name}** | [${tag}](${repo}/releases/tag/${tag}) | ${summary} | ${requirements} [Setup at ${tag}](${repo}/blob/${tag}/${guide}) |`;
+    const format = p.published.assets.some(name => name.endsWith('.whl')) ? 'Python packages'
+      : p.published.assets.length ? 'Linux x86-64 archive' : 'Source only';
+    return `| **${p.name}** | [${tag}](${repo}/releases/tag/${tag}) · ${format} | ${summary} | ${requirements} [Setup at ${tag}](${repo}/blob/${tag}/${guide}) |`;
   });
   const previews = products.filter((p) => !p.published.releaseTag).map((p) => {
     const guides = p.journey.guides.map(({ href, label }) => `[${label}](${href})`).join(' · ');
@@ -154,18 +163,31 @@ export function renderReadme(data, markdown) {
 
   return block(markdown, 'readme-lineup', [
     '', '## Released on GitHub', '',
-    'These are early, **source-only releases**: no prebuilt binaries. Check out the tag before following its setup guide; the guides and features on `main` can differ.', '',
+    'These are early releases. Use the release link for downloads and checksums, or check out the tag to install from source. Guides on `main` can differ from the tagged instructions.', '',
     '| Tool | Release | Use it to | What you need / setup |', '| --- | --- | --- | --- |', ...rows,
-    '', '### Public source preview', '', ...previews,
+    ...(previews.length ? ['', '### Public source preview', '', ...previews] : []),
 
-    '', `Public source and releases checked on GitHub: **${data.factsCheckedOn}**.`,
     '',
+  ].join('\n'));
+}
+
+export function renderSetupSkill(data, markdown) {
+  const pins = publicProducts(data).filter(p => p.published.releaseTag).map(({ name, published, taggedSetup }) => {
+    const { repo, commit, releaseTag } = published;
+    return `| ${name} | \`${data.organization}/${repo}.git\` / \`${releaseTag}\` | \`${commit}\` | [Setup guide](${data.organization}/${repo}/blob/${releaseTag}/${taggedSetup.guide}) |`;
+  });
+  return block(markdown, 'setup-pins', [
+    '| Product | Public repository / release tag | Reviewed commit | Read first |',
+    '| --- | --- | --- | --- |', ...pins,
   ].join('\n'));
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const data = JSON.parse(readFileSync(new URL('data/products.json', root), 'utf8'));
-  for (const [path, render] of [['docs/index.html', renderLineup], ['README.md', renderReadme]]) {
+  for (const [path, render] of [
+    ['docs/index.html', renderLineup], ['README.md', renderReadme],
+    ['.agents/skills/soulsteads-setup/SKILL.md', renderSetupSkill],
+  ]) {
     const file = new URL(path, root);
     const current = readFileSync(file, 'utf8');
     const updated = render(data, current);
