@@ -46,12 +46,13 @@ test('both public surfaces explain the lineup and share the diagrams', () => {
   assert.match(readme, /\]\(\.agents\/skills\/soulsteads-connect\/SKILL\.md\)/);
 });
 
-test('the README introduces the lineup before the optional diagrams, which show standalone Forge', () => {
-  const overview = readme.indexOf('## How the tools fit together');
-  const diagram = readme.indexOf('(docs/assets/agent-connections.svg)', overview);
-  const lineup = readme.indexOf('## Tools at a glance');
-  const start = readme.indexOf('## Start here');
-  assert.ok(lineup >= 0 && lineup < start && start < overview && overview < diagram);
+test('the README opens with the lineup followed by the connection diagram and explanation', () => {
+  const sections = readme.split(/^## /m).slice(1);
+  assert.match(sections[0] ?? '', /^Tools at a glance\n/);
+  assert.match(sections[1] ?? '', /^How the tools fit together\n\n\[!\[[^\]]+\]\(docs\/assets\/agent-connections\.svg\)/);
+});
+
+test('the connection diagrams show that Forge can run standalone', () => {
   const svg = read('docs/assets/agent-connections.svg');
   assert.match(svg, /<text\b[^>]*>Agent Forge<\/text>/);
   assert.match(svg, /<desc\b[^>]*>[^<]*Forge[^<]*no harness/i);
@@ -148,8 +149,19 @@ test('Start here stories render from shared metadata on the README and website',
   assert.match(copy, /existing .*harness/i);
   assert.match(copy, /PostgreSQL/i);
   assert.match(copy, /Hermes import in read-only/i);
-  assert.match(readme, /tagged source/i);
   assert.doesNotMatch(copy, /Agent Harness|Agent Voice/);
+});
+
+test('the README keeps release tags in guide links, not in visible journey labels', () => {
+  const markdown = readme.split('<!-- readme-start-here -->')[1].split('<!-- end-readme-start-here -->')[0];
+  const labels = markdown.split('\n').filter(line => /· Tagged source /i.test(line));
+  assert.deepEqual(labels, []);
+  for (const journey of catalog.journeys.filter(({ source }) => source === 'tagged')) {
+    const { published: { repo, releaseTag } } = catalog.products.find(({ slug }) => slug === journey.product);
+    for (const { path, label } of journey.guides) {
+      assert.ok(markdown.includes(`[${label}](${catalog.organization}/${repo}/blob/${releaseTag}/${path})`), label);
+    }
+  }
 });
 
 test('Start here offers current website chat guides and version-matched README guides', () => {

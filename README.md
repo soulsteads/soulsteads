@@ -6,7 +6,7 @@
 
 Keep the coding agent you already use. Take its settings with you, reach it from chat, or give several agents one board to coordinate their work. Each tool installs separately; start with what you need.
 
-**[Tools](#tools-at-a-glance)** · [Install](#install-a-tool) · [Start here](#start-here) · [Releases and setup](RELEASES.md) · [How the tools fit together](#how-the-tools-fit-together) · [Set up with an agent](#set-up-with-an-agent)
+**[Tools](#tools-at-a-glance)** · [How the tools fit together](#how-the-tools-fit-together) · [Install](#install-a-tool) · [Start here](#start-here) · [Releases and setup](RELEASES.md) · [Set up with an agent](#set-up-with-an-agent)
 
 Just exploring? [Create a local Workboard](#create-a-local-workboard) without a model or a database server.
 
@@ -25,14 +25,26 @@ Just exploring? [Create a local Workboard](#create-a-local-workboard) without a 
 
 **[See releases and setup guides](RELEASES.md)** for downloads, checksums, and prerequisites.
 
+## How the tools fit together
+
+[![The agent can connect to Home, Messaging, Workboard, and Model Router. Forge runs workflows separately.](docs/assets/agent-connections.svg)](docs/assets/agent-connections.svg)
+
+[Compact diagram](docs/assets/agent-connections-compact.svg) · [Lineup diagram](docs/assets/lineup-map.svg) · [Browse the website](https://soulsteads.github.io/soulsteads/)
+
+For example, you can talk to a supported coding agent through **Messaging** while that agent uses **Workboard** to claim and update issues. Workboard tracks the work; the agent does it. The agent still owns its sessions and permissions, and neither tool requires the other.
+
+**Home** prepares the agent’s configuration, and **Model Router** gives compatible clients one endpoint for model servers you already run. **Skillstore** can manage skills without Home. **Forge** runs workflows separately; its quickstart needs no agent or model.
+
+Messaging’s `acp.agentHome` sets a working directory, not an Agent Home import. See the [connection guide](.agents/skills/soulsteads-connect/SKILL.md) for supported combinations.
+
 ## Install a tool
 
 From a checkout of this repository, choose one product:
 
 ```bash
 bash install.sh --list
-bash install.sh --dry-run agent-workboard
-bash install.sh agent-workboard
+bash install.sh --dry-run workboard
+bash install.sh workboard
 ```
 
 The script verifies the pinned release asset and installs the CLI for your user. It doesn't configure or start anything. See the [installer requirements and removal instructions](RELEASES.md#bash-installer), then follow the setup guide for your tool.
@@ -44,15 +56,11 @@ Try one of these tasks with a guide for the matching release.
 
 ### Create a local workboard
 
-*Agent Workboard · Tagged source v0.3.0*
-
 Track issues locally with SQLite. No model or database server needed.
 
 - [Workboard quickstart](https://github.com/soulsteads/soulsteads-agent-workboard/blob/v0.3.0/README.md#quickstart)
 
 ### Chat with your agent
-
-*Agent Messaging · Tagged source v0.4.0*
 
 Keep your existing agent harness. Choose a Linux setup guide:
 
@@ -62,33 +70,17 @@ Keep your existing agent harness. Choose a Linux setup guide:
 
 ### Run your first Forge workflow
 
-*Agent Forge · Tagged source v0.2.0*
-
 Run and schedule a sample workflow. Use a dedicated PostgreSQL database, not production. No model or agent harness needed.
 
 - [Forge quickstart](https://github.com/soulsteads/soulsteads-agent-forge/blob/v0.2.0/README.md#quick-start)
 
 ### Preview a Hermes import
 
-*Agent Home · Tagged source v0.3.0*
-
 Use Agent Home to inspect a Hermes import in read-only mode. No files in the source are changed.
 
 - [Hermes import guide](https://github.com/soulsteads/soulsteads-agent-home/blob/v0.3.0/docs/hermes-import.md)
 
 <!-- end-readme-start-here -->
-
-## How the tools fit together
-
-For example, you can talk to a supported coding agent through **Messaging** while that agent uses **Workboard** to claim and update issues. Workboard tracks the work; the agent does it. The agent still owns its sessions and permissions, and neither tool requires the other.
-
-**Home** prepares the agent’s configuration, and **Model Router** gives compatible clients one endpoint for model servers you already run. **Skillstore** can manage skills without Home. **Forge** runs workflows separately; its quickstart needs no agent or model.
-
-Messaging’s `acp.agentHome` sets a working directory, not an Agent Home import. See the [connection guide](.agents/skills/soulsteads-connect/SKILL.md) for supported combinations.
-
-[![The agent can connect to Home, Messaging, Workboard, and Model Router. Forge runs workflows separately.](docs/assets/agent-connections.svg)](docs/assets/agent-connections.svg)
-
-[Compact diagram](docs/assets/agent-connections-compact.svg) · [Lineup diagram](docs/assets/lineup-map.svg) · [Browse the website](https://soulsteads.github.io/soulsteads/)
 
 ## Print a setup plan
 
@@ -116,15 +108,6 @@ Both skills live in `.agents/skills/`. In a Git checkout with symlinks enabled, 
 
 The tools do not share a database. Connecting tools does not create an agent network. Home and Messaging do not sandbox an agent. Keep credentials out of tracked files, and review each tool’s access limits before connecting it to a network or chat account.
 
-## Maintain this lineup
+<a name="maintain-this-lineup"></a>
 
-This repository contains the website, public product catalog, diagrams, and setup skills—not the product binaries. Product code and issue trackers live in the linked repositories. See [LICENSE](LICENSE) for this repository’s license.
-
-Edit [`data/products.json`](data/products.json) after verifying the tag, its resolved commit, the setup guide, and the published assets. For the installer, check the selected asset against the release’s `SHA256SUMS` and confirm the command names. The setup planner reads the catalog directly. Regenerate the README, release catalog, website, setup skill pins, and installer pins from the same data, then run the checks:
-
-```sh
-node scripts/render-lineup.mjs
-node --test tests/*.test.mjs
-```
-
-GitHub Pages serves `docs/` directly. The site has no runtime build, tracking scripts, or third-party requests.
+[Maintain this lineup](MAINTAIN.md)

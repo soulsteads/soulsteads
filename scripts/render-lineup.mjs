@@ -28,9 +28,7 @@ function journeyContext(data, journey, { website = false } = {}) {
       label,
       note,
     })),
-    sourceLabel: journey.source === 'tagged'
-      ? (website ? 'Source guide' : `Tagged source ${ref}`)
-      : 'Source preview',
+    sourceLabel: journey.source === 'tagged' ? 'Source guide' : 'Source preview',
   };
 }
 
@@ -59,8 +57,7 @@ function renderStartHereReadme(data) {
     return [
       `### ${journey.title}`,
       '',
-      `*${product.name} · ${sourceLabel}*`,
-      '',
+      ...(journey.source === 'preview' ? [`*${product.name} · ${sourceLabel}*`, ''] : []),
       journey.summary,
       '',
       ...guides.map(({ href, label, note }) => `- [${label}](${href})${note ? ` — ${note}` : ''}`),
@@ -191,24 +188,30 @@ export function renderSetupSkill(data, markdown) {
 }
 
 export function renderInstaller(data, script) {
+  const names = new Set();
   const rows = data.lineup.flatMap((slug) => {
     const p = publicProducts(data).find(p => p.slug === slug);
     if (!p?.published.installer) return [];
     const { repo, releaseTag, assets, installer: { asset, sha256, commands, glibc } } = p.published;
     const guide = p.taggedSetup?.guide;
     const matches = (value, pattern) => typeof value === 'string' && pattern.test(value);
+    const selector = slug.replace(/^(?:agent|model)-/, '');
     // These tokens are emitted into a single-quoted Bash block with pipe separators.
     const name = /^[a-z0-9][a-z0-9-]*$/;
     const wheel = matches(asset, /^[a-z0-9][a-z0-9_]*-[a-z0-9_.-]+\.whl$/);
     const archive = asset === `${repo}-linux-x86_64.tar.gz`;
-    if (!matches(slug, name) || !matches(repo, name) || !matches(releaseTag, /^v\d+\.\d+\.\d+$/) ||
+    if (!matches(slug, name) || !matches(selector, name) || !matches(repo, name) || !matches(releaseTag, /^v\d+\.\d+\.\d+$/) ||
         (!wheel && !archive) || !assets.includes(asset) || !matches(sha256, /^[0-9a-f]{64}$/) ||
         (archive ? !matches(glibc, /^[1-9][0-9]?\.[0-9]{1,3}$/) : glibc !== undefined) ||
         !Array.isArray(commands) || !commands.length || (archive && commands.length !== 1) ||
         !commands.every(command => matches(command, name)) || !matches(guide, /^[a-z0-9][a-z0-9_./#-]*$/i)) {
       throw Error(`Invalid installer metadata for ${slug}`);
     }
-    return [[slug, repo, releaseTag, asset, sha256, commands.join(' '), guide, glibc ?? '-'].join('|')];
+    for (const key of new Set([selector, slug])) {
+      if (names.has(key)) throw Error(`Duplicate installer selector: ${key}`);
+      names.add(key);
+    }
+    return [[selector, slug, repo, releaseTag, asset, sha256, commands.join(' '), guide, glibc ?? '-'].join('|')];
   });
   return block(script, 'installer-releases', rows.join('\n'), label => `# ${label}`);
 }

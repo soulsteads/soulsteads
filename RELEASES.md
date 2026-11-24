@@ -14,9 +14,11 @@ Clone this repository, then run the installer as your normal user. Choose one pr
 git clone https://github.com/soulsteads/soulsteads.git
 cd soulsteads
 bash install.sh --list
-bash install.sh --dry-run agent-workboard
-bash install.sh agent-workboard
+bash install.sh --dry-run workboard
+bash install.sh workboard
 ```
+
+The installer lists short names such as `home` and `workboard`. Older names such as `agent-home` and `agent-workboard` still work.
 
 - **Requirements:** Bash, `curl`, `stat`, and `sha256sum` or `shasum`. Messaging, Workboard, Model Router, and Forge use prebuilt Linux x86-64 binaries and need `tar`. `--list` shows the minimum glibc version for each. On other platforms or older systems, check the tagged guide for supported source builds. Home and Skillstore use release wheels and need `uv` and an installed Python 3.11 or newer; `uv` may fetch wheel dependencies. Skillstore is tested on Linux.
 - **Install location:** Commands go in `~/.local/bin` by default. Set `SOULSTEADS_BIN_DIR` to another absolute directory you own if needed. Install paths (including the wheel and `uv` tool directories) must not pass through symlinks or group/world-writable directories. Add the bin directory to `PATH` yourself if it isn't already there. The installer verifies the release asset against the SHA-256 pinned in the catalog. It doesn't invoke `sudo`, edit your shell startup files, provision databases or credentials, or start services.

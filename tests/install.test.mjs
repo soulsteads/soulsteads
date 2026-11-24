@@ -10,6 +10,14 @@ import { renderInstaller } from '../scripts/render-lineup.mjs';
 
 const script = fileURLToPath(new URL('../install.sh', import.meta.url));
 const catalog = JSON.parse(readFileSync(new URL('../data/products.json', import.meta.url), 'utf8'));
+const selectors = {
+  'agent-home': 'home',
+  'agent-messaging': 'messaging',
+  'agent-workboard': 'workboard',
+  'model-router': 'router',
+  'agent-forge': 'forge',
+  'agent-skillstore': 'skillstore',
+};
 
 function scratch(t, parent = tmpdir()) {
   const dir = mkdtempSync(join(parent, 'soulsteads-installer-'));
@@ -28,16 +36,21 @@ test('lists the installer products and previews their pinned releases offline', 
   const env = { HOME: join(dir, 'not created'), PATH: process.env.PATH, TMPDIR: dir };
   const available = run(script, ['--list'], env);
   assert.equal(available.status, 0, available.stderr);
-  assert.deepEqual(available.stdout.trim().split('\n').map(line => line.split(/\s+/)[0]), catalog.lineup);
+  assert.deepEqual(available.stdout.trim().split('\n').map(line => line.split(/\s+/)[0]), Object.values(selectors));
   for (const p of catalog.products.filter(p => p.published.releaseTag)) {
-    const preview = run(script, ['--dry-run', p.slug], env);
+    const selector = selectors[p.slug];
+    const preview = run(script, ['--dry-run', selector], env);
     assert.equal(preview.status, 0, preview.stderr);
+    assert.equal(preview.stdout.split('\n')[0], `${selector} ${p.published.releaseTag}`);
     const prefix = `${catalog.organization}/${p.published.repo}/releases/download/${p.published.releaseTag}/`;
     assert.ok(p.published.assets.filter(a => a !== 'SHA256SUMS').some(a => preview.stdout.includes(prefix + a)));
     assert.ok(preview.stdout.includes(`SHA-256: ${p.published.installer.sha256}`));
     assert.ok(preview.stdout.includes(`Commands: ${p.published.installer.commands.join(' ')}`));
     assert.ok(preview.stdout.includes(join(env.HOME, '.local', 'bin')));
     assert.ok(preview.stdout.includes(`${catalog.organization}/${p.published.repo}/blob/${p.published.releaseTag}/${p.taggedSetup.guide}`));
+    const legacy = run(script, ['--dry-run', p.slug], env);
+    assert.equal(legacy.status, 0, legacy.stderr);
+    assert.equal(legacy.stdout, preview.stdout, `${p.slug} remains an alias for ${selector}`);
   }
   assert.equal(existsSync(env.HOME), false);
 });
@@ -45,7 +58,7 @@ test('lists the installer products and previews their pinned releases offline', 
 test('rejects invalid selections before trying an install', (t) => {
   const dir = scratch(t);
   const env = { HOME: join(dir, 'not created'), PATH: process.env.PATH, TMPDIR: dir };
-  for (const args of [['all'], ['agent-home', 'agent-workboard'], ['--force', 'agent-home'], ['--dry-run']]) {
+  for (const args of [['all'], ['agent-router'], ['home', 'workboard'], ['--force', 'home'], ['--dry-run']]) {
     const result = run(script, args, env);
     assert.notEqual(result.status, 0, args.join(' '));
     assert.match(result.stderr, /install\.sh:/);
@@ -65,14 +78,23 @@ test('installer pins are generated and reject unsafe or unpublished assets', () 
   assert.throws(() => renderInstaller(changed, source), /Invalid installer metadata for agent-home/);
 });
 
+test('installer generation rejects ambiguous short and legacy product selectors', () => {
+  const source = readFileSync(script, 'utf8');
+  const changed = structuredClone(catalog);
+  changed.products.push({ ...changed.products.find(p => p.slug === 'agent-home'), slug: 'home' });
+  changed.lineup.push('home');
+  assert.throws(() => renderInstaller(changed, source), /Duplicate installer selector: home/);
+});
+
 function fixture(t, wheel = false) {
   const dir = scratch(t, realpathSync(process.env.RUNNER_TEMP || process.env.TMPDIR || homedir()));
   const env = { HOME: join(dir, 'home with spaces'), TMPDIR: join(dir, 'temp'), LOG: join(dir, 'calls') };
   const stubs = join(dir, 'stubs');
   for (const path of [env.HOME, env.TMPDIR, stubs]) mkdirSync(path);
   env.PATH = `${stubs}:${process.env.PATH}`;
-  const slug = wheel ? 'agent-home' : 'agent-workboard';
-  const product = catalog.products.find(p => p.slug === slug);
+  const legacy = wheel ? 'agent-home' : 'agent-workboard';
+  const slug = selectors[legacy];
+  const product = catalog.products.find(p => p.slug === legacy);
   const asset = product.published.assets.find(a => a !== 'SHA256SUMS');
   const executable = wheel ? 'soulsteads' : 'soulsteads-workboard';
   const bin = join(env.HOME, '.local', 'bin');
