@@ -39,6 +39,8 @@ Do not modify an endpoint just because another endpoint passed. If the desired e
 
 ### Agent Home and Agent Messaging: distinguish a working directory from a managed launch
 
+For a Hermes conversion and dedicated Mattermost test lane, use the [onboarding checklist](../soulsteads-setup/references/hermes-to-mattermost.md). It separates the Home import, the native harness checks, and the chat connection; it does not imply a combined installer.
+
 Messaging's generic `acp.agentHome` sets an existing working directory for the selected backend; it does not import a Home, translate native settings, or transfer a login. Read Messaging's `docs/SETUP.md` for backend constraints and OpenCode profile-copy incompatibility.
 
 1. For a Home-managed ACP launch, read [Agent Home's documented native backend setup](https://github.com/soulsteads/soulsteads-agent-home/blob/v0.3.0/docs/runtimes.md#launch-through-messaging). It requires a separately installed, compatible native Soulsteads harness; if the operator does not already have that prerequisite, report this path as blocked. Do not substitute an unrelated backend or private source.

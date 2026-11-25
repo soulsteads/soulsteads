@@ -175,6 +175,7 @@ After the approved scope is clear, follow only the selected release's installati
 - Use the verified release wheel or run `uv tool install .` from the verified source checkout. Then follow the tagged quickstart to create a disposable Home with `soulsteads create <name> --runtime <opencode|pi|claude|codex> --path <new-home>`.
 - A Home owns portable identity, instructions, skills, memory documents, generated native files, and its private local Git history. It does not install/authenticate a harness, run models, configure chat, or sandbox the harness.
 - Use `soulsteads config <home> --sync` only for an explicitly chosen Home after reviewing changed canonical files. Starting a new native session is separate scope.
+- For an existing Hermes profile, use the [Hermes-to-Mattermost onboarding checklist](references/hermes-to-mattermost.md) instead of creating a blank Home. Its import checkpoints also apply if you are not connecting chat.
 
 ### Agent Messaging
 
