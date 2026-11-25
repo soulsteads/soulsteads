@@ -124,6 +124,27 @@ test('Messaging working directory is not treated as Home translation or a histor
   assert.match(readme, /working directory, not an Agent Home import/);
 });
 
+test('both onboarding skills link to the same tagged Hermes-to-Mattermost workflow', () => {
+  for (const [name, ref] of [
+    ['soulsteads-setup', 'references/hermes-to-mattermost.md'],
+    ['soulsteads-connect', '../soulsteads-setup/references/hermes-to-mattermost.md'],
+  ]) {
+    const source = new URL(`.agents/skills/${name}/SKILL.md`, repoUrl);
+    assert.ok(readFileSync(source, 'utf8').includes(`](${ref})`));
+    assert.ok(existsSync(new URL(ref, source)), `${name}: ${ref}`);
+  }
+  const guide = read('.agents/skills/soulsteads-setup/references/hermes-to-mattermost.md');
+  for (const [slug, path] of [
+    ['agent-home', 'hermes-import.md'],
+    ['agent-messaging', 'MATTERMOST.md#prepare-the-bot-and-channel'],
+    ['agent-messaging', 'MANUAL-SERVICE.md'],
+  ]) {
+    const { published } = catalog.products.find(product => product.slug === slug);
+    assert.ok(guide.includes(`/${published.repo}/blob/${published.releaseTag}/docs/${path})`), path);
+  }
+  assert.match(guide, /\*\*v0\.4\.0 documentation erratum:\*\*[^\n]*`credentials\.env`[^\n]*`\$ROOT\/work\/\.env`/);
+});
+
 test('Start here stories render from shared metadata on the README and website', () => {
   const journeys = catalog.journeys;
   assert.ok(Array.isArray(journeys), 'journeys must come from the common lineup metadata');
