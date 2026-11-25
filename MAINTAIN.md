@@ -10,3 +10,13 @@ node --test tests/*.test.mjs
 ```
 
 GitHub Pages serves `docs/` directly. The site has no runtime build, tracking scripts, or third-party requests.
+
+## Debian package
+
+Build the static-site-only Debian package without starting a service or installing a web server:
+
+```sh
+bash scripts/build-deb.sh /absolute/output/directory
+```
+
+The package is named `soulsteads-website` so it cannot collide with the Agent Home CLI package. It installs only the reviewed `docs/` site-file allowlist under `/usr/share/soulsteads-website` and copies `LICENSE` and `NOTICE` to `/usr/share/doc/soulsteads-website`. It has no maintainer scripts or dependencies. This repository has no canonical package-version manifest, so the build derives a reproducible Debian version from the checked-out `HEAD`: `0+git<UTC commit date>.g<12-char commit SHA>`. Set `DPKG_DEB` to use a specific `dpkg-deb` executable.
